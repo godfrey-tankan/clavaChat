@@ -62,9 +62,5 @@ def webhook():
     elif request.method == "POST":
         return handle_message()
 
-# @webhook_blueprint.route("/webhook", methods=["POST","GET"])
-# @signature_required
-# def webhook_post():
-#     return handle_message()
 
 
