@@ -34,12 +34,7 @@ def send_whatsapp_message():
     }
     response = requests.post(url, headers=headers, json=data)
     return response
-
-
 response = send_whatsapp_message()
-# print(response.status_code)
-# print(response.json())
-
 
 def get_text_message_input(recipient, text):
     if text == "hello":

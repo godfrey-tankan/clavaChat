@@ -73,17 +73,6 @@ def generate_response(response):
     return response.choices[0].message.content.strip()
 
 
-# def generate_response(response):
-#     if "tecla" in response:
-#         response = "Hey Tecla, how can I help you today?, please be open to me and be sure to tell if tankan is bothering."
-#     if  "tanatswa" in response.lower():
-#         response = openai.ChatCompletion.create(
-#             model="gpt-3.5-turbo",
-#             messages=[{"role": "user", "content": response.strip("tankan")}],
-#             max_tokens=4000,
-#             temperature=0.7,
-#             n=1,
-#             stop=None
 #         )
 #     if response.lower() == "who are you?" or response.lower() == "what is your name" or response.lower() == "where are you from" or response.lower() == "who made you?" or response.lower() == "who is tankan" or response.lower() == "tankan":
 #         response = "I am tankan's assistant, I am here to help you with anything you need."
