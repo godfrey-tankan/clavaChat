@@ -60,9 +60,6 @@ def send_message(data):
 
     response = requests.post(url, data=data, headers=headers)
     if response.status_code == 200:
-        # print("Status:", response.status_code)
-        # print("Content-type:", response.headers["content-type"])
-        # print("Body:", response.text)
         return response
     else:
         # print(response.status_code)

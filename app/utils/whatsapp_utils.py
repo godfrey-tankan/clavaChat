@@ -72,11 +72,6 @@ def generate_response(response):
 
     return response.choices[0].message.content.strip()
 
-
-#         )
-#     if response.lower() == "who are you?" or response.lower() == "what is your name" or response.lower() == "where are you from" or response.lower() == "who made you?" or response.lower() == "who is tankan" or response.lower() == "tankan":
-#         response = "I am tankan's assistant, I am here to help you with anything you need."
-
 # def generate_response(response):
 #     # Return text in uppercase
 #     if response.lower() == "hello":
@@ -95,7 +90,7 @@ def send_message(data):
     try:
         response = requests.post(
             url, data=data, headers=headers, timeout=10
-        )  # 10 seconds timeout as an example
+        )  
         response.raise_for_status()  # Raises an HTTPError if the HTTP request returned an unsuccessful status code
     except requests.Timeout:
         logging.error("Timeout occurred while sending message")
@@ -112,7 +107,6 @@ def send_message(data):
 
 
 def process_text_for_whatsapp(text):
-    # Remove brackets
     pattern = r"\【.*?\】"
     # Substitute the pattern with an empty string
     text = re.sub(pattern, "", text).strip()
@@ -120,10 +114,8 @@ def process_text_for_whatsapp(text):
     # Pattern to find double asterisks including the word(s) in between
     pattern = r"\*\*(.*?)\*\*"
 
-    # Replacement pattern with single asterisks
     replacement = r"*\1*"
 
-    # Substitute occurrences of the pattern with the replacement
     whatsapp_style_text = re.sub(pattern, replacement, text)
 
     return whatsapp_style_text
