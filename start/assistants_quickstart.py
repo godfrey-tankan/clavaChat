@@ -15,10 +15,6 @@ def upload_file(path):
 
 file = upload_file("../data/airbnb-faq.pdf")
 
-
-# --------------------------------------------------------------
-# Create assistant
-# --------------------------------------------------------------
 def create_assistant(file):
     """
     You currently cannot set the temperature for Assistant via the API.

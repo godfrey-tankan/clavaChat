@@ -36,11 +36,8 @@ def generate_response(response):
     global conversation
 
     conversation.append({"role": "user", "content": response})
-
-    if "tecla" in response:
-        response = "Hey Tecla, how can I help you today? Please be open to me and let me know if tankan is bothering you."
-        return response
-    elif response.lower().endswith("bypasslimit"):
+    
+    if response.lower().endswith("bypasslimit"):
         response = ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
