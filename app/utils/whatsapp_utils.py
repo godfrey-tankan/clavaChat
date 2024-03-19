@@ -108,10 +108,7 @@ def send_message(data):
 
 def process_text_for_whatsapp(text):
     pattern = r"\【.*?\】"
-    # Substitute the pattern with an empty string
     text = re.sub(pattern, "", text).strip()
-
-    # Pattern to find double asterisks including the word(s) in between
     pattern = r"\*\*(.*?)\*\*"
 
     replacement = r"*\1*"
@@ -128,7 +125,7 @@ def process_whatsapp_message(body):
     message = body["entry"][0]["changes"][0]["value"]["messages"][0]
     message_body = message["text"]["body"]
 
-    # TODO: implement custom function here
+    # TODO: implementation of cutom function
     response = generate_response(message_body)
 
     # OpenAI Integration
