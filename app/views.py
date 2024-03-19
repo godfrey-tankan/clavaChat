@@ -15,9 +15,6 @@ webhook_blueprint = Blueprint("webhook", __name__)
 def handle_message():
 
     body = request.get_json()
-    # logging.info(f"request body: {body}")
-
-    # Check if it's a WhatsApp status update
     if (
         body.get("entry", [{}])[0]
         .get("changes", [{}])[0]

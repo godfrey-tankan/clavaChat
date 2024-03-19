@@ -79,17 +79,6 @@ def generate_response(response):
 #         return response
 #     # Call OpenAI API
 #     else:
-#         response = openai.ChatCompletion.create(
-#             model="gpt-3.5-turbo",
-#             messages=[{"role": "user", "content": response}],
-#             max_tokens=200,
-#             temperature=0.7,
-#             n=1,
-#             stop=None
-#         )
-#     return response.choices[0].message.content.strip()
-
-# Example usage
 
 # def generate_response(response):
 #     # Return text in uppercase
