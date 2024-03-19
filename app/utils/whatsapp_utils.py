@@ -76,9 +76,6 @@ def generate_response(response):
 #         )
 #     if response.lower() == "who are you?" or response.lower() == "what is your name" or response.lower() == "where are you from" or response.lower() == "who made you?" or response.lower() == "who is tankan" or response.lower() == "tankan":
 #         response = "I am tankan's assistant, I am here to help you with anything you need."
-#         return response
-#     # Call OpenAI API
-#     else:
 
 # def generate_response(response):
 #     # Return text in uppercase
