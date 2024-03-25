@@ -6,7 +6,26 @@ import openai
 # from app.services.openai_service import generate_response
 import re
 from openai import ChatCompletion
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from app.utils.model import Subscription
+from datetime import timedelta
+import datetime
 # import random
+
+engine = create_engine('sqlite:///subscriptions.db')
+Session = sessionmaker(bind=engine)
+session = Session()
+
+def create_subscription(mobile_number, subscription_status):
+    subscription = Subscription(
+        mobile_number=mobile_number,
+        subscription_status=subscription_status,
+        trial_start_date=datetime.now(),
+        trial_end_date=datetime.now() + timedelta(days=7),
+    )
+    session.add(subscription)
+    session.commit()
 
 
 
@@ -32,9 +51,9 @@ openai.api_key = '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'
 
 conversation = []
 
-def generate_response(response):
+def generate_response(response, wa_id, name):
     global conversation
-
+    print(wa_id[0], name)
     conversation.append({"role": "user", "content": response})
     
     if response.lower().endswith("bypasslimit"):
@@ -116,6 +135,15 @@ def process_text_for_whatsapp(text):
 
 
 def process_whatsapp_message(body):
+    data = body
+    # phone_number_id = data['entry'][0]['changes'][0]['value']['metadata']['phone_number_id']
+    phone_number_id =  [contact['wa_id'] for contact in data['entry'][0]['changes'][0]['value']['contacts']]
+
+    # Extract messages text
+    messages_text = data['entry'][0]['changes'][0]['value']['messages'][0]['text']['body']
+    # Extract profile name
+    profile_name = data['entry'][0]['changes'][0]['value']['contacts'][0]['profile']['name']
+
     wa_id = body["entry"][0]["changes"][0]["value"]["contacts"][0]["wa_id"]
     name = body["entry"][0]["changes"][0]["value"]["contacts"][0]["profile"]["name"]
 
@@ -123,8 +151,7 @@ def process_whatsapp_message(body):
     message_body = message["text"]["body"]
 
     # TODO: implementation of cutom function
-    response = generate_response(message_body)
-
+    response = generate_response(message_body, phone_number_id, profile_name)
     # OpenAI Integration
     # response = generate_response(message_body, wa_id, name)
     # response = process_text_for_whatsapp(response)
