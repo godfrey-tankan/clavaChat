@@ -17,15 +17,20 @@ engine = create_engine('sqlite:///subscriptions.db')
 Session = sessionmaker(bind=engine)
 session = Session()
 
-def create_subscription(mobile_number, subscription_status):
-    subscription = Subscription(
-        mobile_number=mobile_number,
-        subscription_status=subscription_status,
-        trial_start_date=datetime.now(),
-        trial_end_date=datetime.now() + timedelta(days=7),
-    )
-    session.add(subscription)
-    session.commit()
+def create_subscription(mobile_number,message, subscription_status):
+    existing_subscription = session.query(Subscription).filter_by(wa_id=mobile_number).first()
+    if existing_subscription:
+        print("Subscription already exists")
+    else:
+        subscription = Subscription(
+            mobile_number=mobile_number,
+            subscription_status=subscription_status,
+            message=message,
+            trial_start_date=datetime.now(),
+            trial_end_date=datetime.now() + timedelta(days=7),
+        )
+        session.add(subscription)
+        session.commit()
 
 
 
