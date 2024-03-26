@@ -21,23 +21,20 @@ class Subscription(Base):
     id = Column(Integer, primary_key=True)
     mobile_number = Column(String)
     subscription_status = Column(String)
-    message = Column(String)
+    user_name = Column(String)
     trial_start_date = Column(Date)
     trial_end_date = Column(Date)
     @classmethod
     def exists(cls, session, mobile_number):
         return session.query(cls).filter_by(mobile_number=mobile_number).first() is not None
     
-
 engine = create_engine('sqlite:///subscriptions.db')
 Base.metadata.create_all(engine)  # Create the table if it doesn't exist
-
 Session = sessionmaker(bind=engine)
 session = Session()
-
 today = datetime.now().date()
 
-def create_subscription(mobile_number,message, subscription_status):
+def create_subscription(mobile_number,user_name, subscription_status):
     if Subscription.exists(session, mobile_number):
         sub_end = session.query(Subscription).filter_by(mobile_number=mobile_number).first().trial_end_date
         if sub_end < today:
@@ -50,9 +47,9 @@ def create_subscription(mobile_number,message, subscription_status):
         subscription = Subscription(
             mobile_number=mobile_number,
             subscription_status=subscription_status,
-            message=message,
+            user_name=user_name,
             trial_start_date=today,
-            trial_end_date=today - timedelta(days=7),
+            trial_end_date=today + timedelta(days=7),
         )
         session.add(subscription)
         session.commit()
@@ -60,9 +57,10 @@ def create_subscription(mobile_number,message, subscription_status):
     return message
 
 def log_http_response(response):
-    logging.info(f"Status: {response.status_code}")
-    logging.info(f"Content-type: {response.headers.get('content-type')}")
-    logging.info(f"Body: {response.text}")
+    pass
+    # logging.info(f"Status: {response.status_code}")
+    # logging.info(f"Content-type: {response.headers.get('content-type')}")
+    # logging.info(f"Body: {response.text}")
 
 def get_text_message_input(recipient, text):
     return json.dumps(
@@ -76,19 +74,20 @@ def get_text_message_input(recipient, text):
     )
 
 openai.api_key = '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'
-
 conversation = []
 
 def generate_response(response, wa_id, name):
     global conversation
-    Subscription_status = create_subscription(wa_id[0], response, "Free Trial")
+    Subscription_status = create_subscription(wa_id[0], name, "Free Trial")
     conversation.append({"role": "user", "content": response})
-    
+    if (response.lower() == "y" or response.lower() == "n" or response == "1" or response == "2" or response == "3" or response== "4" or response == "5" or (len(response) >5 and response[:1] == "0") or response.lower() == "help"):
+        response = activate_subscription(wa_id,response)
+        return response
     if Subscription_status == "created":
-        response = f" Hi {name}\nYour Free trial subscription has been created. You have a free trial for 7 days. expiring on {today + timedelta(days=7)}.\n Regards,\n *tnqn*."
+        response = f" Hi {name}\nYour Free trial subscription has been created. You have a free trial for 7 days. expiring on {today + timedelta(days=7)} reply with word *help* to learn more!.\n Regards,\n *tnqn*."
         return response
     elif Subscription_status == "expired":
-        response = " ⚠️  *YOUR FREE TRIAL HAS EXPIRED*\nPlease Choose SUbscription Option\n1. Monthly Subscription\n2. Cancel Subscription\n3. Check Subscription Status\n4. Help\n5. Exit\n\n *Please reply with the number of your choice*."
+        response = "*YOUR FREE TRIAL HAS `EXPIRED`*\nPlease Choose `Subscription` Option\n1. Monthly Subscription\n2. Cancel Subscription\n3. Check Subscription Status\n4. Help\n5. `Exit`\n\n *Please reply with the `number` of your choice*."
         return response
     else:
         if response.lower().endswith("bypasslimit"):
@@ -113,7 +112,7 @@ def generate_response(response, wa_id, name):
                 messages=[
                     {"role": "user", "content": conversation[i]["content"]} for i in range(len(conversation))
                 ],
-                max_tokens=50,
+                max_tokens=1000,
                 temperature=0.7,
                 n=1,
                 stop=None
@@ -127,27 +126,26 @@ def send_message(data):
         "Content-type": "application/json",
         "Authorization": f"Bearer {current_app.config['ACCESS_TOKEN']}",
     }
-
     url = f"https://graph.facebook.com/{current_app.config['VERSION']}/{current_app.config['PHONE_NUMBER_ID']}/messages"
-
     try:
         response = requests.post(
             url, data=data, headers=headers, timeout=10
         )  
         response.raise_for_status()  # Raises an HTTPError if the HTTP request returned an unsuccessful status code
     except requests.Timeout:
-        logging.error("Timeout occurred while sending message")
-        return jsonify({"status": "error", "message": "Request timed out"}), 408
+        pass
+        # logging.error("Timeout occurred while sending message")
+        # return jsonify({"status": "error", "message": "Request timed out"}), 408
     except (
         requests.RequestException
     ) as e:  # This will catch any general request exception
-        logging.error(f"Request failed due to: {e}")
-        return jsonify({"status": "error", "message": "Failed to send message"}), 500
+        pass
+        # logging.error(f"Request failed due to: {e}")
+        # return jsonify({"status": "error", "message": "Failed to send message"}), 500
     else:
         # Process the response as normal
         log_http_response(response)
         return response
-
 
 def process_text_for_whatsapp(text):
     pattern = r"\【.*?\】"
@@ -159,7 +157,6 @@ def process_text_for_whatsapp(text):
     whatsapp_style_text = re.sub(pattern, replacement, text)
 
     return whatsapp_style_text
-
 
 def process_whatsapp_message(body):
     data = body
@@ -186,7 +183,6 @@ def process_whatsapp_message(body):
     data = get_text_message_input(current_app.config["RECIPIENT_WAID"], response)
     send_message(data)
 
-
 def is_valid_whatsapp_message(body):
     """
     Check if the incoming webhook event has a valid WhatsApp message structure.
@@ -201,41 +197,45 @@ def is_valid_whatsapp_message(body):
     )
 
 def colorize_text(text, color):
-    
     colored_text = f"{color}{text}{Style.RESET_ALL}"
     return colored_text
 
 def activate_subscription(wa_id,message):
-    subs_activity = create_subscription(wa_id, "", "")
-    subscription_detail = session.query(Subscription).filter_by(mobile_number=wa_id).first()
-    if subs_activity == "expired":
-        if message == 1 or message=="1.":
-            response = "Monthly Subscription Plan:\n\n*Features*\n1. Unlimited Access to all features\n2. 24/7 Customer Support\n3. Cancel Anytime\n\n*Pricing*\n$1/month\n\n*To subscribe, please reply with, *Y* to proceed or *N* to abort.*"
+    expired_on = "YYYY-MM-DD"
+    try:
+        if message == "1" or message=="1.":
+            response = "Monthly Subscription Plan:\n\n*Features*\n1. Unlimited Access Message Requests\n2. 24/7 Customer Support\n3. Cancel Anytime - `guaranteed money back within first week` if you decided to change otherwise.\n\n*Pricing*\n$1/month\n\n To subscribe, please reply with, *Y* to proceed or *N* to abort."
             return response
-        elif message == 2 or message=="2.":
+        elif message == "2" or message=="2.":
             response = "Your subscription has been cancelled. To reactivate, please reply with *1* to subscribe."
             return response
-        elif message == 3 or message=="3.":
-            response = f"Your subscription has expired on {subscription_detail.trial_end_date}. To reactivate, please reply with *1* to subscribe."
+        elif message == "3" or message=="3.":
+            response = f"Your subscription has expired on {expired_on}. To reactivate, please reply with *1* to subscribe."
             return response
-        elif message == 4 or message=="4.":
+        elif message == "4" or message=="4.":
             response = "Thank you for your interest in our subscription plans. We offer convenient options to help you split service costs efficiently.\n\n"
             response += "Subscription Plans:\n"
             response += "- Monthly Subscription Plan\n"
             response += "- Cancel Subscription\n\n"
             response += "By subscribing, you will gain unlimited access to all features and enjoy 24/7 customer support.\n\n"
             response += "To proceed with the Monthly Subscription Plan, please reply with *1*. To cancel your subscription, please reply with *N*.\n\n"
-            response += "For any inquiries or assistance, please contact our support team.\n\n"
+            response += "For any inquiries or assistance, please contact our support team.\n\n `263779586059` or send direct email to `solutions@tphub.com`\n\n"
             response += "© 2023 TechProjectsHub. All rights reserved.\n"
             return response
-        elif message == 5 or message=="5.":
+        elif message == "5" or message=="5.":
             response = "Thank you for using our service. If you need any further assistance, please feel free to contact us. Have a great day!\n\n 🫰"
             return response
         if message.lower() == "y":
-            response = "Your subscription is being created. You will be billed $1/month. To cancel your subscription, please reply with *2* or reply with your ecocash mobile number to proceed."
+            response = "Your subscription is being created. You will be billed $1/month. To cancel your subscription, please reply with *2* or reply with your Ecocash mobile number in the form: `07XX` to proceed."
+            return response
+        if message.lower() == "n":
+            response = "Your subscription Process has been terminated, To reactivate a subscription please reply with *1* ."
+            return response
+        if message.lower() == "help":
+            response = "Subscription Options:\n1. Monthly Subscription Plan\n2. Cancel Subscription\n3. Check Subscription Status\n4. Help\n5. Exit\n\nPlease reply with the number of your choice."
             return response
 
-        if len(message) >9  and type(message) == int:
+        if len(message) >5  and message[:1] == "0":
             pattern = r'^(077|078)\d{7}$'
             match = re.match(pattern, message)
             if match:
@@ -244,3 +244,8 @@ def activate_subscription(wa_id,message):
             else:
                 response = "Invalid Ecocash number. Please reply with a valid Ecocash number to proceed."
                 return response
+        
+    except Exception as e:
+        response = "An error occured. Please try again later."
+        return response
+        
