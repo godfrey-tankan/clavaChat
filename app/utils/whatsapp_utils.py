@@ -1,4 +1,6 @@
 import logging
+from datetime import datetime
+from datetime import timedelta
 from flask import current_app, jsonify
 import json
 import requests
@@ -6,34 +8,55 @@ import openai
 # from app.services.openai_service import generate_response
 import re
 from openai import ChatCompletion
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, Column, Integer, String, Date
 from sqlalchemy.orm import sessionmaker
-from app.utils.model import Subscription
-from datetime import timedelta
-import datetime
-# import random
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
+
+class Subscription(Base):
+    __tablename__ = 'subscriptions'
+
+    id = Column(Integer, primary_key=True)
+    mobile_number = Column(String)
+    subscription_status = Column(String)
+    message = Column(String)
+    trial_start_date = Column(Date)
+    trial_end_date = Column(Date)
+    @classmethod
+    def exists(cls, session, mobile_number):
+        return session.query(cls).filter_by(mobile_number=mobile_number).first() is not None
+    
 
 engine = create_engine('sqlite:///subscriptions.db')
+Base.metadata.create_all(engine)  # Create the table if it doesn't exist
+
 Session = sessionmaker(bind=engine)
 session = Session()
 
+today = datetime.now().date()
+
 def create_subscription(mobile_number,message, subscription_status):
-    existing_subscription = session.query(Subscription).filter_by(wa_id=mobile_number).first()
-    if existing_subscription:
-        print("Subscription already exists")
+    if Subscription.exists(session, mobile_number):
+        sub_end = session.query(Subscription).filter_by(mobile_number=mobile_number).first().trial_end_date
+        if sub_end < today:
+            message = "expired"
+            return message
+        else:
+            pass
+            return subscription_status
     else:
         subscription = Subscription(
             mobile_number=mobile_number,
             subscription_status=subscription_status,
             message=message,
-            trial_start_date=datetime.now(),
-            trial_end_date=datetime.now() + timedelta(days=7),
+            trial_start_date=today,
+            trial_end_date=today + timedelta(days=7),
         )
         session.add(subscription)
         session.commit()
-
-
-
+    message = "created"
+    return message
 
 def log_http_response(response):
     logging.info(f"Status: {response.status_code}")
@@ -58,47 +81,47 @@ conversation = []
 
 def generate_response(response, wa_id, name):
     global conversation
-    print(wa_id[0], name)
+    create_subscription(wa_id[0], response, "Free Trial")
     conversation.append({"role": "user", "content": response})
-    
-    if response.lower().endswith("bypasslimit"):
-        response = ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "user", "content": conversation[i]["content"]} for i in range(len(conversation))
-            ],
-            max_tokens=4000,
-            temperature=0.7,
-            n=1,
-            stop=None
-        )
-        conversation.append({"role": "assistant", "content": response.choices[0].message.content.strip("bypasslimit")})
-
-    elif response.lower() in ["who are you?", "what is your name", "where are you from", "who made you?", "who is tankan", "tankan"]:
-        response = "I am tankan's assistant. I am here to help you with anything you need."
+    Subscription_status = create_subscription(wa_id[0], response, "")
+    if Subscription_status == "expired":
+        response = "Your free trial has expired. Please subscribe to continue using the service."
         return response
-
+    elif Subscription_status == "created":
+        response = f"Your Free trial subscription has been created. You have a free trial for 7 days. espiring on {today + timedelta(days=7)}.\n Regards, tnqn."
+        return response
     else:
-        response = ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "user", "content": conversation[i]["content"]} for i in range(len(conversation))
-            ],
-            max_tokens=50,
-            temperature=0.7,
-            n=1,
-            stop=None
-        )
-        conversation.append({"role": "assistant", "content": response.choices[0].message.content.strip()})
+        if response.lower().endswith("bypasslimit"):
+            response = ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "user", "content": conversation[i]["content"]} for i in range(len(conversation))
+                ],
+                max_tokens=4000,
+                temperature=0.7,
+                n=1,
+                stop=None
+            )
+            conversation.append({"role": "assistant", "content": response.choices[0].message.content.strip("bypasslimit")})
 
-    return response.choices[0].message.content.strip()
+        elif response.lower() in ["who are you?", "what is your name", "where are you from", "who made you?", "who is tankan", "tankan"]:
+            response = "I am tankan's assistant. I am here to help you with anything you need."
+            return response
 
-# def generate_response(response):
-#     # Return text in uppercase
-#     if response.lower() == "hello":
-#         response = "Hello, tankan"
-#     return response.upper()
+        else:
+            response = ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "user", "content": conversation[i]["content"]} for i in range(len(conversation))
+                ],
+                max_tokens=50,
+                temperature=0.7,
+                n=1,
+                stop=None
+            )
+            conversation.append({"role": "assistant", "content": response.choices[0].message.content.strip()})
 
+        return response.choices[0].message.content.strip()
 
 def send_message(data):
     headers = {
