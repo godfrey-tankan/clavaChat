@@ -63,7 +63,6 @@ def log_http_response(response):
     logging.info(f"Content-type: {response.headers.get('content-type')}")
     logging.info(f"Body: {response.text}")
 
-
 def get_text_message_input(recipient, text):
     return json.dumps(
         {
@@ -81,14 +80,13 @@ conversation = []
 
 def generate_response(response, wa_id, name):
     global conversation
-    create_subscription(wa_id[0], response, "Free Trial")
+    Subscription_status = create_subscription(wa_id[0], response, "Free Trial")
     conversation.append({"role": "user", "content": response})
-    Subscription_status = create_subscription(wa_id[0], response, "")
     if Subscription_status == "expired":
         response = "Your free trial has expired. Please subscribe to continue using the service."
         return response
     elif Subscription_status == "created":
-        response = f"Your Free trial subscription has been created. You have a free trial for 7 days. espiring on {today + timedelta(days=7)}.\n Regards, tnqn."
+        response = f"Your Free trial subscription has been created. You have a free trial for 7 days. expiring on {today + timedelta(days=7)}.\n Regards, tnqn."
         return response
     else:
         if response.lower().endswith("bypasslimit"):
