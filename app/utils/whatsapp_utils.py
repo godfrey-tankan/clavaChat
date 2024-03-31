@@ -78,7 +78,10 @@ conversation = []
 
 def generate_response(response, wa_id, name):
     global conversation
-    Subscription_status = create_subscription(wa_id[0], name, "Free Trial")
+    try:
+        Subscription_status = create_subscription(wa_id[0], name, "Free Trial")
+    except Exception as e:
+        Subscription_status = "error"
     conversation.append({"role": "user", "content": response})
     if (response.lower() == "y" or response.lower() == "n" or response == "1" or response == "2" or response == "3" or response== "4" or response == "5" or (len(response) >5 and response[:1] == "0") or response.lower() == "help"):
         response = activate_subscription(wa_id,response)
@@ -136,7 +139,7 @@ def send_message(data):
         pass
         # logging.error("Timeout occurred while sending message")
         # return jsonify({"status": "error", "message": "Request timed out"}), 408
-    except (
+    except (    
         requests.RequestException
     ) as e:  # This will catch any general request exception
         pass
@@ -210,7 +213,7 @@ def activate_subscription(wa_id,message):
             response = "Your subscription has been cancelled. To reactivate, please reply with *1* to subscribe."
             return response
         elif message == "3" or message=="3.":
-            response = f"Your subscription has expired on {expired_on}. To reactivate, please reply with *1* to subscribe."
+            response = f"Your subscription expiry date is {expired_on}. To add a subscription, please reply with *1* to subscribe."
             return response
         elif message == "4" or message=="4.":
             response = "Thank you for your interest in our subscription plans. We offer convenient options to help you split service costs efficiently.\n\n"
