@@ -66,9 +66,14 @@ conversation = []
 def generate_response(response, wa_id, name):
     global conversation
     try:
-        user_status_mode = session.query(Subscription).filter_by(mobile_number=wa_id[0]).first().user_status
+        user_status = session.query(Subscription).filter_by(mobile_number=wa_id[0]).first()
+        user_status_mode = user_status.user_status
+        expiry_date = user_status.trial_end_date
+        subscription_status_ob =user_status.subscription_status
     except Exception as e:
         user_status_mode = welcome
+        expiry_date = today
+        subscription_status_ob = "Free Trial"
     try:
         Subscription_status = create_subscription(wa_id[0], name, "Free Trial")
     except Exception as e:
@@ -79,7 +84,7 @@ def generate_response(response, wa_id, name):
         return response
     elif Subscription_status == "expired":
         if  user_status_mode == subs_status:
-            response = activate_subscription(wa_id,user_status_mode,response)
+            response = activate_subscription(wa_id,user_status_mode,response,expiry_date,subscription_status_ob)
             return response
         response = "*YOUR FREE TRIAL HAS `EXPIRED`*\nPlease Choose `Subscription` Option\n1. Monthly Subscription\n2. Check Subscription Status\n3. Help\n4. `Exit`\n\n *Please reply with the `number` of your choice*."
         return response
@@ -194,8 +199,7 @@ def colorize_text(text, color):
     colored_text = f"{color}{text}{Style.RESET_ALL}"
     return colored_text
 
-def activate_subscription(wa_id,status,message):
-    expired_on = "YYYY-MM-DD"
+def activate_subscription(wa_id,status,message,expiry_date,subscription_status_ob):
     try:
         if status ==subs_status:
             try:
@@ -208,7 +212,7 @@ def activate_subscription(wa_id,status,message):
                     response = subs_response1
                     return response
                 if message == "2" or message=="2.":
-                    response = subs_response2
+                    response = f"{subs_response2.format(subscription_status_ob)} its expiry date is {expiry_date}\n{subs_response5}"
                     return response
                 elif message == "3" or message=="3.":
                     response =subs_response3
@@ -220,7 +224,7 @@ def activate_subscription(wa_id,status,message):
                     response = subs_response5
                     return response
                 if message.lower() == "y":
-                    response = subs_payment_agree_response
+                    response = payment_response_default_response
                     try:
                         Subscription_status = session.query(Subscription).filter_by(mobile_number=wa_id[0]).first()
                         Subscription_status.user_status = payment_status
@@ -235,26 +239,17 @@ def activate_subscription(wa_id,status,message):
             
         if status == payment_status:
             try:
-                response = payment_response_default_response
+                response = ""
             except Exception as e:
                 response = f"payment - {error_response}"
                 return response
             else:
                 if message == "1" or message=="1.":
-                    response = "subs_response1"
+                    response = subs_payment_agree_response
                     return response
                 if message == "2" or message=="2.":
-                    response = "subs_cancel_response"
+                    response = subs_cancel_response
                     return response
-                elif message == "3" or message=="3.":
-                    response = "subs_response3"
-                    return response
-                elif message == "4" or message=="4.":
-                    response = "subs_response_final4"
-                    return response
-                elif message == "5" or message=="5.":
-                    response = "subs_response5"
-
             if len(message) >5  and message[:1] == "0":
                 pattern = r'^(077|078)\d{7}$'
                 match = re.match(pattern, message)
@@ -279,8 +274,6 @@ def activate_subscription(wa_id,status,message):
                 else:
                     response = ecocash_number_invalid_response
                     return response
-            
-        
             return response
         return response
     except Exception as e:

@@ -32,7 +32,7 @@ def configure_logging():
 
 subs_response_default = "*YOUR FREE TRIAL HAS `EXPIRED`*\nPlease Choose `Subscription` Option\n1. Monthly Subscription\n2. Check Subscription Status\n3. Help\n4. `Exit`\n\n *Please reply with the `number` of your choice*."
 subs_response1 = "Monthly Subscription Plan:\n\n*Features*\n1. Unlimited Access Message Requests\n2. 24/7 Customer Support\n3. Cancel Anytime - `guaranteed money back within first week` if you decided to change otherwise.\n\n*Pricing*\n$1/month\n\n To subscribe, please reply with, *Y* to proceed or *N* to abort."
-subs_response2 = "Your subscription has been cancelled. To reactivate, please reply with *1* to subscribe."
+subs_response2 = "Your subscription is on {}"
 subs_response3 = f"Your subscription expiry date is. To add a subscription, please reply with *1* to subscribe."
 subs_response4 = "Thank you for your interest in our subscription plans. We offer convenient options to help you split service costs efficiently.\n\n"
 subs_response4 += "Subscription Plans:\n"
@@ -43,12 +43,12 @@ subs_response4 += "To proceed with the Monthly Subscription Plan, please reply w
 subs_response4 += "For any inquiries or assistance, please contact our support team.\n\n `263779586059` or send direct email to `solutions@tphub.com`\n\n"
 subs_response4 += "© 2023 TechProjectsHub. All rights reserved.\n"
 subs_response_final4=subs_response4
-subs_response5 = "Thank you for using our service. If you need any further assistance, please feel free to contact us. Have a great day!\n\n 🫰"
+subs_response5 = "Thank you for using our service. If you need any further assistance, please feel free to contact us.\n\nHave a great day!🫰"
 subs_payment_agree_response = "Your subscription is being created. You will be billed $1/month. To cancel your subscription, please reply with *2* or reply with your Ecocash mobile number in the form: `07XX` to proceed."
 subs_payment_deny_response = "Your subscription request has been cancelled. To subscribe, please reply with *1*."
 subs_error_response = "An error occured. Please try again later."
 subs_cancel_response = "Your subscription has been cancelled. To reactivate, please reply with *1* to subscribe."
-payment_response_default_response = "Subscription Options:\n1. Monthly Subscription Plan\n2. Cancel Subscription\n3. Check Subscription Status\n4. Help\n5. Exit\n\nPlease reply with the number of your choice."
+payment_response_default_response = "You are about to create a Monthly `Subscription` Plan 💳\n\n1.Confirm Subscription \n2. Cancel Subscription\n3. Help\n4. Exit\n\nPlease reply with the number of your choice."
 ecocash_number_valid_response = "Please wait for the popup on your phone to confirm the payment. Your subscription will be activated once the payment is confirmed."
 ecocash_number_invalid_response = "Invalid Ecocash mobile number. Please reply with your Ecocash mobile number in the form: `07XX` to proceed."
 error_response = "An error occured. Please try again later."
