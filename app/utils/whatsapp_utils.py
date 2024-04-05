@@ -8,33 +8,17 @@ import openai
 # from app.services.openai_service import generate_response
 import re
 from openai import ChatCompletion
-from sqlalchemy import create_engine, Column, Integer, String, Date
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from colorama import Fore, Style
+from datetime import datetime
+from .model import Subscription, session
+from app.config import chat_status, subs_status, payment_status, welcome
 
-Base = declarative_base()
 
-class Subscription(Base):
-    __tablename__ = 'subscriptions'
 
-    id = Column(Integer, primary_key=True)
-    mobile_number = Column(String)
-    subscription_status = Column(String)
-    user_name = Column(String)
-    trial_start_date = Column(Date)
-    trial_end_date = Column(Date)
-    @classmethod
-    def exists(cls, session, mobile_number):
-        return session.query(cls).filter_by(mobile_number=mobile_number).first() is not None
-    
-engine = create_engine('sqlite:///subscriptions.db')
-Base.metadata.create_all(engine)  # Create the table if it doesn't exist
-Session = sessionmaker(bind=engine)
-session = Session()
-today = datetime.now().date()
 
 def create_subscription(mobile_number,user_name, subscription_status):
+    today = datetime.now().date()
     if Subscription.exists(session, mobile_number):
         sub_end = session.query(Subscription).filter_by(mobile_number=mobile_number).first().trial_end_date
         if sub_end < today:
@@ -50,6 +34,7 @@ def create_subscription(mobile_number,user_name, subscription_status):
             user_name=user_name,
             trial_start_date=today,
             trial_end_date=today + timedelta(days=7),
+            user_status=chat_status
         )
         session.add(subscription)
         session.commit()
@@ -87,10 +72,10 @@ def generate_response(response, wa_id, name):
         response = activate_subscription(wa_id,response)
         return response
     if Subscription_status == "created":
-        response = f" Hi {name}\nYour Free trial subscription has been created. You have a free trial for 7 days. expiring on {today + timedelta(days=7)} reply with word *help* to learn more!.\n Regards,\n *tnqn*."
+        response = f" Hi {name}\nYour Free trial subscription has been created. You have a free trial for 7 days. expiring on {today + timedelta(days=7)} reply with word *help* to learn more!.\n Enjoy a happy chat with clava \n  Regards,\n *tnqn*."
         return response
     elif Subscription_status == "expired":
-        response = "*YOUR FREE TRIAL HAS `EXPIRED`*\nPlease Choose `Subscription` Option\n1. Monthly Subscription\n2. Cancel Subscription\n3. Check Subscription Status\n4. Help\n5. `Exit`\n\n *Please reply with the `number` of your choice*."
+        response = "*YOUR FREE TRIAL HAS `EXPIRED`*\nPlease Choose `Subscription` Option\n1. Monthly Subscription\n2. Check Subscription Status\n3. Help\n4. `Exit`\n\n *Please reply with the `number` of your choice*."
         return response
     else:
         if response.lower().endswith("bypasslimit"):

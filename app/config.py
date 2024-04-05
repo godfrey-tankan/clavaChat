@@ -3,6 +3,15 @@ import os
 from dotenv import load_dotenv
 import logging
 
+
+
+chat_status="CHATMODE"
+subs_status="SUBMODE"
+payment_status="PAYMENTMODE"
+welcome="WELCOMEMODE"
+
+
+
 def load_configurations(app):
     load_dotenv()
     app.config["ACCESS_TOKEN"] = os.getenv("ACCESS_TOKEN")
