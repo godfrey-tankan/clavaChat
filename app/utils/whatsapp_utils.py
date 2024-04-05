@@ -12,7 +12,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from colorama import Fore, Style
 from datetime import datetime
 from .model import Subscription, session
-from app.config import chat_status, subs_status, payment_status, welcome
+from app.config import *
 
 
 
@@ -199,57 +199,90 @@ def activate_subscription(wa_id,status,message):
     try:
         if status ==subs_status:
             try:
-                response = "*YOUR FREE TRIAL HAS `EXPIRED`*\nPlease Choose `Subscription` Option\n1. Monthly Subscription\n2. Check Subscription Status\n3. Help\n4. `Exit`\n\n *Please reply with the `number` of your choice*."
-                response1 = "Monthly Subscription Plan:\n\n*Features*\n1. Unlimited Access Message Requests\n2. 24/7 Customer Support\n3. Cancel Anytime - `guaranteed money back within first week` if you decided to change otherwise.\n\n*Pricing*\n$1/month\n\n To subscribe, please reply with, *Y* to proceed or *N* to abort."
+                response = subs_response_default
             except Exception as e:
-                response = "An error occured. Please try again later."
+                response = f"subscription - {error_response}"
                 return response
             else:
                 if message == "1" or message=="1.": 
-                    response = response1
+                    response = subs_response1
                     return response
                 if message == "2" or message=="2.":
-                    response = "Your subscription has been cancelled. To reactivate, please reply with *1* to subscribe."
+                    response = subs_response2
                     return response
                 elif message == "3" or message=="3.":
-                    response = f"Your subscription expiry date is {expired_on}. To add a subscription, please reply with *1* to subscribe."
+                    response =subs_response3
                     return response
                 elif message == "4" or message=="4.":
-                    response = "Thank you for your interest in our subscription plans. We offer convenient options to help you split service costs efficiently.\n\n"
-                    response += "Subscription Plans:\n"
-                    response += "- Monthly Subscription Plan\n"
-                    response += "- Cancel Subscription\n\n"
-                    response += "By subscribing, you will gain unlimited access to all features and enjoy 24/7 customer support.\n\n"
-                    response += "To proceed with the Monthly Subscription Plan, please reply with *1*. To cancel your subscription, please reply with *N*.\n\n"
-                    response += "For any inquiries or assistance, please contact our support team.\n\n `263779586059` or send direct email to `solutions@tphub.com`\n\n"
-                    response += "© 2023 TechProjectsHub. All rights reserved.\n"
+                    response = subs_response_final4
                     return response
                 elif message == "5" or message=="5.":
-                    response = "Thank you for using our service. If you need any further assistance, please feel free to contact us. Have a great day!\n\n 🫰"
+                    response = subs_response5
                     return response
                 if message.lower() == "y":
-                    response = "Your subscription is being created. You will be billed $1/month. To cancel your subscription, please reply with *2* or reply with your Ecocash mobile number in the form: `07XX` to proceed."
+                    response = subs_payment_agree_response
+                    try:
+                        Subscription_status = session.query(Subscription).filter_by(mobile_number=wa_id[0]).first()
+                        Subscription_status.user_status = payment_status
+                        session.commit()
+                    except Exception as e:
+                        ...
                     return response
                 if message.lower() == "n":
-                    response = "Your subscription Process has been terminated, To reactivate a subscription please reply with *1* ."
+                    response = subs_payment_deny_response
                     return response
             return response
             
         if status == payment_status:
-            response = "Subscription Options:\n1. Monthly Subscription Plan\n2. Cancel Subscription\n3. Check Subscription Status\n4. Help\n5. Exit\n\nPlease reply with the number of your choice."
-            return response
-
-        if len(message) >5  and message[:1] == "0":
-            pattern = r'^(077|078)\d{7}$'
-            match = re.match(pattern, message)
-            if match:
-                response = "Please wait for the popup on your phone to confirm the payment. Your subscription will be activated once the payment is confirmed."
+            try:
+                response = payment_response_default_response
+            except Exception as e:
+                response = f"payment - {error_response}"
                 return response
             else:
-                response = "Invalid Ecocash number. Please reply with a valid Ecocash number to proceed."
-                return response
+                if message == "1" or message=="1.":
+                    response = "subs_response1"
+                    return response
+                if message == "2" or message=="2.":
+                    response = "subs_cancel_response"
+                    return response
+                elif message == "3" or message=="3.":
+                    response = "subs_response3"
+                    return response
+                elif message == "4" or message=="4.":
+                    response = "subs_response_final4"
+                    return response
+                elif message == "5" or message=="5.":
+                    response = "subs_response5"
+
+            if len(message) >5  and message[:1] == "0":
+                pattern = r'^(077|078)\d{7}$'
+                match = re.match(pattern, message)
+                if match:
+                    response = ecocash_number_valid_response
+                    pattern = r"PP(.*?)\bNew wallet"
+                    match = re.search(pattern, transaction_message)
+                    if match:
+                        try:
+                            Subscription_status = session.query(Subscription).filter_by(mobile_number=wa_id[0]).first()
+                            Subscription_status.subscription_status = "Monthly Subscription"
+                            Subscription_status.user_status = chat_status
+                            Subscription_status.trial_start_date = today
+                            Subscription_status.trial_end_date = today + timedelta(days=30)
+                            session.commit()
+                            response = eccocash_transaction_success_response
+                            return response
+                        except Exception as e:
+                            response = f"transaction - {error_response}"
+
+                    return response
+                else:
+                    response = ecocash_number_invalid_response
+                    return response
+            
         
-    except Exception as e:
-        response = "An error occured. Please try again later."
+            return response
         return response
-        
+    except Exception as e:
+        response = subs_error_response
+        return response
