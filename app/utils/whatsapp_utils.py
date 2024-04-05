@@ -68,6 +68,7 @@ conversation = []
 
 def generate_response(response, wa_id, name):
     global conversation
+    
     if response != "" or None:
         try:
             user_status = session.query(Subscription).filter_by(mobile_number=wa_id[0]).first()
@@ -112,7 +113,6 @@ def generate_response(response, wa_id, name):
             elif response.lower() in questions_list:
                 response = "I am tankan's assistant. I am here to help you with anything you need."
                 return response
-
             else:
                 response = ChatCompletion.create(
                     model="gpt-3.5-turbo",
@@ -127,6 +127,8 @@ def generate_response(response, wa_id, name):
                 conversation.append({"role": "assistant", "content": response.choices[0].message.content.strip()})
 
             return response.choices[0].message.content.strip()
+        else:
+            pass
         
 def send_message(data):
     headers = {
