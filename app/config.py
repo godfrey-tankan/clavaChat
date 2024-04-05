@@ -29,17 +29,16 @@ def configure_logging():
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
         stream=sys.stdout,
     )
-
+questions_list =["who are you?", "what is your name", "where are you from", "who made you?", "who is tankan", "tankan"]
 subs_response_default = "*YOUR FREE TRIAL HAS `EXPIRED`*\nPlease Choose `Subscription` Option\n1. Monthly Subscription\n2. Check Subscription Status\n3. Help\n4. `Exit`\n\n *Please reply with the `number` of your choice*."
 subs_response1 = "Monthly Subscription Plan:\n\n*Features*\n1. Unlimited Access Message Requests\n2. 24/7 Customer Support\n3. Cancel Anytime - `guaranteed money back within first week` if you decided to change otherwise.\n\n*Pricing*\n$1/month\n\n To subscribe, please reply with, *Y* to proceed or *N* to abort."
 subs_response2 = "Your subscription is on {}"
 subs_response3 = f"Your subscription expiry date is. To add a subscription, please reply with *1* to subscribe."
 subs_response4 = "Thank you for your interest in our subscription plans. We offer convenient options to help you split service costs efficiently.\n\n"
 subs_response4 += "Subscription Plans:\n"
-subs_response4 += "- Monthly Subscription Plan\n"
-subs_response4 += "- Cancel Subscription\n\n"
-subs_response4 += "By subscribing, you will gain unlimited access to all features and enjoy 24/7 customer support.\n\n"
-subs_response4 += "To proceed with the Monthly Subscription Plan, please reply with *1*. To cancel your subscription, please reply with *N*.\n\n"
+subs_response4 += "- Monthly Subscription Plan $1/m ✅\n"
+subs_response4 += "By subscribing, you will gain unlimited number of messages with clava chatbot and enjoy 24/7 customer support.\n\n"
+subs_response4 += "To proceed with the Monthly Subscription Plan, please reply with *1*.\nTo cancel your subscription, please reply with *N*.\n\n"
 subs_response4 += "For any inquiries or assistance, please contact our support team.\n\n `263779586059` or send direct email to `solutions@tphub.com`\n\n"
 subs_response4 += "© 2023 TechProjectsHub. All rights reserved.\n"
 subs_response_final4=subs_response4
@@ -54,3 +53,5 @@ ecocash_number_invalid_response = "Invalid Ecocash mobile number. Please reply w
 error_response = "An error occured. Please try again later."
 eccocash_transaction_success_response = "Your subscription has been successfully activated. Thank you for subscribing to our service. Enjoy!"
 transaction_message = "240313.1849.F42721."
+reference_number_error_response = "Transaction ID or Reference Number is invalid. Please try again."
+pop_reference_number_error_response = "The POP message is invalid, please send the whole message again."

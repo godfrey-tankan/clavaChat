@@ -23,8 +23,11 @@ def create_subscription(mobile_number,user_name, subscription_status):
         sub_end = session.query(Subscription).filter_by(mobile_number=mobile_number).first()
         if sub_end.trial_end_date < today:
             message = "expired"
-            sub_end.user_status = subs_status
-            session.commit()
+            if sub_end.subscription_status != "Free Trial" and sub_end.subscription_status != "Monthly Subscription":
+                pass
+            else:
+                sub_end.user_status = subs_status
+                session.commit()
             return message
         else:
             pass
@@ -65,61 +68,66 @@ conversation = []
 
 def generate_response(response, wa_id, name):
     global conversation
-    try:
-        user_status = session.query(Subscription).filter_by(mobile_number=wa_id[0]).first()
-        user_status_mode = user_status.user_status
-        expiry_date = user_status.trial_end_date
-        subscription_status_ob =user_status.subscription_status
-    except Exception as e:
-        user_status_mode = welcome
-        expiry_date = today
-        subscription_status_ob = "Free Trial"
-    try:
-        Subscription_status = create_subscription(wa_id[0], name, "Free Trial")
-    except Exception as e:
-        Subscription_status = "error"
-    conversation.append({"role": "user", "content": response})
-    if Subscription_status == "created":
-        response = f" Hi {name}\nYour Free trial subscription has been created. You have a free trial for 7 days. expiring on {today + timedelta(days=7)} reply with word *help* to learn more!.\n Enjoy a happy chat with clava \n  Regards,\n *tnqn*."
-        return response
-    elif Subscription_status == "expired":
-        if  user_status_mode == subs_status:
-            response = activate_subscription(wa_id,user_status_mode,response,expiry_date,subscription_status_ob)
+    if response != "" or None:
+        try:
+            user_status = session.query(Subscription).filter_by(mobile_number=wa_id[0]).first()
+            user_status_mode = user_status.user_status
+            expiry_date = user_status.trial_end_date
+            subscription_status_ob =user_status.subscription_status
+        except Exception as e:
+            user_status_mode = welcome
+            expiry_date = today
+            subscription_status_ob = "Free Trial"
+        try:
+            Subscription_status = create_subscription(wa_id[0], name, "Free Trial")
+        except Exception as e:
+            Subscription_status = "error"
+        conversation.append({"role": "user", "content": response})
+        if Subscription_status == "created":
+            response = f" Hi {name}\nYour 7-Days Free trial `subscription` has been `created` . Your free trial will expire on `{today + timedelta(days=7)}`\n Enjoy a happy chat with `clavaChat` \nRegards,\n*clavaChat*."
             return response
-        response = "*YOUR FREE TRIAL HAS `EXPIRED`*\nPlease Choose `Subscription` Option\n1. Monthly Subscription\n2. Check Subscription Status\n3. Help\n4. `Exit`\n\n *Please reply with the `number` of your choice*."
-        return response
-    else:
-        if response.lower().endswith("bypasslimit"):
-            response = ChatCompletion.create(
-                model="gpt-3.5-turbo",
-                messages=[
-                    {"role": "user", "content": conversation[i]["content"]} for i in range(len(conversation))
-                ],
-                max_tokens=4000,
-                temperature=0.7,
-                n=1,
-                stop=None
-            )
-            conversation.append({"role": "assistant", "content": response.choices[0].message.content.strip("bypasslimit")})
-        elif response.lower() in ["who are you?", "what is your name", "where are you from", "who made you?", "who is tankan", "tankan"]:
-            response = "I am tankan's assistant. I am here to help you with anything you need."
+        elif Subscription_status == "expired":
+            if  user_status_mode == subs_status:
+                response = activate_subscription(wa_id,user_status_mode,response,expiry_date,subscription_status_ob)
+                return response
+            elif user_status_mode == payment_status:
+                response = activate_subscription(wa_id,user_status_mode,response,expiry_date,subscription_status_ob)
+                return response
+            
+            response = subs_response_default
             return response
+        if subscription_status_ob == chat_status:
+            if response.lower().endswith("bypasslimit"):
+                response = ChatCompletion.create(
+                    model="gpt-3.5-turbo",
+                    messages=[
+                        {"role": "user", "content": conversation[i]["content"]} for i in range(len(conversation))
+                    ],
+                    max_tokens=4000,
+                    temperature=0.7,
+                    n=1,
+                    stop=None
+                )
+                conversation.append({"role": "assistant", "content": response.choices[0].message.content.strip("bypasslimit")})
+            elif response.lower() in questions_list:
+                response = "I am tankan's assistant. I am here to help you with anything you need."
+                return response
 
-        else:
-            response = ChatCompletion.create(
-                model="gpt-3.5-turbo",
-                messages=[
-                    {"role": "user", "content": conversation[i]["content"]} for i in range(len(conversation))
-                ],
-                max_tokens=1000,
-                temperature=0.7,
-                n=1,
-                stop=None
-            )
-            conversation.append({"role": "assistant", "content": response.choices[0].message.content.strip()})
+            else:
+                response = ChatCompletion.create(
+                    model="gpt-3.5-turbo",
+                    messages=[
+                        {"role": "user", "content": conversation[i]["content"]} for i in range(len(conversation))
+                    ],
+                    max_tokens=1000,
+                    temperature=0.7,
+                    n=1,
+                    stop=None
+                )
+                conversation.append({"role": "assistant", "content": response.choices[0].message.content.strip()})
 
-        return response.choices[0].message.content.strip()
-
+            return response.choices[0].message.content.strip()
+        
 def send_message(data):
     headers = {
         "Content-type": "application/json",
@@ -215,7 +223,7 @@ def activate_subscription(wa_id,status,message,expiry_date,subscription_status_o
                     response = f"{subs_response2.format(subscription_status_ob)} its expiry date is {expiry_date}\n{subs_response5}"
                     return response
                 elif message == "3" or message=="3.":
-                    response =subs_response3
+                    response =subs_response_final4
                     return response
                 elif message == "4" or message=="4.":
                     response = subs_response_final4
@@ -226,11 +234,12 @@ def activate_subscription(wa_id,status,message,expiry_date,subscription_status_o
                 if message.lower() == "y":
                     response = payment_response_default_response
                     try:
-                        Subscription_status = session.query(Subscription).filter_by(mobile_number=wa_id[0]).first()
-                        Subscription_status.user_status = payment_status
+                        active_subscription_status = session.query(Subscription).filter_by(mobile_number=wa_id[0]).first()
+                        active_subscription_status.user_status = payment_status
+                        active_subscription_status.subscription_status = "Subscription Activation"
                         session.commit()
                     except Exception as e:
-                        ...
+                        return e
                     return response
                 if message.lower() == "n":
                     response = subs_payment_deny_response
@@ -239,7 +248,7 @@ def activate_subscription(wa_id,status,message,expiry_date,subscription_status_o
             
         if status == payment_status:
             try:
-                response = ""
+                response = payment_response_default_response
             except Exception as e:
                 response = f"payment - {error_response}"
                 return response
@@ -255,9 +264,16 @@ def activate_subscription(wa_id,status,message,expiry_date,subscription_status_o
                 match = re.match(pattern, message)
                 if match:
                     response = ecocash_number_valid_response
-                    pattern = r"PP(.*?)\bNew wallet"
-                    match = re.search(pattern, transaction_message)
-                    if match:
+                    return response
+                else:
+                    response = ecocash_number_invalid_response
+                    return response
+            if "transfer confirmation" in message.lower():
+                pattern = r"PP(.*?)\bNew wallet"
+                match = re.search(pattern, message)
+                if match:
+                    transaction_message_input = match.group(1).strip()
+                    if transaction_message_input == transaction_message.strip():
                         try:
                             Subscription_status = session.query(Subscription).filter_by(mobile_number=wa_id[0]).first()
                             Subscription_status.subscription_status = "Monthly Subscription"
@@ -269,11 +285,11 @@ def activate_subscription(wa_id,status,message,expiry_date,subscription_status_o
                             return response
                         except Exception as e:
                             response = f"transaction - {error_response}"
-
-                    return response
+                            return response
+                    else:
+                        return reference_number_error_response
                 else:
-                    response = ecocash_number_invalid_response
-                    return response
+                    return pop_reference_number_error_response
             return response
         return response
     except Exception as e:
