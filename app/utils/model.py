@@ -16,7 +16,8 @@ class Subscription(Base):
     user_status = Column(String)
     trial_start_date = Column(Date)
     trial_end_date = Column(Date)
-
+    subscription_referral = Column(String)
+    user_type = Column(String)
     @classmethod
     def exists(cls, session, mobile_number):
         return session.query(cls).filter_by(mobile_number=mobile_number).first() is not None
@@ -27,6 +28,7 @@ class Landlord(Base):
 
     id = Column(Integer, primary_key=True)
     phone_number = Column(String)
+    # Add more fields for landlord/agent information if needed
     rental_properties = relationship("RentalProperty", back_populates="landlord")
 
 
@@ -59,7 +61,7 @@ class Electronics(Base):
     gadget_name = Column(String)
     seller_id = Column(Integer, ForeignKey('sellers.id'))
 
-    seller = relationship("Seller", back_populates="gadgets")
+    seller = relationship("Seller", back_populates="electronics")
 
 class Clothes(Base):
     __tablename__ = 'clothes'
@@ -68,7 +70,7 @@ class Clothes(Base):
     garment_type = Column(String)
     seller_id = Column(Integer, ForeignKey('sellers.id'))
 
-    seller = relationship("Seller", back_populates="gadgets")
+    seller = relationship("Seller", back_populates="clothes")
 
 class Accessories(Base):
     __tablename__ = 'accessories'
@@ -77,7 +79,7 @@ class Accessories(Base):
     accessory_type = Column(String)
     seller_id = Column(Integer, ForeignKey('sellers.id'))
 
-    seller = relationship("Seller", back_populates="gadgets")
+    seller = relationship("Seller", back_populates="accessories")
 
 class Cars(Base):
     __tablename__ = 'cars'
@@ -87,7 +89,7 @@ class Cars(Base):
     car_model = Column(String)
     seller_id = Column(Integer, ForeignKey('sellers.id'))
 
-    seller = relationship("Seller", back_populates="gadgets")
+    seller = relationship("Seller", back_populates="cars")
 
 class Food(Base):
     __tablename__ = 'food'
@@ -96,7 +98,7 @@ class Food(Base):
     dish_name = Column(String)
     seller_id = Column(Integer, ForeignKey('sellers.id'))
 
-    seller = relationship("Seller", back_populates="gadgets")
+    seller = relationship("Seller", back_populates="food")
 
 class Seller(Base):
     __tablename__ = 'sellers'
@@ -104,10 +106,14 @@ class Seller(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
     phone_number = Column(String)
-    gadgets = relationship("Gadget", back_populates="seller")
+    electronics = relationship("Electronics", back_populates="seller")
+    clothes = relationship("Clothes", back_populates="seller")
+    accessories = relationship("Accessories", back_populates="seller")
+    cars = relationship("Cars", back_populates="seller")
+    food = relationship("Food", back_populates="seller")
 
-engine = create_engine('sqlite:///data.db')
-Base.metadata.create_all(engine)
+engine = create_engine('sqlite:///subscriptions.db')
+Base.metadata.create_all(engine)  # Create the tables if they don't exist
 
 Session = sessionmaker(bind=engine)
 session = Session()

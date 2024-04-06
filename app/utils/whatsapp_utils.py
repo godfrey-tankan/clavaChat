@@ -12,6 +12,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from colorama import Fore, Style
 from datetime import datetime
 from .model import *
+from services.subscription_chat import *
+from services.user_types import *
 from app.config import *
 
 
@@ -82,7 +84,8 @@ def generate_response(response, wa_id, name):
         try:
             Subscription_status = create_subscription(wa_id[0], name, "Free Trial")
         except Exception as e:
-            Subscription_status = "error"
+            Subscription_status = f"error {e}"
+            return Subscription_status
         conversation.append({"role": "user", "content": response})
         if Subscription_status == "created":
             response = f" Hi {name}\nYour 7-Days Free trial `subscription` has been `created` . Your free trial will expire on `{today + timedelta(days=7)}`\n Enjoy a happy chat with `clavaChat` \nRegards,\n*clavaChat*."
