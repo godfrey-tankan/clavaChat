@@ -7,7 +7,4 @@ app = create_app()
 if __name__ == "__main__":
     logging.info("Flask app started")
     app.run(host="0.0.0.0", port=8000)
-    while True:
-        process = Popen(["python", "chatbot/run.py"])
-        time.sleep(10)  # 120 seconds = 2 minutes
-        process.terminate()
+   

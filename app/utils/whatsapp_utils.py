@@ -11,7 +11,7 @@ from openai import ChatCompletion
 from sqlalchemy.ext.declarative import declarative_base
 from colorama import Fore, Style
 from datetime import datetime
-from .model import Subscription, session
+from .model import *
 from app.config import *
 
 
@@ -97,7 +97,7 @@ def generate_response(response, wa_id, name):
             
             response = subs_response_default
             return response
-        if subscription_status_ob == chat_status:
+        else:
             if response.lower().endswith("bypasslimit"):
                 response = ChatCompletion.create(
                     model="gpt-3.5-turbo",
@@ -127,9 +127,6 @@ def generate_response(response, wa_id, name):
                 conversation.append({"role": "assistant", "content": response.choices[0].message.content.strip()})
 
             return response.choices[0].message.content.strip()
-        else:
-            pass
-        
 def send_message(data):
     headers = {
         "Content-type": "application/json",
