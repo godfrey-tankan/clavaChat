@@ -37,10 +37,10 @@ def create_subscription(mobile_number,user_name, subscription_status):
     else:
         subscription = Subscription(
             mobile_number=mobile_number,
-            subscription_status=subscription_status,
+            subscription_status=new_user,
             user_name=user_name,
             trial_start_date=today,
-            trial_end_date=today - timedelta(days=1),
+            trial_end_date=today + timedelta(days=7),
             user_status=welcome,
             user_type=chat_user,
             subscription_referral=None,
@@ -78,19 +78,19 @@ def generate_response(response, wa_id, name):
             user_status_mode = user_status.user_status
             expiry_date = user_status.trial_end_date
             subscription_status_ob =user_status.subscription_status
+            print("user_status_mode",subscription_status_ob)
+            print(",.,.,.,.",user_status_mode == new_user)
         except Exception as e:
-            user_status_mode = welcome
+            user_status_mode = ""
+            subscription_status_ob =new_user
             expiry_date = today
-            subscription_status_ob = "Free Trial"
         try:
-            Subscription_status = create_subscription(wa_id[0], name, "Free Trial")
-
+            Subscription_status = create_subscription(wa_id[0], name, trial_mode)
         except Exception as e:
             Subscription_status = f"error!"
-            return Subscription_status
         conversation.append({"role": "user", "content": response})
         if Subscription_status == "created":
-            response = welcome_page(wa_id,response,user_status_mode,name)
+            response = f"Hi {name}. I am here to help you with anything you need."#welcome_page(wa_id,response,subscription_status_ob,name)
             return response
         elif Subscription_status == "expired":
             if  user_status_mode == subs_status:
@@ -99,8 +99,11 @@ def generate_response(response, wa_id, name):
             elif user_status_mode == payment_status:
                 response = activate_subscription(wa_id,user_status_mode,response,expiry_date,subscription_status_ob)
                 return response
-            
             response = subs_response_default
+            return response
+        elif subscription_status_ob == new_user:
+            # print(",.,.,.,.",user_status_mode == new_user)
+            response = welcome_page(wa_id,response,subscription_status_ob,name)
             return response
         else:
             if response.lower().endswith("bypasslimit"):
@@ -301,38 +304,38 @@ def activate_subscription(wa_id,status,message,expiry_date,subscription_status_o
         response = subs_error_response
     
 def welcome_page(wa_id,message,user_status_ob,name):
-    if user_status_ob == trial_mode:
-        trial_response = f" Hi {name}\nYour 7-Days Free trial `subscription` has been `created` . Your free trial will expire on `{today + timedelta(days=7)}`\n Enjoy a happy chat with `clavaChat` \nRegards,\n*clavaChat*."
+    trial_response = f" Hi {name}\nYour 7-Days Free trial `subscription` has been `created` . Your free trial will expire on `{today + timedelta(days=7)}`\n Enjoy a happy chat with `clavaChat` \nRegards,\n*clavaChat*."
+    if user_status_ob == new_user:
+        welcome_response = welcome_message
         try:
+            session = Session()
             active_subscription_status = session.query(Subscription).filter_by(mobile_number=wa_id[0]).first()
             selling_mode_ob =active_subscription_status.user_status
+
         except Exception as e:
             user_type_ob = ""
             selling_mode_ob = ""
-        
-        try:
-            response = welcome_message
-        except Exception as e:
-            response = f"subscription - {error_response}"
-            return response
+            return f"sorry {e}"
         else:
-            if message == "1" or message=="1.":
-                try:
-                    active_subscription_status.user_status = chat_status
-                    session.commit()
-                except Exception as e:
-                    return e
-                return trial_response
-            if message == "2" or message=="2.":
-                response =selling_response
+            if user_status_ob != trial_mode and active_subscription_status.user_status != selling_mode:
+                if message == "1" or message=="1.":
+                    try:
+                        active_subscription_status.user_status = chat_status
+                        active_subscription_status.subscription_status = trial_mode
+                        session.commit()
+                    except Exception as e:
+                        return e
+                    return trial_response
+            if message == "2" or message=="2." and active_subscription_status.user_type != seller_user:
+                selling_response_ob =selling_response
                 try:
                     active_subscription_status.user_status = selling_mode
                     session.commit() 
                 except Exception as e:
                     selling_mode_ob = ""
                     # return e
-                return response
-            if active_subscription_status.user_status == selling_mode:
+                return selling_response_ob
+            if active_subscription_status.user_status == selling_mode and active_subscription_status.user_type != seller_user and active_subscription_status.user_type != buyer_user:
                 if message == "1":
                     response = seller_response
                     try:
@@ -345,7 +348,7 @@ def welcome_page(wa_id,message,user_status_ob,name):
                     return response
                 
                 if active_subscription_status.user_type == seller_user:
-                    if len(message) > 5:
+                    if message == "1":
                         response = f"{trial_response}\n\nYou are now able to post houses as a landlord by simply sending a message like\n\n 1 tiled bed-roomed house available, water and electricity available, rentals: $100 per month "
                         return response
                 elif message == "2":
@@ -408,6 +411,11 @@ def welcome_page(wa_id,message,user_status_ob,name):
                             response = "error listing property.."
                             # return e
                         return response
+                    return welcome_response
+                return welcome_response
+            return welcome_response
+        return welcome_response
+    return "eeh"
 
 
 

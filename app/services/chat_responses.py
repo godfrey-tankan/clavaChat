@@ -1,5 +1,5 @@
 # Welcome responses
-welcome_message = "Welcome to `clava` WhatsApp Chatbot. We are here to assist you with your queries. Please tell us what you would like to do:\n\n1. Chatbot services\n2.Selling\n3.Housing Services\n4. Exit\n\nPlease reply with the number of your choice."
+welcome_message = "Welcome to `clava` WhatsApp Chatbot. We are here to assist you with your queries. Please tell us what you would like to do:\n\n1. Chatbot services\n2. Selling\n3. Housing Services\n4. Exit\n\nPlease reply with the number of your choice."
 selling_response = "Please tell us what you would like to do:\n\n1. Sell a product\n2. Looking for a product to buy\n3. Exit\n\nPlease reply with the number of your choice."
 buyer_response = "what are you looking for?\n\nreply with what you are looking for e.g. iphone13 pro-max 256GB *and your bugdet* e.g. $1000 - $1020"
 seller_response = "Please tell us what you would like to do:\n\n1. Add a product\n2. View products\n3. Exit\n\nPlease reply with the number of your choice."
@@ -33,7 +33,7 @@ subs_error_response = "An error occurred. Please try again later."
 subs_cancel_response = "Your subscription has been cancelled. To reactivate, please reply with *1* to subscribe."
 
 #Payment section
-payment_response_default_response = "You are about to create a Monthly `Subscription` Plan 💳\n\n1.Confirm Subscription \n2. Cancel Subscription\n3. Help\n4. Exit\n\nPlease reply with the number of your choice."
+payment_response_default_response = "You are about to create a Monthly `Subscription` Plan 💳\n\n1. Confirm Subscription \n2. Cancel Subscription\n3. Help\n4. Exit\n\nPlease reply with the number of your choice."
 ecocash_number_valid_response = "Please wait for the popup on your phone to confirm the payment.\\n Once you confirm the payment, send us the transaction sms here on whatsApp\n *DISCLAIMER* _the subscription activation may take up to 1-3 minutes_ .If there is no feedback of `subscription` update from us, please contact support by typing word *help*.\n\n Your subscription will be activated once the payment is confirmed."
 ecocash_number_invalid_response = "Invalid Ecocash mobile number. Please reply with your Ecocash mobile number in the form: `07XX` to proceed."
 error_response = "An error occured. Please try again later."
