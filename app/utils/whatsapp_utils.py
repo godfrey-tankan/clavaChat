@@ -12,8 +12,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from colorama import Fore, Style
 from datetime import datetime
 from .model import *
-from services.subscription_chat import *
-from services.user_types import *
+from app.services.chat_responses import *
+from app.services.user_types import *
 from app.config import *
 
 
@@ -41,7 +41,9 @@ def create_subscription(mobile_number,user_name, subscription_status):
             user_name=user_name,
             trial_start_date=today,
             trial_end_date=today - timedelta(days=1),
-            user_status=chat_status
+            user_status=welcome,
+            user_type=chat_user,
+            subscription_referral=None,
         )
         session.add(subscription)
         session.commit()
@@ -70,7 +72,6 @@ conversation = []
 
 def generate_response(response, wa_id, name):
     global conversation
-    
     if response != "" or None:
         try:
             user_status = session.query(Subscription).filter_by(mobile_number=wa_id[0]).first()
@@ -83,12 +84,13 @@ def generate_response(response, wa_id, name):
             subscription_status_ob = "Free Trial"
         try:
             Subscription_status = create_subscription(wa_id[0], name, "Free Trial")
+
         except Exception as e:
-            Subscription_status = f"error {e}"
+            Subscription_status = f"error!"
             return Subscription_status
         conversation.append({"role": "user", "content": response})
         if Subscription_status == "created":
-            response = f" Hi {name}\nYour 7-Days Free trial `subscription` has been `created` . Your free trial will expire on `{today + timedelta(days=7)}`\n Enjoy a happy chat with `clavaChat` \nRegards,\n*clavaChat*."
+            response = welcome_page(wa_id,response,user_status_mode,name)
             return response
         elif Subscription_status == "expired":
             if  user_status_mode == subs_status:
@@ -210,6 +212,7 @@ def colorize_text(text, color):
     return colored_text
 
 def activate_subscription(wa_id,status,message,expiry_date,subscription_status_ob):
+
     try:
         if status ==subs_status:
             try:
@@ -296,4 +299,120 @@ def activate_subscription(wa_id,status,message,expiry_date,subscription_status_o
         return response
     except Exception as e:
         response = subs_error_response
-        return response
+    
+def welcome_page(wa_id,message,user_status_ob,name):
+    if user_status_ob == trial_mode:
+        trial_response = f" Hi {name}\nYour 7-Days Free trial `subscription` has been `created` . Your free trial will expire on `{today + timedelta(days=7)}`\n Enjoy a happy chat with `clavaChat` \nRegards,\n*clavaChat*."
+        try:
+            active_subscription_status = session.query(Subscription).filter_by(mobile_number=wa_id[0]).first()
+            selling_mode_ob =active_subscription_status.user_status
+        except Exception as e:
+            user_type_ob = ""
+            selling_mode_ob = ""
+        
+        try:
+            response = welcome_message
+        except Exception as e:
+            response = f"subscription - {error_response}"
+            return response
+        else:
+            if message == "1" or message=="1.":
+                try:
+                    active_subscription_status.user_status = chat_status
+                    session.commit()
+                except Exception as e:
+                    return e
+                return trial_response
+            if message == "2" or message=="2.":
+                response =selling_response
+                try:
+                    active_subscription_status.user_status = selling_mode
+                    session.commit() 
+                except Exception as e:
+                    selling_mode_ob = ""
+                    # return e
+                return response
+            if active_subscription_status.user_status == selling_mode:
+                if message == "1":
+                    response = seller_response
+                    try:
+                        active_subscription_status.user_type = seller_user
+                        active_subscription_status.user_status = selling_mode
+                        session.commit()
+                    except Exception as e:
+                        pass
+                        # return e
+                    return response
+                
+                if active_subscription_status.user_type == seller_user:
+                    if len(message) > 5:
+                        response = f"{trial_response}\n\nYou are now able to post houses as a landlord by simply sending a message like\n\n 1 tiled bed-roomed house available, water and electricity available, rentals: $100 per month "
+                        return response
+                elif message == "2":
+                    response = buyer_response
+                    try:
+                        active_subscription_status.user_type = buyer_user
+                        active_subscription_status.user_status = buyer_user
+                        session.commit()
+                    except Exception as e:
+                        user_type_ob = ""
+                        # return e
+                    return response
+                if active_subscription_status.user_type == buyer_user:
+                    if len(message) > 5:
+                        response = f"we find.... this ..\nseller: tankan\ncontact{wa_id[0]}\nprice $200"
+                        return response
+
+            if message == "3":
+                response = welcome_response3
+                try:
+                    active_subscription_status.user_status = housing_mode
+                    session.commit() 
+                except Exception as e:
+                    selling_mode_ob = ""
+                return response
+           
+            if selling_mode_ob == housing_mode:
+                if message == "1":
+                    response = welcome_landlord_response
+                    try:
+                        active_subscription_status.user_type = landlord_user
+                        active_subscription_status.user_status = landlord_user
+                        session.commit() 
+                    except Exception as e:
+                        selling_mode_ob = ""
+                        # return e
+                    return response
+                if active_subscription_status.user_type == landlord_user:
+                    if message == "1":
+                        response = add_property_response
+                        try:
+                            active_subscription_status.subscription_referral = message[:5]
+                            active_subscription_status.user_status = appartment_addition
+                            session.commit()
+                        except Exception as e:
+                            ...
+                        return response
+                    if active_subscription_status.user_status == appartment_addition:
+                        if len(message) > 5:
+                            response = f"Property added successfully\n\n{message}"
+                            return response
+                    if message == "2":
+                        try:
+                            active_subscription_status.user_type = tenant_user
+                            active_subscription_status.user_status = tenant_user
+                            session.commit()
+                            response = active_subscription_status.subscription_referral
+                        except Exception as e:
+                            user_type_ob = ""
+                            response = "error listing property.."
+                            # return e
+                        return response
+
+
+
+
+
+
+                    
+          
