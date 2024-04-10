@@ -14,7 +14,7 @@ from .model import *
 from app.services.chat_responses import *
 from app.services.user_types import *
 from app.config import *
-import spacy
+# import spacy
 
 openai.api_key = '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'
 conversation = []
@@ -453,6 +453,8 @@ def welcome_page(wa_id,message,user_status_ob,name):
                     except Exception as e:
                         ...
                     return welcome_message
+                if len(message) > 7:
+                    return f"hi {name}, We found some houses for you to check:\n\nHouse 1\nHouse 2\nHouse 3\n\n1. View house\nails ...0779586059 contact det"
                 return welcome_tenant_response
             
             if active_subscription_status.user_status == housing_mode:
@@ -509,31 +511,31 @@ def welcome_page(wa_id,message,user_status_ob,name):
             return welcome_response
     return "eeh"
 
-def summarize_message(message):
-    nlp = spacy.load("en_core_web_sm")
-    doc = nlp(message)
-    keywords = []
-    house_info = []
-    price_per_month = []
-    location = ""
-    for token in doc:
+# def summarize_message(message):
+#     nlp = spacy.load("en_core_web_sm")
+#     doc = nlp(message)
+#     keywords = []
+#     house_info = []
+#     price_per_month = []
+#     location = ""
+#     for token in doc:
      
-        if token.pos_ in ["NOUN", "PROPN"]:
-            keywords.append(token.text)
-        if token.pos_ == "NUM":
-            house_info.append(token.text)
+#         if token.pos_ in ["NOUN", "PROPN"]:
+#             keywords.append(token.text)
+#         if token.pos_ == "NUM":
+#             house_info.append(token.text)
 
-        if token.ent_type_ == "MONEY":
-            price_per_month.append(token.text)
+#         if token.ent_type_ == "MONEY":
+#             price_per_month.append(token.text)
         
-        if token.ent_type_ == "GPE":
-            location = token.text
+#         if token.ent_type_ == "GPE":
+#             location = token.text
 
-    summary = f"Location: {location}\n" \
-              f"Rent: {', '.join(price_per_month)}\n" \
-              f"House info: {', '.join(house_info)}"
+#     summary = f"Location: {location}\n" \
+#               f"Rent: {', '.join(price_per_month)}\n" \
+#               f"House info: {', '.join(house_info)}"
 
-    return summary
+#     return summary
 
 def extract_house_info(text):
     pattern = r"in\s*([^,]+),\s*([^,]+),.*?\$?(\d+)"
