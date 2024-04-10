@@ -70,7 +70,13 @@ def get_text_message_input(recipient, text):
 def generate_response(response, wa_id, name):
     global conversation
     print("response",response,"wa_id",wa_id,"name",name)
-    if response != "" or None:
+    try:
+        last_message = session.query(Message).filter_by(phone_number=wa_id[0]).order_by(Message.id.desc()).first().message
+    except Exception as e:
+        last_message = ""
+    last_message = last_message.split()
+    incoming = response.split()
+    if incoming[-1] != last_message[-1]:
         try:
             user_status = session.query(Subscription).filter_by(mobile_number=wa_id[0]).first()
             user_status_mode = user_status.user_status
@@ -177,7 +183,6 @@ def process_whatsapp_message(body):
     data = body
     # phone_number_id = data['entry'][0]['changes'][0]['value']['metadata']['phone_number_id']
     phone_number_id =  [contact['wa_id'] for contact in data['entry'][0]['changes'][0]['value']['contacts']]
-
     # Extract messages text
     messages_text = data['entry'][0]['changes'][0]['value']['messages'][0]['text']['body']
     # Extract profile name
@@ -187,8 +192,6 @@ def process_whatsapp_message(body):
     name = body["entry"][0]["changes"][0]["value"]["contacts"][0]["profile"]["name"]
     message = body["entry"][0]["changes"][0]["value"]["messages"][0]
     message_body = message["text"]["body"]
-
-    # TODO: implementation of cutom function
     response = generate_response(message_body, phone_number_id, profile_name)
     # OpenAI Integration
     # response = generate_response(message_body, wa_id, name)
@@ -196,6 +199,7 @@ def process_whatsapp_message(body):
 
     data = get_text_message_input(current_app.config["RECIPIENT_WAID"], response)
     send_message(data)
+
 def landlord_tenant_housing(mobile_number,message,name):
         try:
             active_subscription_status = session.query(Subscription).filter_by(mobile_number=mobile_number).first()
@@ -203,7 +207,6 @@ def landlord_tenant_housing(mobile_number,message,name):
             ...
         #=========================HOUSING USER BLOCK ===============
         if active_subscription_status.user_status == appartment_addition:
-            print("appartment_addition mode....")
             response = add_property_response
             if message.lower() == "y":
                 response = "House information captured successfully, you can add another property anytime."
@@ -216,7 +219,17 @@ def landlord_tenant_housing(mobile_number,message,name):
                 except Exception as e:
                     ...
                 return "error adding property"
+            elif message.lower() == "exit" :
+                try:
+                    active_subscription_status.user_status = welcome
+                    active_subscription_status.user_type = new_user
+                    session.commit()
+                except Exception as e:
+                    ...
+                return welcome_message
+            
             if len(message) > 7:
+                analyze_messages(mobile_number,message)
                 summary = extract_house_info(message)
                 if summary[:5] == "Please":
                     return summary
@@ -225,7 +238,6 @@ def landlord_tenant_housing(mobile_number,message,name):
         
         #=========================LANDLORD USER BLOCK ===============
         if active_subscription_status.user_type == landlord_user:
-            print("landlord user....")
             response = welcome_landlord_response
             if message == "1":
                 response = add_property_response
@@ -250,7 +262,6 @@ def landlord_tenant_housing(mobile_number,message,name):
             return response      
         #=========================TENANT USER BLOCK ===============              
         if active_subscription_status.user_type == tenant_user:
-            print("tenant user....")
             if message == "1":
                 return tenant_response
             elif message.lower() == "exit" :
@@ -262,8 +273,76 @@ def landlord_tenant_housing(mobile_number,message,name):
                     ...
                 return welcome_message
             if len(message) > 7:
+                analyze_messages(mobile_number,message)
                 return f"hi {name}, We found some houses for you to check:\n\nHouse 1\nHouse 2\nHouse 3\n\n1. View house\nails ...0779586059 contact det"
             return welcome_tenant_response
+
+def buying_and_selling(wa_id,message,name):
+    message_ob = message
+    try:
+        active_subscription_status = session.query(Subscription).filter_by(mobile_number=wa_id[0]).first()
+    except Exception as e:
+        ...
+    else:
+        if active_subscription_status.user_type == buyer_user:
+                response =buyer_response
+                if len(message) > 5:
+                    analyze_messages(wa_id[0],message)
+                    response = f"we find.... this ..\nseller: tankan\ncontact{wa_id[0]}\nprice $200"
+                    return response
+                elif message.lower() == "exit" :
+                    try:
+                        active_subscription_status.user_status = welcome
+                        active_subscription_status.user_type = new_user
+                        session.commit()
+                    except Exception as e:
+                        ...
+                    return welcome_message
+                return response
+            #=========================SELLING USER BLOCK ===============
+        if active_subscription_status.user_type == seller_user:
+            response = seller_response
+            if message == "1":
+                response = seller_add_response
+                return response
+            elif message == "2":
+                try:
+                    seller_user_profile = session.query(Seller).filter_by(phone_number=wa_id[0]).first()
+                except Exception as e:
+                    seller_user_profile = None
+                if seller_user_profile:
+                    seller_products = session.query(Electronics).filter_by(seller_id=seller_user_profile.id).all()
+                    if seller_products:
+                        response = "Here is your listings:\n\n"
+                        for i, product in enumerate(seller_products, start=1):
+                            response += f"- {product.gadget_name} {product.condition} price ${product.price}\n"
+                        response += "\n1. Add a product\n2. Exit"
+                        return response
+                    else:
+                        return no_listings_response
+                else:
+                    return not_a_seller_response
+            elif len(message) > 7:
+                analyze_messages(wa_id[0],message)
+                if get_number_range(message):
+                    number_range = get_number_range(message)
+                    response = product_added_successfully.format(message, number_range.start, number_range.stop)
+                    product_name, condition, price = extract_product_details(message)
+                    if product_name and condition and price:
+                        save_electronics_listing(wa_id[0], product_name, condition, price)
+                        return response
+                    else:
+                        return invalid_sale_response
+                return response
+            if message_ob[0].lower() == "exit" :
+                try:
+                    active_subscription_status.user_status = welcome
+                    active_subscription_status.user_type = new_user
+                    session.commit()
+                except Exception as e:
+                    ...
+                return welcome_message
+            return response
 
 def is_valid_whatsapp_message(body):
     """
@@ -368,10 +447,10 @@ def activate_subscription(wa_id,status,message,expiry_date,subscription_status_o
         response = subs_error_response
     
 def welcome_page(wa_id,message,user_status_ob,name):
-    trial_response = f" Hi {name}\nYour 7-Days Free trial `subscription` has been `created` . Your free trial will expire on `{today + timedelta(days=7)}`\n Enjoy a happy chat with `clavaChat` \nRegards,\n*clava*."
+    print(message)
+    end_date = today + timedelta(days=7)
+    trial_response_ob = trial_response.format(name,end_date)
     if user_status_ob == new_user:
-        landlord_tenant_housing(wa_id[0],message,name)
-        print("function true")
         welcome_response = welcome_message
         try:
             session = Session()
@@ -381,42 +460,9 @@ def welcome_page(wa_id,message,user_status_ob,name):
             user_type_ob = ""
             selling_mode_ob = ""
         else:
-            #=========================BUYING USER BLOCK ===============
-            if active_subscription_status.user_type == buyer_user:
-                response =buyer_response
-                if len(message) > 5:
-                    response = f"we find.... this ..\nseller: tankan\ncontact{wa_id[0]}\nprice $200"
-                    return response
-                elif message.lower() == "exit" :
-                    try:
-                        active_subscription_status.user_status = welcome
-                        active_subscription_status.user_type = new_user
-                        session.commit()
-                    except Exception as e:
-                        ...
-                    return welcome_message
-                return response
-            #=========================SELLING USER BLOCK ===============
-            if active_subscription_status.user_type == seller_user:
-                print("seller user.......")
-                response = seller_response
-                if message == "1":
-                    response = seller_add_response
-                    return response
-                elif message == "2":
-                    response = "Here is your listings:\n\n1. iphone13 pro-max 256GB price $1500\n2. iphone13 pro-max 256GB price $1500\n3. iphone13 pro-max 256GB price $1500\n\n1. Add a product\n2. Exit"
-                    return response
-                elif len(message) > 7:
-                    response = f"*{message}* is now added to your listings and everyone looking for a similar product with a close budget can see it.\nHappy selling! `clava` ."
-                    return response
-                elif message.lower() == "exit" :
-                    try:
-                        active_subscription_status.user_status = welcome
-                        active_subscription_status.user_type = new_user
-                        session.commit()
-                    except Exception as e:
-                        ...
-                    return welcome_message
+            #=========================BUYING & SELLING USER BLOCK ===============
+            if active_subscription_status.user_type == buyer_user or active_subscription_status.user_type == seller_user:
+                response = buying_and_selling(wa_id,message,name)
                 return response
             
             if active_subscription_status.user_status == selling_mode:
@@ -426,6 +472,9 @@ def welcome_page(wa_id,message,user_status_ob,name):
                     try:
                         active_subscription_status.user_type = seller_user
                         active_subscription_status.user_status = selling_mode
+                        session.commit()
+                        seller_info = Seller(phone_number=wa_id[0], name=name)
+                        session.add(seller_info)
                         session.commit()
                     except Exception as e:
                         pass
@@ -452,15 +501,10 @@ def welcome_page(wa_id,message,user_status_ob,name):
                     return welcome_message
                 return response
             
-            if message == "3":
-                response = welcome_response3
-                try:
-                    active_subscription_status.user_status = housing_mode
-                    session.commit() 
-                except Exception as e:
-                    selling_mode_ob = ""
+            
+            if active_subscription_status.user_type == landlord_user or active_subscription_status.user_type == tenant_user:
+                response =landlord_tenant_housing(wa_id[0],message,name)
                 return response
-           
             
             if active_subscription_status.user_status == housing_mode:
                 response = welcome_response3
@@ -502,7 +546,7 @@ def welcome_page(wa_id,message,user_status_ob,name):
                     session.commit()
                 except Exception as e:
                     return e
-                return trial_response
+                return trial_response_ob
             
             if message == "2" or message=="2.":
                 selling_response_ob =selling_response
@@ -513,6 +557,14 @@ def welcome_page(wa_id,message,user_status_ob,name):
                     selling_mode_ob = ""
                     # return e
                 return selling_response_ob
+            if message == "3":
+                response = welcome_response3
+                try:
+                    active_subscription_status.user_status = housing_mode
+                    session.commit() 
+                except Exception as e:
+                    selling_mode_ob = ""
+                return response
             return welcome_response
     return "eeh"
 
@@ -541,8 +593,59 @@ def welcome_page(wa_id,message,user_status_ob,name):
 #               f"House info: {', '.join(house_info)}"
 
 #     return summary
+def get_number_range(string):
+    match = re.search(r'\$(\d+)', string)
+    if match:
+        number = int(match.group(1))
+        return range(number - 10, number + 11)
+    else:
+        return None
+
+def extract_product_details(string):
+    product_name, condition, price ="", "", ""
+    match = re.search(r'^(.*?)\s*,\s*(.*?)\s+\$(\d+)$', string)
+    if match:
+        product_name = match.group(1)
+        condition = match.group(2)
+        price = int(match.group(3))
+        return product_name, condition, price
+    else:
+        return product_name, condition, price
+
+def save_electronics_listing(seller_id, product_name, condition, price):
+    seller = session.query(Seller).filter_by(phone_number=seller_id).first()
+    if seller:
+        electronics = Electronics(gadget_name=product_name, condition=condition, price=price, seller=seller)
+        session.add(electronics)
+        session.commit()
+
+def analyze_messages(sender,message):
+    try:
+        last_message = session.query(Message).filter_by(phone_number=sender).order_by(Message.id.desc()).first().message
+    except Exception as e:
+        last_message = False
+    if last_message:
+        try:
+            message_ob = Message(message=message,phone_number=sender)
+            session.add(message_ob)
+            if last_message != message:
+                session.commit()
+                return True
+            else:
+                return False
+        except Exception as e:
+            ...
+    else:
+        try:
+            message_ob = Message(message=message,phone_number=sender)
+            session.add(message_ob)
+            session.commit()
+            return True
+        except Exception as e:
+            ...
 
 def extract_house_info(text):
+    location, description, rentals = "", "", ""
     pattern = r"in\s*([^,]+),\s*([^,]+),.*?\$?(\d+)"
     match = re.search(pattern, text)
     
@@ -550,9 +653,6 @@ def extract_house_info(text):
         location = match.group(1).strip()
         description = match.group(2).strip()
         rentals = match.group(3).strip()
-        summary = f"Location: {location}\n" \
-              f"Rent: {rentals}\n" \
-              f"House info: {description}"
-    else:
-        summary= "Please follow this format:*house location* ,*house description*, *rent* like this:\n full House to rent in Harare CBD, 3 bedrooms, 2 bathrooms, $500/month"
-    return summary
+        return location, description, rentals
+    return location, description, rentals
+    

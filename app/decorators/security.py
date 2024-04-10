@@ -21,7 +21,6 @@ def signature_required(f):
     """
     Decorator to ensure that the incoming requests to our webhook are valid and signed with the correct signature.
     """
-    print("checking signature.............")
     @wraps(f)
     def decorated_function(*args, **kwargs):
         signature = request.headers.get("X-Hub-Signature-256", "")[

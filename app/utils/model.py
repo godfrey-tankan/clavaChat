@@ -22,6 +22,13 @@ class Subscription(Base):
     def exists(cls, session, mobile_number):
         return session.query(cls).filter_by(mobile_number=mobile_number).first() is not None
 
+class Message(Base):
+    __tablename__ = 'messages'
+
+    id = Column(Integer, primary_key=True)
+    message = Column(String)
+    phone_number = Column(String)
+
 
 class Landlord(Base):
     __tablename__ = 'landlords'
@@ -59,8 +66,9 @@ class Electronics(Base):
 
     id = Column(Integer, primary_key=True)
     gadget_name = Column(String)
+    condition = Column(String)
+    price = Column(Integer)
     seller_id = Column(Integer, ForeignKey('sellers.id'))
-
     seller = relationship("Seller", back_populates="electronics")
 
 class Clothes(Base):

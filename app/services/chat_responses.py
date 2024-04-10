@@ -1,14 +1,18 @@
 # Welcome responses
 welcome_message = "Welcome to `clava` WhatsApp Chatbot. We are here to assist you with your queries. Please tell us what you would like to do:\n\n1. Chatbot services\n2. Selling\n3. Housing Services\n4. Exit\n\nPlease reply with the number of your choice or type exit to exit"
 selling_response = "Please tell us what you would like to do:\n\n1. Sell a product\n2. Looking for a product to buy\n3. Exit\n\nPlease reply with the number of your choice or type exit to exit"
-buyer_response = "what are you looking for?\n\nreply with what you are looking for e.g. iphone13 pro-max 256GB *and your bugdet* e.g. $1000 - $1020\n\nTo exit simply type exit"
+buyer_response = "what are you looking for?\n\nreply with what you are looking for e.g. iphone13 pro-max 256GB *and your budget* e.g. $1000 - $1020\n\nTo exit simply type exit"
 seller_response = "Please tell us what you would like to do:\n\n1. Add a product\n2. View Your Listings \n3. Exit\n\nPlease reply with the number of your choice or type exit to exit"
-seller_add_response = "what are you selling?\n\nreply with what you are selling e.g. iphone13 pro-max 256GB price $1500\n\nTo exit simply type exit" 
+seller_add_response = "*What are you selling?*\nPlease provide the following details about the product you are selling:\n1.Product\n2.Condition\n3.Price \n\nConsider this example: *iphone13 pro-max 256GB, Boxed $1500*\n\nTo exit simply type exit" 
 welcome_response3 = "Are you a `Landlord` or a `Tenant`?\n\n1. Landlord\n2. Tenant\n3. Exit\n\nPlease reply with the number of your choice or type exit to exit"
 welcome_landlord_response = "Please tell us what you would like to do:\n\n1. Add a property\n2. View properties\n3. Exit\n\nPlease reply with the number of your choice or type exit to exit"
-add_property_response = "Please provide the following details about the property you would like to add:\n\n1. House information\n2. Location\n3. Price\n\nConsider this example: full House to rent in Harare CBD, 3 bedrooms, 2 bathrooms, $500/month\n\nTo exit simply type exit"
+add_property_response = "Please provide the following details about the property you would like to add:\n\n1. House information\n2. Location\n3. Price\n\nConsider this example: full House to rent in Gunhill, 3 bedrooms, 2 bathrooms, $500/month\n\nTo exit simply type exit"
 welcome_tenant_response = "Please tell us what you would like to do:\n\n1. View available properties or houses to rent\n2. Exit\n\nPlease *reply* with the number of your choice or type exit to exit"
 tenant_response = "Please tell us the type of apartment/house you are looking for and your budget. e.g. 2 bedroom apartment in Sunningdale with tiles and ceiling, budget $300 - $400\n\nTo exit simply type exit"
+product_added_successfully = "*{}* is now added to your listings and everyone looking for a similar product with a close budget ranging from *${} to ${}* can see it.\nHappy selling! `clava` ."
+invalid_sale_response =  "Your product details are invalid. Please provide the *product name*, *condition*, and *price* in the format: *iphone13 pro-max 256GB, Boxed $1500*."
+
+
 
 questions_list =["who are you?", "what is your name", "where are you from", "who made you?", "who is tankan", "tankan"]
 
@@ -42,4 +46,6 @@ eccocash_transaction_success_response = "Your subscription has been successfully
 transaction_message = "240313.1849.F42721."
 reference_number_error_response = "Transaction ID or Reference Number is invalid. Please try again."
 pop_reference_number_error_response = "The POP message is invalid, please send the whole message again."
-
+trial_response = " Hi {}\nYour 7-Days Free trial `subscription` has been `created` . Your free trial will expire on `{}`\n Enjoy a happy chat with `clavaChat` \nRegards,\n*clava*."
+no_listings_response = "You have no listings yet. Please add a product to sell.\n\n1. Add a product\n2. Exit"
+not_a_seller_response = "You are not a Registered as a seller!\n1. Contact Support\n2. Exit \n\nPlease reply with the word help or type exit to exit"
