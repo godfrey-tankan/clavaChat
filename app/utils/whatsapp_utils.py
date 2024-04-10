@@ -196,6 +196,74 @@ def process_whatsapp_message(body):
 
     data = get_text_message_input(current_app.config["RECIPIENT_WAID"], response)
     send_message(data)
+def landlord_tenant_housing(mobile_number,message,name):
+        try:
+            active_subscription_status = session.query(Subscription).filter_by(mobile_number=mobile_number).first()
+        except Exception as e:
+            ...
+        #=========================HOUSING USER BLOCK ===============
+        if active_subscription_status.user_status == appartment_addition:
+            print("appartment_addition mode....")
+            response = add_property_response
+            if message.lower() == "y":
+                response = "House information captured successfully, you can add another property anytime."
+                return response
+            elif message.lower() == "n":
+                try:
+                    active_subscription_status.user_type = new_user
+                    session.commit()
+                    return welcome_message
+                except Exception as e:
+                    ...
+                return "error adding property"
+            if len(message) > 7:
+                summary = extract_house_info(message)
+                if summary[:5] == "Please":
+                    return summary
+                return f"Please verify house information: \n{summary}\n\nPress *Y* to confirm or *N* to cancel."
+            return response
+        
+        #=========================LANDLORD USER BLOCK ===============
+        if active_subscription_status.user_type == landlord_user:
+            print("landlord user....")
+            response = welcome_landlord_response
+            if message == "1":
+                response = add_property_response
+                try:
+                    active_subscription_status.subscription_referral = message[:5]
+                    active_subscription_status.user_status = appartment_addition
+                    session.commit()
+                except Exception as e:
+                    ...
+                return response
+            elif message == "2":
+                response = "Here is your property list:\n\n1. House 1\n2. House 2\n3. House 3\n\n1. Add a property\n2. Exit"
+                return response
+            elif message.lower() == "exit" :
+                try:
+                    active_subscription_status.user_status = welcome
+                    active_subscription_status.user_type = new_user
+                    session.commit()
+                except Exception as e:
+                    ...
+                return welcome_message
+            return response      
+        #=========================TENANT USER BLOCK ===============              
+        if active_subscription_status.user_type == tenant_user:
+            print("tenant user....")
+            if message == "1":
+                return tenant_response
+            elif message.lower() == "exit" :
+                try:
+                    active_subscription_status.user_status = welcome
+                    active_subscription_status.user_type = new_user
+                    session.commit()
+                except Exception as e:
+                    ...
+                return welcome_message
+            if len(message) > 7:
+                return f"hi {name}, We found some houses for you to check:\n\nHouse 1\nHouse 2\nHouse 3\n\n1. View house\nails ...0779586059 contact det"
+            return welcome_tenant_response
 
 def is_valid_whatsapp_message(body):
     """
@@ -302,6 +370,7 @@ def activate_subscription(wa_id,status,message,expiry_date,subscription_status_o
 def welcome_page(wa_id,message,user_status_ob,name):
     trial_response = f" Hi {name}\nYour 7-Days Free trial `subscription` has been `created` . Your free trial will expire on `{today + timedelta(days=7)}`\n Enjoy a happy chat with `clavaChat` \nRegards,\n*clava*."
     if user_status_ob == new_user:
+        landlord_tenant_housing(wa_id[0],message,name)
         print("function true")
         welcome_response = welcome_message
         try:
@@ -327,7 +396,6 @@ def welcome_page(wa_id,message,user_status_ob,name):
                         ...
                     return welcome_message
                 return response
-           
             #=========================SELLING USER BLOCK ===============
             if active_subscription_status.user_type == seller_user:
                 print("seller user.......")
@@ -393,69 +461,6 @@ def welcome_page(wa_id,message,user_status_ob,name):
                     selling_mode_ob = ""
                 return response
            
-           #=========================HOUSING USER BLOCK ===============
-            if active_subscription_status.user_status == appartment_addition:
-                print("appartment_addition mode....")
-                response = add_property_response
-                if message.lower() == "y":
-                    response = "House information captured successfully, you can add another property anytime."
-                    return response
-                elif message.lower() == "n":
-                    try:
-                        active_subscription_status.user_type = new_user
-                        session.commit()
-                        return welcome_message
-                    except Exception as e:
-                        ...
-                    return "error adding property"
-                if len(message) > 7:
-                    summary = extract_house_info(message)
-                    if summary[:5] == "Please":
-                        return summary
-                    return f"Please verify house information: \n{summary}\n\nPress *Y* to confirm or *N* to cancel."
-                return response
-           
-           #=========================LANDLORD USER BLOCK ===============
-            if active_subscription_status.user_type == landlord_user:
-                print("landlord user....")
-                response = welcome_landlord_response
-                if message == "1":
-                    response = add_property_response
-                    try:
-                        active_subscription_status.subscription_referral = message[:5]
-                        active_subscription_status.user_status = appartment_addition
-                        session.commit()
-                    except Exception as e:
-                        ...
-                    return response
-                elif message == "2":
-                    response = "Here is your property list:\n\n1. House 1\n2. House 2\n3. House 3\n\n1. Add a property\n2. Exit"
-                    return response
-                elif message.lower() == "exit" :
-                    try:
-                        active_subscription_status.user_status = welcome
-                        active_subscription_status.user_type = new_user
-                        session.commit()
-                    except Exception as e:
-                        ...
-                    return welcome_message
-                return response      
-            #=========================TENANT USER BLOCK ===============              
-            if active_subscription_status.user_type == tenant_user:
-                print("tenant user....")
-                if message == "1":
-                    return tenant_response
-                elif message.lower() == "exit" :
-                    try:
-                        active_subscription_status.user_status = welcome
-                        active_subscription_status.user_type = new_user
-                        session.commit()
-                    except Exception as e:
-                        ...
-                    return welcome_message
-                if len(message) > 7:
-                    return f"hi {name}, We found some houses for you to check:\n\nHouse 1\nHouse 2\nHouse 3\n\n1. View house\nails ...0779586059 contact det"
-                return welcome_tenant_response
             
             if active_subscription_status.user_status == housing_mode:
                 response = welcome_response3
