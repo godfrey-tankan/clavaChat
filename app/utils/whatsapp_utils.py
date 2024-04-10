@@ -16,8 +16,10 @@ from app.services.user_types import *
 from app.config import *
 import spacy
 
-
+openai.api_key = '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'
+conversation = []
 today = datetime.now().date()
+
 def create_subscription(mobile_number,user_name, subscription_status):
     if Subscription.exists(session, mobile_number):
         sub_end = session.query(Subscription).filter_by(mobile_number=mobile_number).first()
@@ -65,9 +67,6 @@ def get_text_message_input(recipient, text):
         }
     )
 
-openai.api_key = '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'
-conversation = []
-
 def generate_response(response, wa_id, name):
     global conversation
     print("response",response,"wa_id",wa_id,"name",name)
@@ -83,7 +82,7 @@ def generate_response(response, wa_id, name):
             user_status_mode = ""
             subscription_status_ob =new_user
             expiry_date = today
-            return f"sorry {e}"
+            # return f"sorry {e}"
         try:
             Subscription_status = create_subscription(wa_id[0], name, trial_mode)
         except Exception as e:
@@ -91,7 +90,7 @@ def generate_response(response, wa_id, name):
             return Subscription_status
         conversation.append({"role": "user", "content": response})
         if Subscription_status == "created":
-            response = f"Hi {name}. I am here to help you with anything you need."#welcome_page(wa_id,response,subscription_status_ob,name)
+            response = welcome_message
             return response
         elif Subscription_status == "expired":
             if  user_status_mode == subs_status:
@@ -301,7 +300,7 @@ def activate_subscription(wa_id,status,message,expiry_date,subscription_status_o
         response = subs_error_response
     
 def welcome_page(wa_id,message,user_status_ob,name):
-    trial_response = f" Hi {name}\nYour 7-Days Free trial `subscription` has been `created` . Your free trial will expire on `{today + timedelta(days=7)}`\n Enjoy a happy chat with `clavaChat` \nRegards,\n*clavaChat*."
+    trial_response = f" Hi {name}\nYour 7-Days Free trial `subscription` has been `created` . Your free trial will expire on `{today + timedelta(days=7)}`\n Enjoy a happy chat with `clavaChat` \nRegards,\n*clava*."
     if user_status_ob == new_user:
         print("function true")
         welcome_response = welcome_message
@@ -312,32 +311,21 @@ def welcome_page(wa_id,message,user_status_ob,name):
         except Exception as e:
             user_type_ob = ""
             selling_mode_ob = ""
-            return f"sorry {e}"
         else:
-            if user_status_ob != trial_mode and active_subscription_status.user_status != selling_mode:
-                if message == "1" or message=="1.":
-                    try:
-                        active_subscription_status.user_status = chat_status
-                        active_subscription_status.subscription_status = trial_mode
-                        session.commit()
-                    except Exception as e:
-                        return e
-                    return trial_response
-            if message == "2" or message=="2." and active_subscription_status.user_type != seller_user:
-                selling_response_ob =selling_response
-                try:
-                    active_subscription_status.user_status = selling_mode
-                    session.commit() 
-                except Exception as e:
-                    selling_mode_ob = ""
-                    # return e
-                return selling_response_ob
             #=========================BUYING USER BLOCK ===============
             if active_subscription_status.user_type == buyer_user:
                 response =buyer_response
                 if len(message) > 5:
                     response = f"we find.... this ..\nseller: tankan\ncontact{wa_id[0]}\nprice $200"
                     return response
+                elif message.lower() == "exit" :
+                    try:
+                        active_subscription_status.user_status = welcome
+                        active_subscription_status.user_type = new_user
+                        session.commit()
+                    except Exception as e:
+                        ...
+                    return welcome_message
                 return response
            
             #=========================SELLING USER BLOCK ===============
@@ -351,8 +339,16 @@ def welcome_page(wa_id,message,user_status_ob,name):
                     response = "Here is your listings:\n\n1. iphone13 pro-max 256GB price $1500\n2. iphone13 pro-max 256GB price $1500\n3. iphone13 pro-max 256GB price $1500\n\n1. Add a product\n2. Exit"
                     return response
                 elif len(message) > 7:
-                    response = f"*{message}* is now added to your listings and everyone looking for a similar product with a close budget can see it.\\nHappy selling! `clava` ."
+                    response = f"*{message}* is now added to your listings and everyone looking for a similar product with a close budget can see it.\nHappy selling! `clava` ."
                     return response
+                elif message.lower() == "exit" :
+                    try:
+                        active_subscription_status.user_status = welcome
+                        active_subscription_status.user_type = new_user
+                        session.commit()
+                    except Exception as e:
+                        ...
+                    return welcome_message
                 return response
             
             if active_subscription_status.user_status == selling_mode:
@@ -378,7 +374,16 @@ def welcome_page(wa_id,message,user_status_ob,name):
                         user_type_ob = ""
                         # return e
                     return response
+                elif message.lower() == "exit" :
+                    try:
+                        active_subscription_status.user_status = welcome
+                        active_subscription_status.user_type = new_user
+                        session.commit()
+                    except Exception as e:
+                        ...
+                    return welcome_message
                 return response
+            
             if message == "3":
                 response = welcome_response3
                 try:
@@ -388,11 +393,29 @@ def welcome_page(wa_id,message,user_status_ob,name):
                     selling_mode_ob = ""
                 return response
            
+           #=========================HOUSING USER BLOCK ===============
             if active_subscription_status.user_status == appartment_addition:
                 print("appartment_addition mode....")
-                if len(message) > 5:
-                    response = f"Property added successfully\n\n{message}"
+                response = add_property_response
+                if message.lower() == "y":
+                    response = "House information captured successfully, you can add another property anytime."
                     return response
+                elif message.lower() == "n":
+                    try:
+                        active_subscription_status.user_type = new_user
+                        session.commit()
+                        return welcome_message
+                    except Exception as e:
+                        ...
+                    return "error adding property"
+                if len(message) > 7:
+                    summary = extract_house_info(message)
+                    if summary[:5] == "Please":
+                        return summary
+                    return f"Please verify house information: \n{summary}\n\nPress *Y* to confirm or *N* to cancel."
+                return response
+           
+           #=========================LANDLORD USER BLOCK ===============
             if active_subscription_status.user_type == landlord_user:
                 print("landlord user....")
                 response = welcome_landlord_response
@@ -405,37 +428,33 @@ def welcome_page(wa_id,message,user_status_ob,name):
                     except Exception as e:
                         ...
                     return response
-                elif message.lower() == "y":
-                    response = "House information captured successfully, you can add another property anytime."
-                    return response
-                elif message == "n":
-                    response = "Property addition cancelled successfully, you can add another property anytime."
-                    return response
                 elif message == "2":
                     response = "Here is your property list:\n\n1. House 1\n2. House 2\n3. House 3\n\n1. Add a property\n2. Exit"
                     return response
                 elif message.lower() == "exit" :
                     try:
-                        active_subscription_status.user_status = chat_status
-                        active_subscription_status.subscription_status = new_user
-                        session.commit()
-                    return response
-                elif len(message) > 7:
-                    summary = extract_house_info(message)
-                    if summary[:5] == "Please":
-                        return summary
-                    return f"Please verify house information: \n{summary}\n\n1. Confirm\n2. Cancel"
-            if active_subscription_status.user_type == tenant_user:
-                print("tenant user....")
-                if message == "1":
-                    response = tenant_response
-                    try:
-                        active_subscription_status.subscription_referral = message[:5]
-                        active_subscription_status.user_status = appartment_addition
+                        active_subscription_status.user_status = welcome
+                        active_subscription_status.user_type = new_user
                         session.commit()
                     except Exception as e:
                         ...
-                    return response
+                    return welcome_message
+                return response      
+            #=========================TENANT USER BLOCK ===============              
+            if active_subscription_status.user_type == tenant_user:
+                print("tenant user....")
+                if message == "1":
+                    return tenant_response
+                elif message.lower() == "exit" :
+                    try:
+                        active_subscription_status.user_status = welcome
+                        active_subscription_status.user_type = new_user
+                        session.commit()
+                    except Exception as e:
+                        ...
+                    return welcome_message
+                return welcome_tenant_response
+            
             if active_subscription_status.user_status == housing_mode:
                 response = welcome_response3
                 if message == "1":
@@ -448,7 +467,7 @@ def welcome_page(wa_id,message,user_status_ob,name):
                         selling_mode_ob = ""
                         # return e
                     return response
-                if message == "2":
+                elif message == "2":
                     response = welcome_tenant_response
                     try:
                         active_subscription_status.user_type = tenant_user
@@ -460,10 +479,35 @@ def welcome_page(wa_id,message,user_status_ob,name):
                         response = "error listing property.."
                         # return e
                     return response
+                elif message.lower() == "exit" :
+                    try:
+                        active_subscription_status.user_status = welcome
+                        active_subscription_status.user_type = new_user
+                        session.commit()
+                    except Exception as e:
+                        ...
+                    return welcome_message
                 return response
+            if message == "1" or message=="1.":
+                try:
+                    active_subscription_status.user_status = chat_status
+                    active_subscription_status.subscription_status = trial_mode
+                    session.commit()
+                except Exception as e:
+                    return e
+                return trial_response
+            
+            if message == "2" or message=="2.":
+                selling_response_ob =selling_response
+                try:
+                    active_subscription_status.user_status = selling_mode
+                    session.commit() 
+                except Exception as e:
+                    selling_mode_ob = ""
+                    # return e
+                return selling_response_ob
             return welcome_response
     return "eeh"
-
 
 def summarize_message(message):
     nlp = spacy.load("en_core_web_sm")
