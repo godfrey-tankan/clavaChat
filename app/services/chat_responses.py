@@ -1,5 +1,5 @@
 # Welcome responses
-welcome_message = "Welcome to `clava` WhatsApp Chatbot. We are here to assist you with your queries. Please tell us what you would like to do:\n\n1. Chatbot services\n2. Selling\n3. Housing Services\n4. Exit\n\nPlease reply with the number of your choice or type exit to exit"
+welcome_message = "Welcome to `clava` WhatsApp MarketPlace. We are here to assist you with your queries. Please tell us what you would like to do:\n\n1. Chatbot services\n2. Selling\n3. Housing Services\n4. Exit\n\nPlease reply with the number of your choice or type exit to exit"
 selling_response = "Please tell us what you would like to do:\n\n1. Sell a product\n2. Looking for a product to buy\n3. Exit\n\nPlease reply with the number of your choice or type exit to exit"
 buyer_response = "WHAT ARE YOU LOOKING FOR?\nreply with what you are looking for in this form:\n- *Product name*\n- *Condition*\n- *Budget*\n\nYou can consider this example:*iphone13 pro-max 256GB,boxed $1200*\n\nReply with exit to exit."
 seller_response = "Please tell us what you would like to do:\n\n1. Add a product\n2. View Your Listings \n3. Exit\n\nPlease reply with the number of your choice or reply with word `exit` to exit"

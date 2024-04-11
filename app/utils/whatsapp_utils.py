@@ -72,15 +72,14 @@ def get_text_message_input(recipient, text):
     )
 
 def generate_response(response, wa_id, name):
+
     global conversation
-    print("response",response,"wa_id",wa_id,"name",name)
     try:
-        last_message = session.query(Message).filter_by(phone_number=wa_id[0]).order_by(Message.id.desc()).first().message
+        last_message = session.query(Subscription).filter_by(phone_number=wa_id[0]).first().user_activity
     except Exception as e:
         last_message = ""
-    last_message = last_message.split()
-    incoming = response.split()
-    # if incoming[-1] != last_message[-1]:
+    if last_message == response.strip() and (response != "1" and response !="2" and response !="3"):
+        return None
     if response is not None:
         try:
             user_status = session.query(Subscription).filter_by(mobile_number=wa_id[0]).first()
@@ -90,15 +89,11 @@ def generate_response(response, wa_id, name):
             except Exception as e:
                 ...
             user_status_mode = user_status.user_status
-            user_activity = user_status.user_activity
             expiry_date = user_status.trial_end_date
             subscription_status_ob =user_status.subscription_status
-            print("user_status_mode",subscription_status_ob)
-            print(",.,.,.,.",subscription_status_ob == new_user)
         except Exception as e:
             user_status_mode = ""
             subscription_status_ob =new_user
-            user_activity = ""
             expiry_date = today
             # return f"sorry {e}"
         try:
@@ -106,8 +101,6 @@ def generate_response(response, wa_id, name):
         except Exception as e:
             Subscription_status = f"error!"
         conversation.append({"role": "user", "content": response})
-        if user_activity == response and (response != "1" or "2" or "3"):
-            return None
         if Subscription_status == "created":
             response = welcome_message
             return response
@@ -264,7 +257,7 @@ def landlord_tenant_housing(mobile_number,message,name):
                         session.commit()
                     except Exception as e:
                         ...
-                    response = f"We will use *{message.upper()}* as your name."
+                    response = f"We will use *{message.upper()}* as your name.\n\nReply with *Y* to accept or *N* to deny."
             if message == "1":
                 response = add_property_response
                 try:
