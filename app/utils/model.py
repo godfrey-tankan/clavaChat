@@ -18,6 +18,7 @@ class Subscription(Base):
     trial_end_date = Column(Date)
     subscription_referral = Column(String)
     user_type = Column(String)
+    user_activity=Column(String)
     @classmethod
     def exists(cls, session, mobile_number):
         return session.query(cls).filter_by(mobile_number=mobile_number).first() is not None
@@ -34,8 +35,8 @@ class Landlord(Base):
     __tablename__ = 'landlords'
 
     id = Column(Integer, primary_key=True)
+    name = Column(String)
     phone_number = Column(String)
-    # Add more fields for landlord/agent information if needed
     rental_properties = relationship("RentalProperty", back_populates="landlord")
 
 
@@ -49,8 +50,8 @@ class RentalProperty(Base):
     price = Column(Integer)
     description = Column(String)
     picture = Column(String)
-
     landlord = relationship("Landlord", back_populates="rental_properties")
+    
 
 
 class Document(Base):
