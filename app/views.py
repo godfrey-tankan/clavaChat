@@ -21,7 +21,7 @@ def handle_message():
         .get("value", {})
         .get("statuses")
     ):
-        logging.info("Received a WhatsApp status update.")
+        # logging.info("Received a WhatsApp status update.")
         return jsonify({"status": "ok"}), 200
 
     try:

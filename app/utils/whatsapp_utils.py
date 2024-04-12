@@ -115,12 +115,21 @@ def generate_response(response, wa_id, name):
                 return response
             response = subs_response_default
             return response
-        elif user_status.subscription_status == new_user or user_status.user_status != welcome:
+        elif user_status.subscription_status == new_user or user_status.user_status != welcome and not user_status.subscription_status == trial_mode:
             print("calling function welcome page ....")
 
             response_ob = welcome_page(wa_id,response,subscription_status_ob,name,page_number=1)
             return response_ob
         else:
+            if response.lower() == "exit" :
+                    try:
+                        user_status.user_status = welcome
+                        user_status.user_type = new_user
+                        user_status.subscription_status = new_user
+                        session.commit()
+                    except Exception as e:
+                        ...
+                    return welcome_message
             if response.lower().endswith("bypasslimit"):
                 response = ChatCompletion.create(
                     model="gpt-3.5-turbo",
@@ -133,6 +142,7 @@ def generate_response(response, wa_id, name):
                     stop=None
                 )
                 conversation.append({"role": "assistant", "content": response.choices[0].message.content.strip("bypasslimit")})
+            
             elif response.lower() in questions_list:
                 response = "I am tankan's assistant. I am here to help you with anything you need."
                 return response
@@ -600,8 +610,15 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                         active_subscription_status.user_status = selling_mode
                         session.commit()
                         seller_info = Seller(phone_number=wa_id[0], name=name)
-                        session.add(seller_info)
-                        session.commit()
+                        try:
+                            seller_ob = session.query(Seller).filter_by(phone_number=wa_id[0]).first()
+                        except Exception as e:
+                            seller_ob = ""
+                        if seller_ob:
+                            pass
+                        else:
+                            session.add(seller_info)
+                            session.commit()
                     except Exception as e:
                         pass
                         # return e
@@ -633,8 +650,6 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
             
             if active_subscription_status.user_status == housing_mode:
                 response = welcome_response3
-                
-
                 if message == "1":
                     response = welcome_landlord_response
                     try:
