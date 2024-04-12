@@ -81,6 +81,8 @@ def generate_response(response, wa_id, name):
     if last_message == response.strip() and (response != "1" and response !="2" and response !="3"):
         return None
     if response is not None:
+        if response.lower() == "help": 
+            return buying_selling_help_help_final 
         try:
             user_status = session.query(Subscription).filter_by(mobile_number=wa_id[0]).first()
             try:
@@ -358,32 +360,48 @@ def buying_and_selling(wa_id,message,name,page_number):
             #=========================SELLING USER BLOCK ===============
         if active_subscription_status.user_type == seller_user:
             response = seller_response
+            page_number = page_number
+            records_per_page = 10
             if message == "1":
                 response = seller_add_response
                 return response
-            elif message == "2" or message.lower()=="more":
+            elif message == "2" or message.lower()=="more" or "delete" in message.lower() or "edit" in message.lower():
                 try:
                     seller_user_profile = session.query(Seller).filter_by(phone_number=wa_id[0]).first()
                 except Exception as e:
                     seller_user_profile = None
+
                 if seller_user_profile:
-                    page_number = page_number
-                    records_per_page = 10
+
+                    if "edit" in message.lower():
+                        product_id = message.split(" ")[1]
+                        match = re.search(r'\$(\d+)', message)
+                        new_price = match.group(1) if match else None
+                        response = edit_product(product_id, new_price)
+                        return response
+                    
+                    if "delete" in message.lower():
+                        product_id = message.split(" ")[1]
+                        response = delete_product(product_id)
+                        return response
+                    
                     if message.lower() =="more":
                         page_number+=1
                     offset = (page_number - 1) * records_per_page
                     seller_products = session.query(Electronics).filter_by(seller_id=seller_user_profile.id).\
                     limit(records_per_page).offset(offset).all()
                     if seller_products:
-                        response = "Here is your listings:\n\n"
+                        response = "Here are your listings:\n\n"
                         for i, product in enumerate(seller_products, start=1):
-                            response += f"- {i} *Product Name:* {product.gadget_name}\n\t- *Condition:* {product.condition}\n\t- *Price:* ${product.price}\n\n"
-                        response += "\nReply with *1* to Add a product, *more* to view more or *exit* to exit."
+                            response += f"- {product.id} *Product Name:* {product.gadget_name}\n\t- *Condition:* {product.condition}\n\t- *Price:* ${product.price}\n"
+                        response += underline_response
+                        response += after_listing_response
                         return response
                     else:
                         return no_listings_response
                 else:
                     return not_a_seller_response
+                
             elif len(message) > 7:
                 analyze_messages(wa_id[0],message)
                 if get_number_range(message):
@@ -690,6 +708,10 @@ def extract_product_details(string):
 
 def save_electronics_listing(seller_id, product_name, condition, price):
     seller = session.query(Seller).filter_by(phone_number=seller_id).first()
+    if condition == "boxed" or condition =="new":
+        condition = "boxed"
+    else:
+        condition = "pre-owned"
     if seller:
         electronics = Electronics(gadget_name=product_name, condition=condition, price=price, seller=seller,seller_id=seller.id)
         session.add(electronics)
@@ -748,14 +770,35 @@ def search_rental_properties(house_info, location, budget):
         properties = session.query(RentalProperty).\
             filter(RentalProperty.description.ilike('%{}%'.format(house_info))).\
             filter(RentalProperty.location.ilike('%{}%'.format(location))).\
-            filter(RentalProperty.price.between(budget - 20, budget + 20)).\
+            filter(RentalProperty.price.between(budget - 20, budget + 100)).\
             all()
     except Exception as e:
         properties = None
     return properties
 
+def delete_product(product_id):
+    try:
+        product = session.query(Electronics).filter_by(id=product_id).first()
+        session.delete(product)
+        session.commit()
+        return f"Product `{product_id}` has been deleted successfully."
+    except Exception as e:
+        return "wrong product id, please try again, make sure you're using correct the command e.g *delete 1*."
+
+def edit_product(product_id, new_price):
+    if new_price:
+        try:
+            product = session.query(Electronics).filter_by(id=product_id).first()
+            product.price = new_price
+            session.commit()
+            return f"Product `{product_id}` has been updated successfully."
+        except Exception as e:
+            return "wrong product id, please try again, make sure you're using correct the command e.g *edit 1 price = $200*."
+    else:
+        return f"Please provide a valid new price for the product `{product_id}`."
+
 def search_products(product_name, condition, budget, page_number, records_per_page):
-    if condition == "boxed" or "new":
+    if condition == "boxed" or condition == "new":
         condition = "boxed"
     else:
         condition = "pre-owned"
@@ -764,7 +807,7 @@ def search_products(product_name, condition, budget, page_number, records_per_pa
         matching_products = session.query(Electronics).join(Electronics.seller).\
             filter(Electronics.gadget_name.ilike(f'%{product_name}%')).\
             filter(Electronics.condition.ilike(f'%{condition}%')).\
-            filter(Electronics.price.between(budget - 20, budget + 20)).\
+            filter(Electronics.price.between(budget - 20, budget + 100)).\
             offset(offset).limit(records_per_page).all()
     except Exception as e:
         matching_products = None
