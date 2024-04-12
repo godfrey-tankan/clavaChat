@@ -50,18 +50,21 @@ transaction_message = "240313.1849.F42721."
 reference_number_error_response = "Transaction ID or Reference Number is invalid. Please try again."
 pop_reference_number_error_response = "The POP message is invalid, please send the whole message again."
 trial_response = " Hi {}\nYour 7-Days Free trial `subscription` has been `created` . Your free trial will expire on `{}`\n Enjoy a happy chat with `clavaChat` \nRegards,\n*clava*."
+
+
+#housing and selling services
 no_listings_response = "You have no listings yet. Please add a product to sell.\n\n1. Add a product\n2. Exit"
 not_a_seller_response = "You are not a Registered as a seller!\n1. Contact Support\n2. Exit \n\nPlease reply with the word help or type exit to exit"
 no_apartment_listings = "You have no listings yet. Please add a property to rent.\n\n1. Add a property\n2. Exit"
 not_a_landlord_response = "You are not a Registered as a landlord!\n1. Contact Support\n2. Exit \n\nPlease reply with the word help or type exit to exit"
 after_listing_response ="\n- *1* to Add a product\n- *more* to view more\n- *exit* to exit\n- *delete* product number. e.g. *delete 1* to delete or *edit 1 price =$300* to edit.\nFor more help reply with *help*"
 underline_response = "______________*REPLY WITH:*______________"
-buying_selling_help_help = "`clavaChat` *WhatsApp marketplace  support* 🆘\n\nclavaChat connects *buyers* and *sellers*, *tenants* and *landlords*. You can buy or sell products, rent or lease properties\n\n1. *FOR AI CHATBOT SERVICE*\n- choose option 1\n\n*2. FOR LANDLORDS:"
+buying_selling_help_help = "`clavaChat` *WhatsApp marketplace  support* 🆘\n\nclavaChat connects *buyers* and *sellers*, *tenants* and *landlords*. You can buy or sell products, rent or lease properties\n\n*1. FOR AI CHATBOT SERVICE*\n- choose option 1\n\n*2. FOR LANDLORDS:"
 buying_selling_help_help +="*\n*Landlord can post and manage properties, they can edit property information or delete a property*\n- To add a property you go to *housing services* >> select Landlord >> add a property and follow the steps."
 buying_selling_help_help +="\n- To edit a property you first go to your property listings tab\n `Once there you can`:\n- edit by typing *edit* and property number and what you want to edit e.g *edit 2 rent = $300*"
 buying_selling_help_help+="\n- To delete a property you type: *delete* and property number e.g *delete 1* to remove listing number *1* from your listings or if the property has been occupied.\n\n*3. FOR TENANTS:*\n*Tenants can view available properties*"
 buying_selling_help_help+="\n- To view available properties you go to *housing services* >> select Tenant >> view available properties\n\n*4. FOR SELLERS:*\n*Sellers can post and manage products,edit product information or delete a product*"
 buying_selling_help_help+= "\n- To add a product you go to *selling* >> select Sell a product >> add a product and follow the steps.\n- To edit a product you first go to your product listings tab\n `Once there you can`:"
 buying_selling_help_help+= "\n- edit by typing *edit* and product number and what you want to edit e.g edit 2 price = $300\n- *delete* product number e.g *delete 1* to remove from listings or if the product has been sold or out of stock."
-buying_selling_help_help+="\n5. *FOR BUYERS:*\n- Buyers can view available products\n- To view available products you go to *selling* >> select Looking for a product to buy\n\n*6. FOR SUBSCRIPTIONS:*\n- To subscribe to our services you go to a service first then *subscriptions* >> select your Subscription choice and follow the steps"
+buying_selling_help_help+="\n\n*5. FOR BUYERS:*\n- Buyers can view available products\n- To view available products you go to *selling* >> select Looking for a product to buy\n\n*6. FOR SUBSCRIPTIONS:*\n- To subscribe to our services you go to a service first then *subscriptions* >> select your Subscription choice and follow the steps\n\nType *exit* to exit."
 buying_selling_help_help_final = buying_selling_help_help
