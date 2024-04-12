@@ -209,7 +209,7 @@ def process_whatsapp_message(body):
     data = get_text_message_input(current_app.config["RECIPIENT_WAID"], response)
     send_message(data)
 
-def landlord_tenant_housing(mobile_number,message,name):
+def landlord_tenant_housing(mobile_number,message,name,page_number):
         try:
             active_subscription_status = session.query(Subscription).filter_by(mobile_number=mobile_number).first()
         except Exception as e:
@@ -251,15 +251,8 @@ def landlord_tenant_housing(mobile_number,message,name):
         
         #=========================LANDLORD USER BLOCK ===============
         if active_subscription_status.user_type == landlord_user:
+            records_per_page =10
             response = welcome_landlord_response
-            if len(message) > 4 and len(message) < 10 and message != "exit" and message != "hello":
-                    try:
-                        landlord_prof = session.query(Landlord).filter_by(phone_number=mobile_number).first()
-                        landlord_prof.name = message
-                        session.commit()
-                    except Exception as e:
-                        ...
-                    response = f"We will use *{message.upper()}* as your name.\n\nReply with *Y* to accept or *N* to deny."
             if message == "1":
                 response = add_property_response
                 try:
@@ -269,23 +262,63 @@ def landlord_tenant_housing(mobile_number,message,name):
                 except Exception as e:
                     ...
                 return response
-            elif message == "2":
+            elif message == "2" or "delete" in message.lower() or "edit" in message.lower() or message.lower() == "more":
                 try:
                     landlord_profile = session.query(Landlord).filter_by(phone_number=mobile_number).first()
                 except Exception as e:
                     landlord_profile = None
                 if landlord_profile:
-                    landlord_listings = session.query(RentalProperty).filter_by(landlord_id=landlord_profile.id).all()
+                    if "edit" in message.lower():
+                        property_id = message.split(" ")[1]
+                        match = re.search(r'\$(\d+)', message)
+                        new_price = match.group(1) if match else None
+                        response = edit_property(property_id, new_price)
+                        return response
+                    
+                    if "delete" in message.lower():
+                        property_id = message.split(" ")[1]
+                        response = delete_property(property_id)
+                        return response
+
+                    if message.lower() =="more":
+                        page_number+=1
+                        offset = (page_number - 1) * records_per_page
+                        landlord_listings = session.query(RentalProperty).filter_by(landlord_id=landlord_profile.id).\
+                        limit(records_per_page).offset(offset).all()
+                        if landlord_listings:
+                            response = f"*HERE IS YOUR OTHER PROPERTY LISTINGS:*\n\n"
+                            for i, listing in enumerate(landlord_listings, start=1):
+                                response += f"{listing.id} *House Information:* {listing.description}\n\t-*Location:* {listing.location}\n\t-*Rent:* ${listing.price}/month\n\n"
+                            response += underline_response
+                            response += after_property_listing_response
+                            return response
+                        else:
+                            return "No more properties found."
+                        
+                    offset = (page_number - 1) * records_per_page
+                    landlord_listings = session.query(RentalProperty).filter_by(landlord_id=landlord_profile.id).\
+                    limit(records_per_page).offset(offset).all()
                     if landlord_listings:
-                        response = f"*Hi `{landlord_profile.name}` here is your rental property listings:*\n\n"
+                        response = f"*HI `{landlord_profile.name.upper()}` HERE IS YOUR PROPERTY LISTINGS:*\n\n"
                         for i, listing in enumerate(landlord_listings, start=1):
-                            response += f"{i} *House Information:* {listing.description}\n\t-*Location:* {listing.location}\n\t-*Rent:* ${listing.price}/month\n\n"
-                        response += "\n1. To add  property or type *exit* to Exit."
+                            response += f"{listing.id} *House Information:* {listing.description}\n\t-*Location:* {listing.location}\n\t-*Rent:* ${listing.price}/month\n\n"
+                        response += underline_response
+                        response += after_property_listing_response
                         return response
                     else:
                         return no_apartment_listings
                 else:
                     return not_a_landlord_response
+            if len(message) > 4 and len(message) < 10 and message != "exit" and message != "hello":
+                    try:
+                        landlord_prof = session.query(Landlord).filter_by(phone_number=mobile_number).first()
+                        landlord_prof.name = message
+                        session.commit()
+                    except Exception as e:
+                        ...
+                    response = f"We will use *{message.upper()}* as your name.\n\nReply with *Y* to accept or *N* to deny."
+                    return response
+
             elif message.lower() == "exit" :
                 try:
                     active_subscription_status.user_status = welcome
@@ -387,6 +420,19 @@ def buying_and_selling(wa_id,message,name,page_number):
                     
                     if message.lower() =="more":
                         page_number+=1
+                        offset = (page_number - 1) * records_per_page
+                        seller_products = session.query(Electronics).filter_by(seller_id=seller_user_profile.id).\
+                        limit(records_per_page).offset(offset).all()
+                        if seller_products:
+                            response = "Here are your other listings:\n\n"
+                            for i, product in enumerate(seller_products, start=1):
+                                response += f"- {product.id} *Product Name:* {product.gadget_name}\n\t- *Condition:* {product.condition}\n\t- *Price:* ${product.price}\n"
+                            response += underline_response
+                            response += after_listing_response
+                            return response
+                        else:
+                            return "No more listings found."
+                        
                     offset = (page_number - 1) * records_per_page
                     seller_products = session.query(Electronics).filter_by(seller_id=seller_user_profile.id).\
                     limit(records_per_page).offset(offset).all()
@@ -582,7 +628,7 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                 return response  
             
             if active_subscription_status.user_type == landlord_user or active_subscription_status.user_type == tenant_user:
-                response =landlord_tenant_housing(wa_id[0],message,name)
+                response =landlord_tenant_housing(wa_id[0],message,name,page_number)
                 return response
             
             if active_subscription_status.user_status == housing_mode:
@@ -768,9 +814,8 @@ def search_rental_properties(house_info, location, budget):
     session = Session()
     try:
         properties = session.query(RentalProperty).\
-            filter(RentalProperty.description.ilike('%{}%'.format(house_info))).\
             filter(RentalProperty.location.ilike('%{}%'.format(location))).\
-            filter(RentalProperty.price.between(budget - 20, budget + 100)).\
+            filter(RentalProperty.price.between(budget - 100, budget)).\
             all()
     except Exception as e:
         properties = None
@@ -784,6 +829,15 @@ def delete_product(product_id):
         return f"Product `{product_id}` has been deleted successfully."
     except Exception as e:
         return "wrong product id, please try again, make sure you're using correct the command e.g *delete 1*."
+
+def delete_property(property_id):
+    try:
+        property = session.query(RentalProperty).filter_by(id=property_id).first()
+        session.delete(property)
+        session.commit()
+        return f"Property `{property_id}` has been deleted successfully."
+    except Exception as e:
+        return "wrong property id, please try again, make sure you're using correct the command e.g *delete 1*."
 
 def edit_product(product_id, new_price):
     if new_price:
@@ -817,9 +871,9 @@ def search_products(product_name, condition, budget, page_number, records_per_pa
     try:
         offset = (page_number - 1) * records_per_page
         matching_products = session.query(Electronics).join(Electronics.seller).\
-            filter(Electronics.gadget_name.ilike(f'%{product_name}%')).\
+            filter(Electronics.gadget_name.ilike(f'%{product_name[:10]}%')).\
             filter(Electronics.condition.ilike(f'%{condition}%')).\
-            filter(Electronics.price.between(budget - 20, budget + 100)).\
+            filter(Electronics.price.between(budget - 100, budget + 100)).\
             offset(offset).limit(records_per_page).all()
     except Exception as e:
         matching_products = None

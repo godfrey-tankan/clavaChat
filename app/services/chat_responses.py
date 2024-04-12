@@ -51,12 +51,12 @@ reference_number_error_response = "Transaction ID or Reference Number is invalid
 pop_reference_number_error_response = "The POP message is invalid, please send the whole message again."
 trial_response = " Hi {}\nYour 7-Days Free trial `subscription` has been `created` . Your free trial will expire on `{}`\n Enjoy a happy chat with `clavaChat` \nRegards,\n*clava*."
 
-
 #housing and selling services
 no_listings_response = "You have no listings yet. Please add a product to sell.\n\n1. Add a product\n2. Exit"
 not_a_seller_response = "You are not a Registered as a seller!\n1. Contact Support\n2. Exit \n\nPlease reply with the word help or type exit to exit"
 no_apartment_listings = "You have no listings yet. Please add a property to rent.\n\n1. Add a property\n2. Exit"
 not_a_landlord_response = "You are not a Registered as a landlord!\n1. Contact Support\n2. Exit \n\nPlease reply with the word help or type exit to exit"
+after_property_listing_response ="\n- *1* to Add a property\n- *more* to view more properties\n- *exit* to exit\n- *delete* property number. e.g. *delete 1* to delete or *edit 1 price =$300* to edit.\nFor more help reply with *help*"
 after_listing_response ="\n- *1* to Add a product\n- *more* to view more\n- *exit* to exit\n- *delete* product number. e.g. *delete 1* to delete or *edit 1 price =$300* to edit.\nFor more help reply with *help*"
 underline_response = "______________*REPLY WITH:*______________"
 buying_selling_help_help = "`clavaChat` *WhatsApp marketplace  support* 🆘\n\nclavaChat connects *buyers* and *sellers*, *tenants* and *landlords*. You can buy or sell products, rent or lease properties\n\n*1. FOR AI CHATBOT SERVICE*\n- choose option 1\n\n*2. FOR LANDLORDS:"
