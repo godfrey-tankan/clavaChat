@@ -80,7 +80,7 @@ def generate_response(response, wa_id, name):
         last_message = ""
     if last_message == response.strip() and (response != "1" and response !="2" and response !="3"):
         return None
-    if response is not None:
+    else:
         if response.lower() == "help": 
             return buying_selling_help_help_final 
         try:
