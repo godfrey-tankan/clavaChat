@@ -350,15 +350,19 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
                 except Exception as e:
                     ...
                 return welcome_message
-            if len(message) > 7:
+            if len(message) > 7 or message.lower() == "more":
+                if message.lower() == "more":
+                    return "No more properties found."
                 house_info, location, budget = extract_house_details(message)
                 if house_info and location and budget:
-                    matching_properties = search_rental_properties(house_info.lower(), location.lower(), budget)
+                    matching_properties = search_rental_properties(house_info.lower(), location.lower(), budget,page_number, 20)
                     if matching_properties:
-                        result = "Here are some houses you may like:\n\n"
+                        result = "HERE ARE SOME PROPERTIES TO CONSIDER:\n\n"
                         for i,property in enumerate(matching_properties, start=1) :
-                            result += f"*{i}* *House information* {property.house_info}\n\t*Rent*: {property.price}\n\t*Location*: {property.location}\n\n Call: *{property.landlord.name}* on {property.landlord.phone_number}"
+                            result += f"*{i}* *House information* {property.house_info}\n\t*Rent*: {property.price}\n\t*Location*: {property.location}\n Call: *{property.landlord.name}* on {property.landlord.phone_number}\n\n"
                         analyze_messages(mobile_number,message)
+                        result += underline_response
+                        result += after_tenant_listing_response
                         return result
                     else:
                         return no_houses_found_response
@@ -377,14 +381,18 @@ def buying_and_selling(wa_id,message,name,page_number):
                 response =buyer_response
                 if len(message) > 5:
                     analyze_messages(wa_id[0],message)
+                    if message.lower() == "more" :
+                        return "No more products found."
                     product_name, condition, price = extract_product_details(message)
                     if product_name and condition and price:
                         seller_products_list =search_products(product_name, condition, price,page_number, 5)
                         if seller_products_list:
-                            result = "HERE IS WHAT WE FOUND:\n\n"
+                            result = "*HERE IS WHAT YOU MAY LIKE:*\n\n"
                             for i,product in enumerate(seller_products_list, start=1) :
-                                result += f"*{i}* *Product Name* {product.gadget_name}\n\t*Condition*: {product.condition}\n\t*Price*: {product.price}\n\n Call: *{product.seller.name}* on {product.seller.phone_number}"
+                                result += f"*{i}* *Product Name* {product.gadget_name}\n\t*Condition*: {product.condition}\n\t*Price*: {product.price}\n\n Call: *{product.seller.name}* on {product.seller.phone_number}\n\n"
                             analyze_messages(wa_id[0],message)
+                            result += underline_response
+                            result += after_buyer_listing_response
                             return result
                         else:
                             return no_products_found_response
@@ -825,13 +833,21 @@ def extract_house_details(string):
     
     return house_info, location, budget
 
-def search_rental_properties(house_info, location, budget):
+def search_rental_properties(house_info, location, budget, page_number, records_per_page):
     session = Session()
+    # try:
+    #     properties = session.query(RentalProperty).\
+    #         filter(RentalProperty.location.ilike('%{}%'.format(location))).\
+    #         filter(RentalProperty.price.between(budget - 100, budget +50)).\
+    #         all()
+    # except Exception as e:
+    #     properties = None
     try:
-        properties = session.query(RentalProperty).\
-            filter(RentalProperty.location.ilike('%{}%'.format(location))).\
-            filter(RentalProperty.price.between(budget - 100, budget)).\
-            all()
+        offset = (page_number - 1) * records_per_page
+        properties = session.query(RentalProperty).join(RentalProperty.landlord).\
+            filter(RentalProperty.location.ilike(f'%{location}%')).\
+            filter(RentalProperty.price.between(budget - 100, budget + 100)).\
+            offset(offset).limit(records_per_page).all()
     except Exception as e:
         properties = None
     return properties
