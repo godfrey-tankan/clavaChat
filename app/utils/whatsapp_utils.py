@@ -797,6 +797,18 @@ def edit_product(product_id, new_price):
     else:
         return f"Please provide a valid new price for the product `{product_id}`."
 
+def edit_property(property_id, new_price):
+    if new_price:
+        try:
+            property = session.query(RentalProperty).filter_by(id=property_id).first()
+            property.price = new_price
+            session.commit()
+            return f"Property `{property_id}` has been updated successfully."
+        except Exception as e:
+            return "wrong property id, please try again, make sure you're using correct the command e.g *edit 1 price = $200*."
+    else:
+        return f"Please provide a valid new price for the property `{property_id}`."
+
 def search_products(product_name, condition, budget, page_number, records_per_page):
     if condition == "boxed" or condition == "new":
         condition = "boxed"
