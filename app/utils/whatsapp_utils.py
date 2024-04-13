@@ -883,7 +883,7 @@ def create_landlord_subscription(message, mobile_number):
     monthly_sub,quarterly_sub,half_yearly_sub,yearly_sub = "Monthly Subscription","Quarterly Subscription","Half Yearly Subscription","Yearly Subscription"
     try:
         subscription_status = session.query(Subscription).filter_by(mobile_number=mobile_number).first()
-        landlord_subscription = session.query(Subscription).filter_by(mobile_number=mobile_number).first()
+        landlord_subscription = session.query(Landlord).filter_by(phone_number=mobile_number).first()
         landlord_subscription.subscription=subscription_status.id
         session.commit()
     except Exception as e:
@@ -891,31 +891,32 @@ def create_landlord_subscription(message, mobile_number):
     if message == "1":
         response = landlord_proceed_with_subs_response.format(monthly_sub,monthly_pricing)
         try:
-            ...
+            subscription_status.subscription_status =monthly_mode
+            session.commit()
         except Exception as e:
             ...
         return landlord_proceed_with_subs_response.format(monthly_sub,monthly_pricing)
     elif message == "2":
         response = landlord_proceed_with_subs_response.format(quarterly_sub,quarterly_pricing)
         try:
-            user_status = subscription_status
-            # session.commit()
+            subscription_status.subscription_status =quarterly_mode
+            session.commit()
         except Exception as e:
             ...
         return landlord_proceed_with_subs_response.format(quarterly_sub,quarterly_pricing)
     elif message == "3":
         response = landlord_proceed_with_subs_response.format(half_yearly_sub,half_yearly)
         try:
-            user_status = subscription_status
-            # session.commit()
+            subscription_status.subscription_status =half_yearly_mode
+            session.commit()
         except Exception as e:
             ...
         return landlord_proceed_with_subs_response.format(half_yearly_sub,half_yearly)
     elif message == "4":
         response = landlord_proceed_with_subs_response.format(yearly_sub,yearly_pricing)
         try:
-            user_status = subscription_status
-            # session.commit()
+            subscription_status.subscription_status =yearly_mode
+            session.commit()
         except Exception as e:
             ...
         return landlord_proceed_with_subs_response.format(yearly_sub,yearly_pricing)
@@ -949,9 +950,17 @@ def validate_payment(message,phone_number,end_date):
             if transaction_message_input == transaction_message.strip():
                 try:
                     Subscription_status = session.query(Subscription).filter_by(mobile_number=phone_number).first()
-                    Subscription_status.subscription_status = subscription_status
+                    if Subscription_status.subscription_status == monthly_mode:
+                        end_date = datetime.now().date() + timedelta(days=30)
+                    elif Subscription_status.subscription_status == quarterly_mode:
+                        end_date = datetime.now().date() + timedelta(days=90)
+                    elif Subscription_status.subscription_status == half_yearly_mode:
+                        end_date = datetime.now().date() + timedelta(days=180)
+                    elif Subscription_status.subscription_status == yearly_mode:
+                        end_date = datetime.now().date() + timedelta(days=365)
                     Subscription_status.trial_start_date = datetime.now().date()
                     Subscription_status.trial_end_date = end_date
+                    Subscription_status.is_active = True
                     session.commit()
                     response = eccocash_transaction_success_response
                     return response
