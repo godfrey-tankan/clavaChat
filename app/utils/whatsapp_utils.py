@@ -117,7 +117,6 @@ def generate_response(response, wa_id, name):
             return response
         elif user_status.subscription_status == new_user or user_status.user_status != welcome and not user_status.subscription_status == trial_mode:
             print("calling function welcome page ....")
-
             response_ob = welcome_page(wa_id,response,subscription_status_ob,name,page_number=1)
             return response_ob
         else:
@@ -576,7 +575,7 @@ def activate_subscription(wa_id,status,message,expiry_date,subscription_status_o
 def welcome_page(wa_id,message,user_status_ob,name,page_number):
     end_date = today + timedelta(days=7)
     trial_response_ob = trial_response.format(name,end_date)
-    if user_status_ob == new_user:
+    if user_status_ob == new_user or user_status_ob != trial_mode or user_status_ob != welcome:
         welcome_response = welcome_message
         try:
             session = Session()
@@ -924,7 +923,7 @@ def create_landlord_subscription(message, mobile_number):
         except Exception as e:
             ...
         return welcome_landlord_response
-    if len(message) > 5 and message[:1] == "0":
+    if len(message) > 5 and message[:1] == "0" or "ecocash" in message.lower():
         user_details = {"message": message, "phone_number": mobile_number}
         response =validate_payment(message, mobile_number,today)
         return response
@@ -961,6 +960,7 @@ def validate_payment(message,phone_number,end_date):
     else:
         response = ecocash_number_invalid_response
         return response
+    return response
 
 def search_products(product_name, condition, budget, page_number, records_per_page):
     if condition == "boxed" or condition == "new":
