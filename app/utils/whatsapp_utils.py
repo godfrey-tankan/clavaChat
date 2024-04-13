@@ -881,11 +881,17 @@ def create_landlord_subscription(message, mobile_number):
     today = datetime.now().date()+timedelta(days=7)
     monthly_pricing,quarterly_pricing,half_yearly,yearly_pricing = 5.77, 13.80, 22.80,39.90
     monthly_sub,quarterly_sub,half_yearly_sub,yearly_sub = "Monthly Subscription","Quarterly Subscription","Half Yearly Subscription","Yearly Subscription"
+    try:
+        subscription_status = session.query(Subscription).filter_by(mobile_number=mobile_number).first()
+        landlord_subscription = session.query(Subscription).filter_by(mobile_number=mobile_number).first()
+        landlord_subscription.subscription=subscription_status.id
+        session.commit()
+    except Exception as e:
+        ...
     if message == "1":
         response = landlord_proceed_with_subs_response.format(monthly_sub,monthly_pricing)
         try:
-            user_status = subscription_status
-            # session.commit()
+            ...
         except Exception as e:
             ...
         return landlord_proceed_with_subs_response.format(monthly_sub,monthly_pricing)

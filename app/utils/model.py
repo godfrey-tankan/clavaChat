@@ -38,6 +38,7 @@ class Landlord(Base):
     name = Column(String)
     phone_number = Column(String)
     rental_properties = relationship("RentalProperty", back_populates="landlord")
+    subscription = relationship("Subscription", back_populates="landlord")
 
 
 class RentalProperty(Base):
@@ -87,8 +88,22 @@ class Accessories(Base):
     id = Column(Integer, primary_key=True)
     accessory_type = Column(String)
     seller_id = Column(Integer, ForeignKey('sellers.id'))
-
     seller = relationship("Seller", back_populates="accessories")
+
+class Students(Base):
+    __tablename__ = 'students'
+
+    id = Column(Integer, primary_key=True)
+    student_name = Column(String)
+    student_id = Column(String)
+    student_course = Column(String)
+    student_year = Column(String)
+    student_email = Column(String)
+    student_phone = Column(String)
+    student_address = Column(String)
+    Subscription = relationship("Subscription", back_populates="students")
+    document = relationship("Document", back_populates="students")
+
 
 class Cars(Base):
     __tablename__ = 'cars'
@@ -120,6 +135,7 @@ class Seller(Base):
     accessories = relationship("Accessories", back_populates="seller")
     cars = relationship("Cars", back_populates="seller")
     food = relationship("Food", back_populates="seller")
+    subscription = relationship("Subscription", back_populates="seller")
 
 engine = create_engine('sqlite:///subscriptions.db')
 Base.metadata.create_all(engine)  # Create the tables if they don't exist
