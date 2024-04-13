@@ -101,7 +101,8 @@ def generate_response(response, wa_id, name):
         try:
             Subscription_status = create_subscription(wa_id[0], name, trial_mode)
         except Exception as e:
-            Subscription_status = f"error!"
+            Subscription_status = f"error!{e}"
+            return Subscription_status
         conversation.append({"role": "user", "content": response})
         if Subscription_status == "created":
             response = welcome_message
@@ -115,7 +116,7 @@ def generate_response(response, wa_id, name):
                 return response
             response = subs_response_default
             return response
-        elif user_status.subscription_status == new_user or user_status.user_status != welcome and not user_status.subscription_status == trial_mode:
+        elif user_status.user_type != chat_user:
             print("calling function welcome page ....")
             response_ob = welcome_page(wa_id,response,subscription_status_ob,name,page_number=1)
             return response_ob
@@ -330,15 +331,15 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
                         ...
                     response = f"We will use *{message.upper()}* as your name.\n\nReply with *Y* to accept or *N* to deny."
                     return response
-            elif message == "3":
+            if message == "3":
                 response = landlord_subs_response
                 try:
                     active_subscription_status.user_status = subscription_status
                     session.commit()
                 except Exception as e:
                     ...
-                return welcome_message
-            elif message.lower() == "exit" :
+                return response
+            if message.lower() == "exit" :
                 try:
                     active_subscription_status.user_status = welcome
                     active_subscription_status.user_type = new_user
@@ -564,8 +565,8 @@ def activate_subscription(wa_id,status,message,expiry_date,subscription_status_o
                 if message == "2" or message=="2.":
                     response = subs_cancel_response
                     return response
-            if len(message) >5  and message[:1] == "0":
-                validate_payment(message,wa_id,expiry_date)
+            if len(message) >5  and message[:1] == "0" or "ecocash" in message.lower() or "onemoney" in message.lower() or "bank" in message.lower():
+                validate_payment(message,wa_id)
             return response
         return response
     except Exception as e:
@@ -599,7 +600,7 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                         active_subscription_status.user_type = seller_user
                         active_subscription_status.user_status = selling_mode
                         session.commit()
-                        seller_info = Seller(phone_number=wa_id[0], name=name)
+                        seller_info = Seller(phone_number=wa_id[0], name=name,subscription_id=active_subscription_status.id)
                         try:
                             seller_ob = session.query(Seller).filter_by(phone_number=wa_id[0]).first()
                         except Exception as e:
@@ -656,6 +657,8 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                             pass
                         else:
                             session.add(landlord_info)
+                            session.commit()
+                            active_subscription_status.landlord_id=landlord_info.id
                             session.commit()
                             return response
                         return welcome_landlord_response
@@ -878,18 +881,16 @@ def edit_property(property_id, new_price):
 
 def create_landlord_subscription(message, mobile_number):
     response = landlord_subs_response
-    today = datetime.now().date()+timedelta(days=7)
     monthly_pricing,quarterly_pricing,half_yearly,yearly_pricing = 5.77, 13.80, 22.80,39.90
     monthly_sub,quarterly_sub,half_yearly_sub,yearly_sub = "Monthly Subscription","Quarterly Subscription","Half Yearly Subscription","Yearly Subscription"
     try:
         subscription_status = session.query(Subscription).filter_by(mobile_number=mobile_number).first()
         landlord_subscription = session.query(Landlord).filter_by(phone_number=mobile_number).first()
-        landlord_subscription.subscription=subscription_status.id
+        landlord_subscription.subscriptions=subscription_status.id
         session.commit()
     except Exception as e:
         ...
     if message == "1":
-        response = landlord_proceed_with_subs_response.format(monthly_sub,monthly_pricing)
         try:
             subscription_status.subscription_status =monthly_mode
             session.commit()
@@ -903,7 +904,7 @@ def create_landlord_subscription(message, mobile_number):
             session.commit()
         except Exception as e:
             ...
-        return landlord_proceed_with_subs_response.format(quarterly_sub,quarterly_pricing)
+        return response
     elif message == "3":
         response = landlord_proceed_with_subs_response.format(half_yearly_sub,half_yearly)
         try:
@@ -911,7 +912,7 @@ def create_landlord_subscription(message, mobile_number):
             session.commit()
         except Exception as e:
             ...
-        return landlord_proceed_with_subs_response.format(half_yearly_sub,half_yearly)
+        return response
     elif message == "4":
         response = landlord_proceed_with_subs_response.format(yearly_sub,yearly_pricing)
         try:
@@ -919,29 +920,24 @@ def create_landlord_subscription(message, mobile_number):
             session.commit()
         except Exception as e:
             ...
-        return landlord_proceed_with_subs_response.format(yearly_sub,yearly_pricing)
+        return response
     
-    elif message.lower() == "exit" :
-        response = welcome_landlord_response
+    if message.lower() == "exit" :
         try:
             landlord_subs_cancelling = session.query(Subscription).filter_by(mobile_number=mobile_number).first()
             landlord_subs_cancelling.subscription_status = new_user
+            landlord_subs_cancelling.user_status = landlord_user
             session.commit()
         except Exception as e:
             ...
         return welcome_landlord_response
     if len(message) > 5 and message[:1] == "0" or "ecocash" in message.lower():
-        user_details = {"message": message, "phone_number": mobile_number}
-        response =validate_payment(message, mobile_number,today)
+        response =validate_payment(message, mobile_number)
         return response
     return response
 
 #PAYMENT CREATION
-def validate_payment(message,phone_number,end_date):
-    try:
-        subs_class = session.query(Subscription).filter_by(mobile_number=phone_number).first().subscription_status
-    except Exception as e:
-        subs_class = ""
+def validate_payment(message,phone_number):
     if "transfer confirmation" in message.lower():
         pattern = r"PP(.*?)\bNew wallet"
         match = re.search(pattern, message)
@@ -961,6 +957,8 @@ def validate_payment(message,phone_number,end_date):
                     Subscription_status.trial_start_date = datetime.now().date()
                     Subscription_status.trial_end_date = end_date
                     Subscription_status.is_active = True
+                    subscription_status.subscription_referral = transaction_message_input
+                    Subscription_status.user_status = Subscription_status.user_type
                     session.commit()
                     response = eccocash_transaction_success_response
                     return response

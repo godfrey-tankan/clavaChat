@@ -46,7 +46,7 @@ landlord_monthly_subs_response = "Your subscription is on {}"
 
 #Payment section
 payment_response_default_response = "You are about to create a Monthly `Subscription` Plan 💳\n\n1. Confirm Subscription \n2. Cancel Subscription\n3. Help\n4. Exit\n\nPlease reply with the number of your choice."
-ecocash_number_valid_response = "Please wait for the popup on your phone to confirm the payment.\\n Once you confirm the payment, send us the transaction sms here on whatsApp\n *DISCLAIMER* _the subscription activation may take up to 1-3 minutes_ .If there is no feedback of `subscription` update from us, please contact support by typing word *help*.\n\n Your subscription will be activated once the payment is confirmed."
+ecocash_number_valid_response = "Please wait for the popup on your phone to confirm the payment.\n\n Once you confirm the payment, send us the transaction sms here on whatsApp\n *DISCLAIMER* _the subscription activation may take up to 1-3 minutes_ .If there is no feedback of `subscription` update from us, please contact support by typing word *help*.\n\n Your subscription will be activated once the payment is confirmed."
 ecocash_number_invalid_response = "Invalid Ecocash mobile number. Please reply with your Ecocash mobile number in the form: `07XX` to proceed."
 error_response = "An error occured. Please try again later."
 eccocash_transaction_success_response = "Your subscription has been successfully activated. Thank you for subscribing to our service. Enjoy!"
@@ -66,7 +66,7 @@ not_a_landlord_response = "You are not a Registered as a landlord!\n1. Contact S
 after_property_listing_response ="\n- *1* to Add a property\n- *more* to view more properties\n- *exit* to exit\n- *delete* property number. e.g. *delete 1* to delete or *edit 1 price =$300* to edit.\nFor more help reply with *help*"
 after_listing_response ="\n- *1* to Add a product\n- *more* to view more\n- *exit* to exit\n- *delete* product number. e.g. *delete 1* to delete or *edit 1 price =$300* to edit.\nFor more help reply with *help*"
 after_buyer_listing_response ="\n- *exit* to exit\n- *more* to view more products\nFor more help reply with *help*"
-underline_response = "______________*REPLY WITH:*______________"
+underline_response = "\n______________*REPLY WITH:*______________"
 after_tenant_listing_response ="\n- *exit* to exit\n- *more* to view more properties\nFor more help reply with *help*"
 buying_selling_help_help = "`clavaChat` *WhatsApp marketplace  support* 🆘\n\nclavaChat connects *buyers* and *sellers*, *tenants* and *landlords*. You can buy or sell products, rent or lease properties\n\n*1. FOR AI CHATBOT SERVICE*\n- choose option 1\n\n*2. FOR LANDLORDS:"
 buying_selling_help_help +="*\n*Landlord can post and manage properties, they can edit property information or delete a property*\n- To add a property you go to *housing services* >> select Landlord >> add a property and follow the steps."

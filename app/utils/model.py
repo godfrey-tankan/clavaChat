@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Date, ForeignKey
+from sqlalchemy import Column, Integer, String, Date, ForeignKey,Boolean,DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, relationship
@@ -18,8 +18,13 @@ class Subscription(Base):
     trial_end_date = Column(Date)
     subscription_referral = Column(String)
     user_type = Column(String)
-    user_activity=Column(String)
-    is_active = bool(True)
+    user_activity = Column(String)
+    is_active = Column(Boolean, default=True)
+    landlord_id = Column(Integer, ForeignKey('landlords.id'))
+    landlord = relationship("Landlord", back_populates="subscriptions")
+    students = relationship("Student", backref="subscription")  
+    seller = relationship("Seller", back_populates="subscription")
+
     @classmethod
     def exists(cls, session, mobile_number):
         return session.query(cls).filter_by(mobile_number=mobile_number).first() is not None
@@ -39,8 +44,7 @@ class Landlord(Base):
     name = Column(String)
     phone_number = Column(String)
     rental_properties = relationship("RentalProperty", back_populates="landlord")
-    subscription = relationship("Subscription", back_populates="landlord")
-
+    subscriptions = relationship("Subscription", back_populates="landlord")
 
 class RentalProperty(Base):
     __tablename__ = 'rental_properties'
@@ -91,7 +95,7 @@ class Accessories(Base):
     seller_id = Column(Integer, ForeignKey('sellers.id'))
     seller = relationship("Seller", back_populates="accessories")
 
-class Students(Base):
+class Student(Base):
     __tablename__ = 'students'
 
     id = Column(Integer, primary_key=True)
@@ -102,8 +106,7 @@ class Students(Base):
     student_email = Column(String)
     student_phone = Column(String)
     student_address = Column(String)
-    Subscription = relationship("Subscription", back_populates="students")
-    document = relationship("Document", back_populates="students")
+    subscription_id = Column(Integer, ForeignKey('subscriptions.id'))  # Foreign key linking the tables
 
 
 class Cars(Base):
@@ -127,7 +130,6 @@ class Food(Base):
 
 class Seller(Base):
     __tablename__ = 'sellers'
-
     id = Column(Integer, primary_key=True)
     name = Column(String)
     phone_number = Column(String)
@@ -136,6 +138,7 @@ class Seller(Base):
     accessories = relationship("Accessories", back_populates="seller")
     cars = relationship("Cars", back_populates="seller")
     food = relationship("Food", back_populates="seller")
+    subscription_id = Column(Integer, ForeignKey('subscriptions.id'))
     subscription = relationship("Subscription", back_populates="seller")
 
 engine = create_engine('sqlite:///subscriptions.db')
