@@ -224,7 +224,7 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
             active_subscription_status = session.query(Subscription).filter_by(mobile_number=mobile_number).first()
         except Exception as e:
             ...
-        #=========================HOUSING USER BLOCK ===============
+        #=========================HOUSING USER BLOCK ========================
         if active_subscription_status.user_status == appartment_addition:
             response = add_property_response
             if message.lower() == "y":
@@ -261,6 +261,9 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
         
         #=========================LANDLORD USER BLOCK ===============
         if active_subscription_status.user_type == landlord_user:
+            if active_subscription_status.user_status == subscription_status:
+                response = create_landlord_subscription(message, mobile_number)
+                return response
             records_per_page =10
             response = welcome_landlord_response
             if message == "1":
@@ -328,7 +331,14 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
                         ...
                     response = f"We will use *{message.upper()}* as your name.\n\nReply with *Y* to accept or *N* to deny."
                     return response
-
+            elif message == "3":
+                response = landlord_subs_response
+                try:
+                    active_subscription_status.user_status = subscription_status
+                    session.commit()
+                except Exception as e:
+                    ...
+                return welcome_message
             elif message.lower() == "exit" :
                 try:
                     active_subscription_status.user_status = welcome
@@ -389,7 +399,7 @@ def buying_and_selling(wa_id,message,name,page_number):
                         if seller_products_list:
                             result = "*HERE IS WHAT YOU MAY LIKE:*\n\n"
                             for i,product in enumerate(seller_products_list, start=1) :
-                                result += f"*{i}* *Product Name* {product.gadget_name}\n\t*Condition*: {product.condition}\n\t*Price*: {product.price}\n\n Call: *{product.seller.name}* on {product.seller.phone_number}\n\n"
+                                result += f"*{i}* *Product Name* {product.gadget_name}\n\t*Condition*: {product.condition}\n\t*Price*: ${product.price}\n\n Call: *{product.seller.name}* on {product.seller.phone_number}\n\n"
                             analyze_messages(wa_id[0],message)
                             result += underline_response
                             result += after_buyer_listing_response
@@ -501,6 +511,7 @@ def is_valid_whatsapp_message(body):
         and body["entry"][0]["changes"][0]["value"]["messages"][0]
     )
 
+#=========================CHAT SERVICE SUBSCRIPTION BLOCK ========================
 def activate_subscription(wa_id,status,message,expiry_date,subscription_status_ob):
 
     try:
@@ -555,41 +566,13 @@ def activate_subscription(wa_id,status,message,expiry_date,subscription_status_o
                     response = subs_cancel_response
                     return response
             if len(message) >5  and message[:1] == "0":
-                pattern = r'^(077|078)\d{7}$'
-                match = re.match(pattern, message)
-                if match:
-                    response = ecocash_number_valid_response
-                    return response
-                else:
-                    response = ecocash_number_invalid_response
-                    return response
-            if "transfer confirmation" in message.lower():
-                pattern = r"PP(.*?)\bNew wallet"
-                match = re.search(pattern, message)
-                if match:
-                    transaction_message_input = match.group(1).strip()
-                    if transaction_message_input == transaction_message.strip():
-                        try:
-                            Subscription_status = session.query(Subscription).filter_by(mobile_number=wa_id[0]).first()
-                            Subscription_status.subscription_status = "Monthly Subscription"
-                            Subscription_status.user_status = chat_status
-                            Subscription_status.trial_start_date = today
-                            Subscription_status.trial_end_date = today + timedelta(days=30)
-                            session.commit()
-                            response = eccocash_transaction_success_response
-                            return response
-                        except Exception as e:
-                            response = f"transaction - {error_response}"
-                            return response
-                    else:
-                        return reference_number_error_response
-                else:
-                    return pop_reference_number_error_response
+                validate_payment(message,wa_id,expiry_date)
             return response
         return response
     except Exception as e:
         response = subs_error_response
-    
+
+#=====================THE HOME PAGE==========================
 def welcome_page(wa_id,message,user_status_ob,name,page_number):
     end_date = today + timedelta(days=7)
     trial_response_ob = trial_response.format(name,end_date)
@@ -893,6 +876,91 @@ def edit_property(property_id, new_price):
             return "wrong property id, please try again, make sure you're using correct the command e.g *edit 1 price = $200*."
     else:
         return f"Please provide a valid new price for the property `{property_id}`."
+
+def create_landlord_subscription(message, mobile_number):
+    response = landlord_subs_response
+    today = datetime.now().date()+timedelta(days=7)
+    monthly_pricing,quarterly_pricing,half_yearly,yearly_pricing = 5.77, 13.80, 22.80,39.90
+    monthly_sub,quarterly_sub,half_yearly_sub,yearly_sub = "Monthly Subscription","Quarterly Subscription","Half Yearly Subscription","Yearly Subscription"
+    if message == "1":
+        response = landlord_proceed_with_subs_response.format(monthly_sub,monthly_pricing)
+        try:
+            user_status = subscription_status
+            # session.commit()
+        except Exception as e:
+            ...
+        return landlord_proceed_with_subs_response.format(monthly_sub,monthly_pricing)
+    elif message == "2":
+        response = landlord_proceed_with_subs_response.format(quarterly_sub,quarterly_pricing)
+        try:
+            user_status = subscription_status
+            # session.commit()
+        except Exception as e:
+            ...
+        return landlord_proceed_with_subs_response.format(quarterly_sub,quarterly_pricing)
+    elif message == "3":
+        response = landlord_proceed_with_subs_response.format(half_yearly_sub,half_yearly)
+        try:
+            user_status = subscription_status
+            # session.commit()
+        except Exception as e:
+            ...
+        return landlord_proceed_with_subs_response.format(half_yearly_sub,half_yearly)
+    elif message == "4":
+        response = landlord_proceed_with_subs_response.format(yearly_sub,yearly_pricing)
+        try:
+            user_status = subscription_status
+            # session.commit()
+        except Exception as e:
+            ...
+        return landlord_proceed_with_subs_response.format(yearly_sub,yearly_pricing)
+    
+    elif message.lower() == "exit" :
+        response = welcome_landlord_response
+        try:
+            landlord_subs_cancelling = session.query(Subscription).filter_by(mobile_number=mobile_number).first()
+            landlord_subs_cancelling.subscription_status = new_user
+            session.commit()
+        except Exception as e:
+            ...
+        return welcome_landlord_response
+    if len(message) > 5 and message[:1] == "0":
+        user_details = {"message": message, "phone_number": mobile_number}
+        response =validate_payment(message, mobile_number,today)
+        return response
+    return response
+
+#PAYMENT CREATION
+def validate_payment(message,phone_number,end_date):
+    if "transfer confirmation" in message.lower():
+        pattern = r"PP(.*?)\bNew wallet"
+        match = re.search(pattern, message)
+        if match:
+            transaction_message_input = match.group(1).strip()
+            if transaction_message_input == transaction_message.strip():
+                try:
+                    Subscription_status = session.query(Subscription).filter_by(mobile_number=phone_number).first()
+                    Subscription_status.subscription_status = subscription_status
+                    Subscription_status.trial_start_date = datetime.now().date()
+                    Subscription_status.trial_end_date = end_date
+                    session.commit()
+                    response = eccocash_transaction_success_response
+                    return response
+                except Exception as e:
+                    response = f"transaction - {error_response}"
+                    return response
+            else:
+                return reference_number_error_response
+        else:
+            return pop_reference_number_error_response
+        
+    pattern = r'^(077|078)\d{7}$'
+    match = re.match(pattern, message)
+    if match:
+        response = ecocash_number_valid_response
+    else:
+        response = ecocash_number_invalid_response
+        return response
 
 def search_products(product_name, condition, budget, page_number, records_per_page):
     if condition == "boxed" or condition == "new":

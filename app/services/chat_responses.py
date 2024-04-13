@@ -5,7 +5,7 @@ buyer_response = "WHAT ARE YOU LOOKING FOR?\nreply with what you are looking for
 seller_response = "Please tell us what you would like to do:\n\n1. Add a product\n2. View Your Listings \n3. Exit\n\nPlease reply with the number of your choice or reply with word `exit` to exit"
 seller_add_response = "*What are you selling?*\nPlease provide the following details about the product you are selling:\n1.Product\n2.Condition\n3.Price \n\nConsider this example: *iphone13 pro-max 256GB, Boxed $1500*\n\n🚨 _note that after adding your first product, you will be able to just post other products without going through all these steps again!_ \n\nTo exit simply type exit"
 welcome_response3 = "Are you a `Landlord` or a `Tenant`?\n\n1. Landlord\n2. Tenant\n3. Exit\n\nPlease reply with the number of your choice or type exit to exit"
-welcome_landlord_response = "Please tell us what you would like to do:\n\n1. Add a property\n2. View properties\n3. Exit\n\nPlease reply with the number of your choice or type exit to exit"
+welcome_landlord_response = "Please tell us what you would like to do:\n\n1. Add a property\n2. View properties\n3. Subscriptions\n\nPlease reply with the number of your choice or type exit to exit"
 add_property_response = "Please provide the following details about the property you would like to add:\n\n1. House information\n2. Location\n3. Rent *needed per month*\n\nConsider this example:\n*1 room with tiles,ceiling and own entrance door* in *Waterfalls Prospect* $130\n\n🚨 _note that after adding your first property, you will be able to just post other properties without going through all these steps again!_ \n\nTo exit simply type exit"
 welcome_tenant_response = "Please tell us what you would like to do:\n\n1. View available properties or houses to rent\n2. Exit\n\nPlease *reply* with the number of your choice or type exit to exit"
 tenant_response = "Please tell us the type of apartment/house you are looking for and your budget. e.g. 2 bedroom apartment in Sunningdale with tiles and ceiling, budget $300\n\nTo exit simply type exit"
@@ -39,6 +39,10 @@ subs_payment_agree_response = "Your subscription is being created. You will be b
 subs_payment_deny_response = "Your subscription request has been cancelled. To subscribe, please reply with *1*."
 subs_error_response = "An error occurred. Please try again later."
 subs_cancel_response = "Your subscription has been cancelled. To reactivate, please reply with *1* to subscribe."
+landlord_subs_response = "Landlord Subscription Plan:\n\n*Features*\n1. Manage all your properties\n2. 24/7 Customer Support\n3. Cancel Anytime - `guaranteed money back within first week` if you decided to change otherwise.\n\n*Pricing List*\n- 1. $5.77/monthly\n- 2. $13.80/quarterly\n- 3. $22.00/half-yearly\n- 4. $39.90/Yearly  \n\n To subscribe, please reply with your subscription choice to proceed or exit to exit."
+landlord_proceed_with_subs_response = "Your *{}* subscription is being created. You will be billed $`{}`/month. Please reply with your Ecocash mobile number in the form: `07XX` to proceed.\n\nTo cancel your subscription, please reply with *exit*."
+landlord_monthly_subs_response = "Your subscription is on {}"
+
 
 #Payment section
 payment_response_default_response = "You are about to create a Monthly `Subscription` Plan 💳\n\n1. Confirm Subscription \n2. Cancel Subscription\n3. Help\n4. Exit\n\nPlease reply with the number of your choice."
@@ -50,6 +54,9 @@ transaction_message = "240313.1849.F42721."
 reference_number_error_response = "Transaction ID or Reference Number is invalid. Please try again."
 pop_reference_number_error_response = "The POP message is invalid, please send the whole message again."
 trial_response = " Hi {}\nYour 7-Days Free trial `subscription` has been `created` . Your free trial will expire on `{}`\n Enjoy a happy chat with `clavaChat` \nRegards,\n*clava*."
+
+
+
 
 #housing and selling services
 no_listings_response = "You have no listings yet. Please add a product to sell.\n\n1. Add a product\n2. Exit"
