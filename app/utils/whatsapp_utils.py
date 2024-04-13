@@ -937,6 +937,10 @@ def create_landlord_subscription(message, mobile_number):
 
 #PAYMENT CREATION
 def validate_payment(message,phone_number,end_date):
+    try:
+        subs_class = session.query(Subscription).filter_by(mobile_number=phone_number).first().subscription_status
+    except Exception as e:
+        subs_class = ""
     if "transfer confirmation" in message.lower():
         pattern = r"PP(.*?)\bNew wallet"
         match = re.search(pattern, message)

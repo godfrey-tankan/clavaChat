@@ -19,6 +19,7 @@ class Subscription(Base):
     subscription_referral = Column(String)
     user_type = Column(String)
     user_activity=Column(String)
+    is_active = bool(True)
     @classmethod
     def exists(cls, session, mobile_number):
         return session.query(cls).filter_by(mobile_number=mobile_number).first() is not None
