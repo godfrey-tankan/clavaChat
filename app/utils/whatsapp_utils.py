@@ -17,6 +17,7 @@ from .model import *
 from app.services.chat_responses import *
 from app.services.user_types import *
 from app.config import *
+from .functions import *
 # import spacy
 
 openai.api_key = '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'
@@ -200,24 +201,27 @@ def process_text_for_whatsapp(text):
 
 def process_whatsapp_message(body):
     data = body
-    # phone_number_id = data['entry'][0]['changes'][0]['value']['metadata']['phone_number_id']
-    phone_number_id =  [contact['wa_id'] for contact in data['entry'][0]['changes'][0]['value']['contacts']]
-    # Extract messages text
-    messages_text = data['entry'][0]['changes'][0]['value']['messages'][0]['text']['body']
-    # Extract profile name
-    profile_name = data['entry'][0]['changes'][0]['value']['contacts'][0]['profile']['name']
+    try:
+        # phone_number_id = data['entry'][0]['changes'][0]['value']['metadata']['phone_number_id']
+        phone_number_id =  [contact['wa_id'] for contact in data['entry'][0]['changes'][0]['value']['contacts']]
+        # Extract messages text
+        messages_text = data['entry'][0]['changes'][0]['value']['messages'][0]['text']['body']
+        # Extract profile name
+        profile_name = data['entry'][0]['changes'][0]['value']['contacts'][0]['profile']['name']
 
-    wa_id = body["entry"][0]["changes"][0]["value"]["contacts"][0]["wa_id"]
-    name = body["entry"][0]["changes"][0]["value"]["contacts"][0]["profile"]["name"]
-    message = body["entry"][0]["changes"][0]["value"]["messages"][0]
-    message_body = message["text"]["body"]
-    response = generate_response(message_body, phone_number_id, profile_name)
-    # OpenAI Integration
-    # response = generate_response(message_body, wa_id, name)
-    # response = process_text_for_whatsapp(response)
+        wa_id = body["entry"][0]["changes"][0]["value"]["contacts"][0]["wa_id"]
+        name = body["entry"][0]["changes"][0]["value"]["contacts"][0]["profile"]["name"]
+        message = body["entry"][0]["changes"][0]["value"]["messages"][0]
+        message_body = message["text"]["body"]
+        response = generate_response(message_body, phone_number_id, profile_name)
+        # OpenAI Integration
+        # response = generate_response(message_body, wa_id, name)
+        # response = process_text_for_whatsapp(response)
 
-    data = get_text_message_input(current_app.config["RECIPIENT_WAID"], response)
-    send_message(data)
+        data = get_text_message_input(current_app.config["RECIPIENT_WAID"], response)
+        send_message(data)
+    except Exception as e:
+        pass
 
 def landlord_tenant_housing(mobile_number,message,name,page_number):
         try:
@@ -576,6 +580,7 @@ def activate_subscription(wa_id,status,message,expiry_date,subscription_status_o
 def welcome_page(wa_id,message,user_status_ob,name,page_number):
     end_date = today + timedelta(days=7)
     trial_response_ob = trial_response.format(name,end_date)
+
     if user_status_ob == new_user or user_status_ob != trial_mode or user_status_ob != welcome:
         welcome_response = welcome_message
         try:
@@ -590,6 +595,18 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
             if active_subscription_status.user_type == buyer_user or active_subscription_status.user_type == seller_user:
                 
                 response = buying_and_selling(wa_id,message,name,page_number)
+                return response
+            #=========================LIBRARY USER BLOCK ===============
+            if active_subscription_status.user_type == library_user:
+                if message.lower() == "exit":
+                    try:
+                        active_subscription_status.user_status = welcome
+                        active_subscription_status.user_type = new_user
+                        session.commit()
+                    except Exception as e:
+                        ...
+                response = library_contents_lookup(wa_id[0],message)
+                print("response::::",response)
                 return response
             
             if active_subscription_status.user_status == selling_mode:
@@ -635,6 +652,7 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                     return welcome_message
                 return response  
             
+            #=========================HOUSING USER BLOCK ========================
             if active_subscription_status.user_type == landlord_user or active_subscription_status.user_type == tenant_user:
                 response =landlord_tenant_housing(wa_id[0],message,name,page_number)
                 return response
@@ -711,6 +729,15 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                     session.commit() 
                 except Exception as e:
                     selling_mode_ob = ""
+                return response
+            if message == "4" :
+                response = library_response
+                try:
+                    active_subscription_status.user_status = library_user
+                    active_subscription_status.user_type = library_user
+                    session.commit()
+                except Exception as e:
+                    ...
                 return response
             return welcome_response
     return "eeh"

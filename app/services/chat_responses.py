@@ -1,8 +1,8 @@
 # Welcome responses
-welcome_message = "Welcome to `clava` WhatsApp MarketPlace. We are here to assist you with your queries. Please tell us what you would like to do:\n\n1. Chatbot services\n2. Selling\n3. Housing Services\n4. Exit\n\nPlease reply with the number of your choice or type exit to exit"
+welcome_message = "*WELCOME TO `clavaChat` WHATSAPP MARKETPLACE*.\nPlease tell us what you would like to do:\n\n1. *General AI Chatbot services*\n2. *Buying and Selling*\n3. *Housing Services*\n4. *Novels & Past exam papers*\n5. *Help*\n\nPlease reply with the number of your choice or type `exit` to exit"
 selling_response = "Please tell us what you would like to do:\n\n1. Sell a product\n2. Looking for a product to buy\n3. Exit\n\nPlease reply with the number of your choice or type exit to exit"
 buyer_response = "WHAT ARE YOU LOOKING FOR?\nreply with what you are looking for in this form:\n- *Product name*\n- *Condition*\n- *Budget*\n\nYou can consider this example:*iphone13 pro-max 256GB,boxed $1200*\n\nReply with exit to exit."
-seller_response = "Please tell us what you would like to do:\n\n1. Add a product\n2. View Your Listings \n3. Exit\n\nPlease reply with the number of your choice or reply with word `exit` to exit"
+seller_response = "Please tell us what you would like to do:\n\n1. Add a product\n2. View Your Listings \n3. Subscriptions\n\nPlease reply with the number of your choice or reply with word `exit` to exit"
 seller_add_response = "*What are you selling?*\nPlease provide the following details about the product you are selling:\n1.Product\n2.Condition\n3.Price \n\nConsider this example: *iphone13 pro-max 256GB, Boxed $1500*\n\n🚨 _note that after adding your first product, you will be able to just post other products without going through all these steps again!_ \n\nTo exit simply type exit"
 welcome_response3 = "Are you a `Landlord` or a `Tenant`?\n\n1. Landlord\n2. Tenant\n3. Exit\n\nPlease reply with the number of your choice or type exit to exit"
 welcome_landlord_response = "Please tell us what you would like to do:\n\n1. Add a property\n2. View properties\n3. Subscriptions\n\nPlease reply with the number of your choice or type exit to exit"
@@ -18,6 +18,7 @@ no_houses_found_response = "We couldn't find any match based on your need, try a
 no_products_found_response = "We couldn't find any match based on the product you're looking for,try another one or increase your budget."
 invalid_product_information ="⚠️Invalid product information provided. \n\n- Please provide:\n- *Product name*\n- *Condition*\n- *Budget*\n\nYou can consider this example:*iphone13 pro-max 256GB,boxed $1200*\nreply with `exit` to exit."
 questions_list =["who are you?", "what is your name", "where are you from", "who made you?", "who is tankan", "tankan"]
+library_response = "Welcome to the `clavaChat` Library.\n\nPlease tell us what you would like to do:\n\n1. View Novels\n2. View Past Exam Papers\n3. Exit\n\nPlease reply with the number of your choice or type exit to exit"
 
 #subscription section
 subs_response_default = "*YOUR FREE TRIAL HAS `EXPIRED`*\nPlease Choose `Subscription` Option\n1. Monthly Subscription\n2. Check Subscription Status\n3. Help\n4. `Exit`\n\n *Please reply with the `number` of your choice*."

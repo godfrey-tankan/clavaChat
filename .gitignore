@@ -3,3 +3,4 @@ data.db
 subscriptions.db
 subscriptions-dump.db
 example.env
+app/utils/documents/
