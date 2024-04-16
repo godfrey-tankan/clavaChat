@@ -1079,10 +1079,13 @@ def search_document(document_name,requester):
         for file_name in file_name_list:
             document = session.query(Document).filter_by(title=file_name).first()
             # title = file_name[:-4]  
-            document_add = Document(title=file_name, category="Library", file_path=requester)
-            session.add(document_add)
-            session.commit()
-        return "Documents added successfully."
+            if document:
+                return f"Document already exists.{document.id}"
+            else:
+                document_add = Document(title=file_name, category="Library", file_path=requester)
+                session.add(document_add)
+                session.commit()
+                return f"Documents added successfully.{file_name}"
 
 
     if document_name.startswith("add"):
