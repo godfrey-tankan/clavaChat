@@ -17,12 +17,40 @@ from .model import *
 from app.services.chat_responses import *
 from app.services.user_types import *
 from app.config import *
-from .functions import search_document, library_contents_lookup
 # import spacy
 
 openai.api_key = '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'
 conversation = []
 today = datetime.now().date()
+
+def send():
+    print("sending....")
+    headers = {
+        "Content-type": "application/json",
+        "Authorization": f"Bearer {current_app.config['ACCESS_TOKEN']}",
+    }
+    # url = f"https://graph.facebook.com/{current_app.config['VERSION']}/{current_app.config['PHONE_NUMBER_ID']}/messages"
+    url = "https://graph.facebook.com/v18.0/283764354812541/messages"
+    media_files = {
+        "messaging_product": "whatsapp",
+        "to": "+263779586059",
+        "type": "document",
+        "document": {
+            "link": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+            "name": "tankan.pdf",
+        }
+    }
+    print("about to try...")
+    try:
+        print("trying....")
+        response = requests.post(url, json=media_files, headers=headers, timeout=10)
+        response.raise_for_status()
+        print("POST request sent successfully.")
+    except requests.exceptions.RequestException as e:
+        print("POST request failed.")
+        print("!!-------->>", e)
+
+
 
 def create_subscription(mobile_number,user_name, subscription_status):
     if Subscription.exists(session, mobile_number):
@@ -61,7 +89,21 @@ def log_http_response(response):
     # logging.info(f"Content-type: {response.headers.get('content-type')}")
     # logging.info(f"Body: {response.text}")
 
-def get_text_message_input(recipient, text):
+def get_text_message_input(recipient, text,media):
+    if media:
+        return json.dumps(
+            {
+                "messaging_product": "whatsapp",
+                "recipient_type": "individual",
+                "to": recipient,
+                "type": "document",
+                # "type": "document",
+                "document": {
+                    "link": media,
+                    "filename": text
+                },
+            }
+        )
     return json.dumps(
         {
             "messaging_product": "whatsapp",
@@ -162,12 +204,14 @@ def generate_response(response, wa_id, name):
 
             return response.choices[0].message.content.strip()
 
-def send_message(data,media_files):
+def send_message(data):
+    print("here is the passed data:::",data)
     headers = {
         "Content-type": "application/json",
         "Authorization": f"Bearer {current_app.config['ACCESS_TOKEN']}",
     }
     url = f"https://graph.facebook.com/{current_app.config['VERSION']}/{current_app.config['PHONE_NUMBER_ID']}/messages"
+    # print(data)
     try:
         response = requests.post(
             url, data=data, headers=headers, timeout=10
@@ -187,18 +231,6 @@ def send_message(data,media_files):
         # Process the response as normal
         log_http_response(response)
         return response
-    
-    if media_files:
-        print("SENDING MEDIA FILE ###################")
-        try:
-            response = requests.post(
-                url, files=media_files, headers=headers, timeout=10
-            )
-            response.raise_for_status()  # Raises an HTTPError if the HTTP request returned an unsuccessful status code
-        except requests.Timeout:
-            pass
-        return response
-
 
 
 
@@ -232,8 +264,8 @@ def process_whatsapp_message(body):
         # response = generate_response(message_body, wa_id, name)
         # response = process_text_for_whatsapp(response)
 
-        data = get_text_message_input(current_app.config["RECIPIENT_WAID"], response)
-        send_message(data,None)
+        data = get_text_message_input(current_app.config["RECIPIENT_WAID"], response,"")
+        send_message(data)
     except Exception as e:
         pass
 
@@ -1065,23 +1097,15 @@ def library_contents_lookup(requester, message):
             requested_document = Document(title=message, category="Library", file_path=requester)
             session.add(requested_document)
             session.commit()
-
-        media_files= {
-                "messaging_product": "whatsapp",
-                "recipient_type": "individual",
-                "to": f"{requester}",
-                "type": "document",
-                "document": {
-                    "link" : f"{document_path}",
-                    "filename": "message"
-                }
-                }
-        
-        response = send_message("",media_files)
+        path=f"https://github.com/godfrey-tankan/My_projects/blob/godfrey-tankan-patch-1/{message}"
+        data = get_text_message_input(current_app.config["RECIPIENT_WAID"], message, path)
+        response =send_message(data)
         return response
-
+        # response = send_message("",media_files)
+    
         # except FileNotFoundError as e:
         #     # Handle the FileNotFoundError appropriately
         #     return f"error somewhere..{e}"
     else:
-        return "Document not found! Please check the document name and try again."
+        print("else else..")
+        return send() #"Document not found! Please check the document name and try again."
