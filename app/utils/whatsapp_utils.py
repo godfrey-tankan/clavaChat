@@ -17,7 +17,7 @@ from .model import *
 from app.services.chat_responses import *
 from app.services.user_types import *
 from app.config import *
-from .functions import *
+from .functions import search_document, library_contents_lookup
 # import spacy
 
 openai.api_key = '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'
@@ -162,7 +162,7 @@ def generate_response(response, wa_id, name):
 
             return response.choices[0].message.content.strip()
 
-def send_message(data):
+def send_message(data,media_files):
     headers = {
         "Content-type": "application/json",
         "Authorization": f"Bearer {current_app.config['ACCESS_TOKEN']}",
@@ -187,6 +187,20 @@ def send_message(data):
         # Process the response as normal
         log_http_response(response)
         return response
+    
+    if media_files:
+        print("SENDING MEDIA FILE ###################")
+        try:
+            response = requests.post(
+                url, files=media_files, headers=headers, timeout=10
+            )
+            response.raise_for_status()  # Raises an HTTPError if the HTTP request returned an unsuccessful status code
+        except requests.Timeout:
+            pass
+        return response
+
+
+
 
 def process_text_for_whatsapp(text):
     pattern = r"\【.*?\】"
@@ -219,7 +233,7 @@ def process_whatsapp_message(body):
         # response = process_text_for_whatsapp(response)
 
         data = get_text_message_input(current_app.config["RECIPIENT_WAID"], response)
-        send_message(data)
+        send_message(data,None)
     except Exception as e:
         pass
 
@@ -1007,6 +1021,7 @@ def validate_payment(message,phone_number):
     return response
 
 def search_products(product_name, condition, budget, page_number, records_per_page):
+
     if condition == "boxed" or condition == "new":
         condition = "boxed"
     else:
@@ -1021,3 +1036,52 @@ def search_products(product_name, condition, budget, page_number, records_per_pa
     except Exception as e:
         matching_products = None
     return matching_products
+
+
+
+
+
+def search_document(document_name):
+    current_directory = os.getcwd() 
+    folder_path = current_directory + "/app/utils/documents"
+    for root, dirs, files in os.walk(folder_path):
+        for file in files:
+            if file.lower() == document_name.lower():
+                path_ob = os.path.join(root, file)
+                return path_ob
+    return None
+
+
+def library_contents_lookup(requester, message):
+    message = message + ".pdf"
+    document_path = search_document(message)
+    if document_path:
+        print("Document found at:", document_path)
+        # try:
+        requested_document_by_user = session.query(Document).filter_by(title = message, file_path =requester).first()
+        if requested_document_by_user:
+            pass
+        else:
+            requested_document = Document(title=message, category="Library", file_path=requester)
+            session.add(requested_document)
+            session.commit()
+
+        media_files= {
+                "messaging_product": "whatsapp",
+                "recipient_type": "individual",
+                "to": f"{requester}",
+                "type": "document",
+                "document": {
+                    "link" : f"{document_path}",
+                    "filename": "message"
+                }
+                }
+        
+        response = send_message("",media_files)
+        return response
+
+        # except FileNotFoundError as e:
+        #     # Handle the FileNotFoundError appropriately
+        #     return f"error somewhere..{e}"
+    else:
+        return "Document not found! Please check the document name and try again."
