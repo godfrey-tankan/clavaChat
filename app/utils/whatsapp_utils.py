@@ -23,35 +23,6 @@ openai.api_key = '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'
 conversation = []
 today = datetime.now().date()
 
-def send():
-    print("sending....")
-    headers = {
-        "Content-type": "application/json",
-        "Authorization": f"Bearer {current_app.config['ACCESS_TOKEN']}",
-    }
-    # url = f"https://graph.facebook.com/{current_app.config['VERSION']}/{current_app.config['PHONE_NUMBER_ID']}/messages"
-    url = "https://graph.facebook.com/v18.0/283764354812541/messages"
-    media_files = {
-        "messaging_product": "whatsapp",
-        "to": "+263779586059",
-        "type": "document",
-        "document": {
-            "link": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-            "name": "tankan.pdf",
-        }
-    }
-    print("about to try...")
-    try:
-        print("trying....")
-        response = requests.post(url, json=media_files, headers=headers, timeout=10)
-        response.raise_for_status()
-        print("POST request sent successfully.")
-    except requests.exceptions.RequestException as e:
-        print("POST request failed.")
-        print("!!-------->>", e)
-
-
-
 def create_subscription(mobile_number,user_name, subscription_status):
     if Subscription.exists(session, mobile_number):
         sub_end = session.query(Subscription).filter_by(mobile_number=mobile_number).first()
@@ -649,6 +620,7 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                         active_subscription_status.user_status = welcome
                         active_subscription_status.user_type = new_user
                         session.commit()
+                        return welcome_message
                     except Exception as e:
                         ...
                 response = library_contents_lookup(wa_id[0],message)
@@ -1073,21 +1045,20 @@ def search_products(product_name, condition, budget, page_number, records_per_pa
 
 
 
-def search_document(document_name,requester):
-    if document_name.startswith("list="):
-        file_name_list = document_name.strip("list=")
+def search_document(document_name, requester):
+    if document_name.startswith("[") and len(document_name) > 40:
+        file_name_list = eval(document_name)  # Convert the string to a list
         for file_name in file_name_list:
             document = session.query(Document).filter_by(title=file_name).first()
-            # title = file_name[:-4]  
+            # title = file_name[:-4]
             if document:
-                return f"Document already exists.{document.id}"
+                pass
             else:
                 document_add = Document(title=file_name, category="Library", file_path=requester)
                 session.add(document_add)
                 session.commit()
-                return f"Documents added successfully.{file_name}"
-
-
+        return "Documents added successfully."
+    
     if document_name.startswith("add"):
         new_name = document_name.strip("add")
 
@@ -1109,7 +1080,14 @@ def search_document(document_name,requester):
                 response = document.title
                 return response
             else:
-                return None
+                modified_string = document_name.replace(" ", "_")
+                document = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{modified_string}%"))).first()
+                if document:
+                    response = document.title
+                    return response
+                else:
+                    return None
+
         except Exception as e:
             return None
     return None
@@ -1117,14 +1095,12 @@ def search_document(document_name,requester):
 
 def library_contents_lookup(requester, message):
     document_path = search_document(message,requester)
-
     if document_path == "Document already exists.":
         return "Document already exists."
     elif document_path == "Document added successfully.":
         return "Document added successfully."
     
     if document_path:
-        print("Document found is:", document_path)
         path=f"https://github.com/godfrey-tankan/My_projects/raw/godfrey-tankan-patch-1/{document_path.strip()}"
         data = get_text_message_input(current_app.config["RECIPIENT_WAID"], document_path, path)
         response =send_message(data)

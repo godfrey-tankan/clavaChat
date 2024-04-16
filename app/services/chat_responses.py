@@ -1,5 +1,5 @@
 # Welcome responses
-welcome_message = "*WELCOME TO `clavaChat` WHATSAPP MARKETPLACE*.\nPlease tell us what you would like to do:\n\n1. *General AI Chatbot services*\n2. *Buying and Selling*\n3. *Housing Services*\n4. *Novels & Past exam papers*\n5. *Help*\n\nPlease reply with the number of your choice or type `exit` to exit"
+welcome_message = "*WELCOME TO `clavaChat` WHATSAPP MARKETPLACE*.\nPlease tell us what you would like to do:\n\n1. *General AI Chatbot services*\n2. *Buying and Selling*\n3. *Housing Services*\n4. *clavaChat Library*\n5. *Help*\n\nPlease reply with the number of your choice or type `exit` to exit"
 selling_response = "Please tell us what you would like to do:\n\n1. Sell a product\n2. Looking for a product to buy\n3. Exit\n\nPlease reply with the number of your choice or type exit to exit"
 buyer_response = "WHAT ARE YOU LOOKING FOR?\nreply with what you are looking for in this form:\n- *Product name*\n- *Condition*\n- *Budget*\n\nYou can consider this example:*iphone13 pro-max 256GB,boxed $1200*\n\nReply with exit to exit."
 seller_response = "Please tell us what you would like to do:\n\n1. Add a product\n2. View Your Listings \n3. Subscriptions\n\nPlease reply with the number of your choice or reply with word `exit` to exit"
@@ -19,7 +19,7 @@ no_products_found_response = "We couldn't find any match based on the product yo
 invalid_product_information ="⚠️Invalid product information provided. \n\n- Please provide:\n- *Product name*\n- *Condition*\n- *Budget*\n\nYou can consider this example:*iphone13 pro-max 256GB,boxed $1200*\nreply with `exit` to exit."
 questions_list =["who are you?", "what is your name", "where are you from", "who made you?", "who is tankan", "tankan"]
 
-library_response = "Welcome to the `clavaChat` Library.\n\nPlease tell us what you would like to do:\n\n1. View Novels\n2. View Past Exam Papers\n3. Exit\n\nPlease reply with the number of your choice or type exit to exit"
+library_response = "Welcome to the `clavaChat` Library.\n\n- -> If looking for a novel/book, simply reply with the title of that book/novel.\n- -> If it's a past exam paper, reply with *level*,*paper title*,*year* and the *session* eg:\n- *A level mathematics paper 1 November 2023*.\n- -> For marking schemes, reply with word *solution* ,*level*,*paper title*,*year* and the *session* eg:\n- *solution A level mathematics paper 1 November 2023*.\n\nType `exit` to exit"
 
 #subscription section
 subs_response_default = "*YOUR FREE TRIAL HAS `EXPIRED`*\nPlease Choose `Subscription` Option\n1. Monthly Subscription\n2. Check Subscription Status\n3. Help\n4. `Exit`\n\n *Please reply with the `number` of your choice*."
