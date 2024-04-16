@@ -10,7 +10,7 @@ import re
 from openai import ChatCompletion
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import and_
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine,func
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 from .model import *
@@ -1073,26 +1073,57 @@ def search_products(product_name, condition, budget, page_number, records_per_pa
 
 
 
-def search_document(document_name):
-    
+def search_document(document_name,requester):
+    if document_name.startswith("list="):
+        file_name_list = document_name.strip("list=")
+        for file_name in file_name_list:
+            document = session.query(Document).filter_by(title=file_name).first()
+            # title = file_name[:-4]  
+            document_add = Document(title=file_name, category="Library", file_path=requester)
+            session.add(document_add)
+            session.commit()
+        return "Documents added successfully."
+
+
+    if document_name.startswith("add"):
+        new_name = document_name.strip("add")
+
+        try:
+            document_ob = session.query(Document).filter_by(title=new_name).first()
+            if document_ob:
+                return "Document already exists."
+            new_name+=".pdf"
+            document = Document(title=new_name, category="Library", file_path=requester)
+            session.add(document)
+            session.commit()
+            return "Document added successfully."
+        except Exception as e:
+            return None
+    else:
+        try:
+            document = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{document_name}%"))).first()
+            if document:
+                response = document.title
+                return response
+            else:
+                return None
+        except Exception as e:
+            return None
     return None
 
 
 def library_contents_lookup(requester, message):
-    message = message + ".pdf"
-    document_path = search_document(message)
+    document_path = search_document(message,requester)
+
+    if document_path == "Document already exists.":
+        return "Document already exists."
+    elif document_path == "Document added successfully.":
+        return "Document added successfully."
+    
     if document_path:
-        print("Document found at:", document_path)
-        # try:
-        requested_document_by_user = session.query(Document).filter_by(title = message, file_path =requester).first()
-        if requested_document_by_user:
-            pass
-        else:
-            requested_document = Document(title=message, category="Library", file_path=requester)
-            session.add(requested_document)
-            session.commit()
-        path=f"https://github.com/godfrey-tankan/My_projects/raw/godfrey-tankan-patch-1/{message}"
-        data = get_text_message_input(current_app.config["RECIPIENT_WAID"], message, path)
+        print("Document found is:", document_path)
+        path=f"https://github.com/godfrey-tankan/My_projects/raw/godfrey-tankan-patch-1/{document_path.strip()}"
+        data = get_text_message_input(current_app.config["RECIPIENT_WAID"], document_path, path)
         response =send_message(data)
         return response
         # response = send_message("",media_files)
