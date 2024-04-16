@@ -1074,13 +1074,7 @@ def search_products(product_name, condition, budget, page_number, records_per_pa
 
 
 def search_document(document_name):
-    current_directory = os.getcwd() 
-    folder_path = current_directory + "/app/utils/documents"
-    for root, dirs, files in os.walk(folder_path):
-        for file in files:
-            if file.lower() == document_name.lower():
-                path_ob = os.path.join(root, file)
-                return path_ob
+    
     return None
 
 
@@ -1097,7 +1091,7 @@ def library_contents_lookup(requester, message):
             requested_document = Document(title=message, category="Library", file_path=requester)
             session.add(requested_document)
             session.commit()
-        path=f"https://github.com/godfrey-tankan/My_projects/blob/godfrey-tankan-patch-1/{message}"
+        path=f"https://github.com/godfrey-tankan/My_projects/raw/godfrey-tankan-patch-1/{message}"
         data = get_text_message_input(current_app.config["RECIPIENT_WAID"], message, path)
         response =send_message(data)
         return response
@@ -1107,5 +1101,4 @@ def library_contents_lookup(requester, message):
         #     # Handle the FileNotFoundError appropriately
         #     return f"error somewhere..{e}"
     else:
-        print("else else..")
-        return send() #"Document not found! Please check the document name and try again."
+        return "Document not found! Please check the document name and try again."

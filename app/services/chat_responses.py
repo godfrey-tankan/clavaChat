@@ -18,6 +18,7 @@ no_houses_found_response = "We couldn't find any match based on your need, try a
 no_products_found_response = "We couldn't find any match based on the product you're looking for,try another one or increase your budget."
 invalid_product_information ="⚠️Invalid product information provided. \n\n- Please provide:\n- *Product name*\n- *Condition*\n- *Budget*\n\nYou can consider this example:*iphone13 pro-max 256GB,boxed $1200*\nreply with `exit` to exit."
 questions_list =["who are you?", "what is your name", "where are you from", "who made you?", "who is tankan", "tankan"]
+
 library_response = "Welcome to the `clavaChat` Library.\n\nPlease tell us what you would like to do:\n\n1. View Novels\n2. View Past Exam Papers\n3. Exit\n\nPlease reply with the number of your choice or type exit to exit"
 
 #subscription section
