@@ -176,13 +176,11 @@ def generate_response(response, wa_id, name):
             return response.choices[0].message.content.strip()
 
 def send_message(data):
-    print("here is the passed data:::",data)
     headers = {
         "Content-type": "application/json",
         "Authorization": f"Bearer {current_app.config['ACCESS_TOKEN']}",
     }
     url = f"https://graph.facebook.com/{current_app.config['VERSION']}/{current_app.config['PHONE_NUMBER_ID']}/messages"
-    # print(data)
     try:
         response = requests.post(
             url, data=data, headers=headers, timeout=10
@@ -271,7 +269,6 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
             if len(message) > 7:
                 analyze_messages(mobile_number,message)
                 description,location, rentals = extract_house_details(message)
-                print(description,"|",location,"|",rentals)
                 if location and description and rentals:
                     house_details = f"- *Location:* {location}\n- *Description:* {description}\n- *Rentals*: ${rentals}"
                     response = apartment_added_successfully.format(house_details)
@@ -624,7 +621,6 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                     except Exception as e:
                         ...
                 response = library_contents_lookup(wa_id[0],message)
-                print("response::::",response)
                 return response
             
             if active_subscription_status.user_status == selling_mode:
