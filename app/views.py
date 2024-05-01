@@ -7,6 +7,7 @@ from .decorators.security import signature_required
 from .utils.whatsapp_utils import (
     process_whatsapp_message,
     is_valid_whatsapp_message,
+    send_message_template,
 )
 
 webhook_blueprint = Blueprint("webhook", __name__)
@@ -25,14 +26,13 @@ def handle_message():
         return jsonify({"status": "ok"}), 200
 
     try:
-        # if is_valid_whatsapp_message(body):
-        process_whatsapp_message(body)
-        return jsonify({"status": "ok"}), 200
-        # else:
-        #     return (
-        #         jsonify({"status": "error", "message": "Not a WhatsApp API event"}),
-        #         404,
-        #     )
+        if is_valid_whatsapp_message(body):
+            process_whatsapp_message(body)
+            return jsonify({"status": "ok"}), 200
+        
+        else:
+            send_message_template(body)
+            return jsonify({"status": "ok"}), 200
     except json.JSONDecodeError:
         logging.error("Failed to decode JSON")
         return jsonify({"status": "error", "message": "Invalid JSON provided"}), 400

@@ -60,7 +60,7 @@ def log_http_response(response):
     # logging.info(f"Content-type: {response.headers.get('content-type')}")
     # logging.info(f"Body: {response.text}")
 
-def get_text_message_input(recipient, text,media):
+def get_text_message_input(recipient, text,media,template=False):
     if media:
         return json.dumps(
             {
@@ -72,6 +72,19 @@ def get_text_message_input(recipient, text,media):
                 "document": {
                     "link": media,
                     "filename": text
+                },
+            }
+        )
+    if template:
+        return json.dumps(
+            {
+                "messaging_product": "whatsapp",
+                "recipient_type": "individual",
+                "to": recipient,
+                "type": "template",
+                "template": {
+                    "name": "clava_welcome",
+                    "language": {"code": "en_US"},
                 },
             }
         )
@@ -237,6 +250,23 @@ def process_whatsapp_message(body):
         send_message(data)
     except Exception as e:
         pass
+
+def send_message_template(body):
+    wa_id = body["entry"][0]["changes"][0]["value"]["contacts"][0]["wa_id"]
+    headers = {
+        "Content-type": "application/json",
+        "Authorization": f"Bearer {current_app.config['ACCESS_TOKEN']}",
+    }
+    url = f"https://graph.facebook.com/{current_app.config['VERSION']}/{current_app.config['PHONE_NUMBER_ID']}/messages"
+    data = get_text_message_input(wa_id, "","",template=True)
+    try:
+        response = requests.post(
+            url, data=data, headers=headers, timeout=10
+        )  
+        response.raise_for_status()  # Raises an HTTPError if the HTTP request returned an unsuccessful status code
+    except requests.Timeout:
+        pass
+
 
 def landlord_tenant_housing(mobile_number,message,name,page_number):
         try:
