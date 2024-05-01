@@ -60,6 +60,7 @@ def webhook():
     if request.method == "GET":
         return verify()
     elif request.method == "POST":
+        print("request.get_json() : ",request.get_json())
         return handle_message()
 
 
