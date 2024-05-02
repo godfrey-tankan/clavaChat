@@ -84,7 +84,7 @@ def get_text_message_input(recipient, text,media,template=False):
                 "type": "template",
                 "template": {
                     "name": "clava_welcome",
-                    "language": {"code": "en_US"},
+                    "language": {"code": "en-GB"},
                 },
             }
         )
@@ -188,31 +188,57 @@ def generate_response(response, wa_id, name):
 
             return response.choices[0].message.content.strip()
 
-def send_message(data):
-    headers = {
+def send_message(data,template=False):
+    if template:
+        headers = {
+            "Content-type": "application/json",
+            "Authorization": f"Bearer {current_app.config['ACCESS_TOKEN']}",
+        }
+        url = f"https://graph.facebook.com/{current_app.config['VERSION']}/{current_app.config['PHONE_NUMBER_ID']}/messages"
+        try:
+            response = requests.post(
+                url, data=send_message_template(), headers=headers, timeout=10
+            )  
+            response.raise_for_status()  # Raises an HTTPError if the HTTP request returned an unsuccessful status code
+        except requests.Timeout:
+            pass
+            # logging.error("Timeout occurred while sending message")
+            # return jsonify({"status": "error", "message": "Request timed out"}), 408
+        except (    
+            requests.RequestException
+        ) as e:  # This will catch any general request exception
+            pass
+            # logging.error(f"Request failed due to: {e}")
+            # return jsonify({"status": "error", "message": "Failed to send message"}), 500
+        else:
+            # Process the response as normal
+            log_http_response(response)
+            return response
+    else:
+        headers = {
         "Content-type": "application/json",
         "Authorization": f"Bearer {current_app.config['ACCESS_TOKEN']}",
-    }
-    url = f"https://graph.facebook.com/{current_app.config['VERSION']}/{current_app.config['PHONE_NUMBER_ID']}/messages"
-    try:
-        response = requests.post(
-            url, data=data, headers=headers, timeout=10
-        )  
-        response.raise_for_status()  # Raises an HTTPError if the HTTP request returned an unsuccessful status code
-    except requests.Timeout:
-        pass
-        # logging.error("Timeout occurred while sending message")
-        # return jsonify({"status": "error", "message": "Request timed out"}), 408
-    except (    
-        requests.RequestException
-    ) as e:  # This will catch any general request exception
-        pass
-        # logging.error(f"Request failed due to: {e}")
-        # return jsonify({"status": "error", "message": "Failed to send message"}), 500
-    else:
-        # Process the response as normal
-        log_http_response(response)
-        return response
+        }
+        url = f"https://graph.facebook.com/{current_app.config['VERSION']}/{current_app.config['PHONE_NUMBER_ID']}/messages"
+        try:
+            response = requests.post(
+                url, data=data, headers=headers, timeout=10
+            )  
+            response.raise_for_status()  # Raises an HTTPError if the HTTP request returned an unsuccessful status code
+        except requests.Timeout:
+            pass
+            # logging.error("Timeout occurred while sending message")
+            # return jsonify({"status": "error", "message": "Request timed out"}), 408
+        except (    
+            requests.RequestException
+        ) as e:  # This will catch any general request exception
+            pass
+            # logging.error(f"Request failed due to: {e}")
+            # return jsonify({"status": "error", "message": "Failed to send message"}), 500
+        else:
+            # Process the response as normal
+            log_http_response(response)
+            return response
 
 
 
@@ -246,26 +272,26 @@ def process_whatsapp_message(body):
         # response = generate_response(message_body, wa_id, name)
         # response = process_text_for_whatsapp(response)
 
-        data = get_text_message_input(current_app.config["RECIPIENT_WAID"], response,"")
+        # data = get_text_message_input(phone_number_id, response,"")
+        data = get_text_message_input(phone_number_id, response,None,False)
         send_message(data)
     except Exception as e:
         pass
 
-def send_message_template(body):
-    wa_id = body["entry"][0]["changes"][0]["value"]["contacts"][0]["wa_id"]
-    headers = {
-        "Content-type": "application/json",
-        "Authorization": f"Bearer {current_app.config['ACCESS_TOKEN']}",
-    }
-    url = f"https://graph.facebook.com/{current_app.config['VERSION']}/{current_app.config['PHONE_NUMBER_ID']}/messages"
-    data = get_text_message_input(wa_id, "","",template=True)
-    try:
-        response = requests.post(
-            url, data=data, headers=headers, timeout=10
-        )  
-        response.raise_for_status()  # Raises an HTTPError if the HTTP request returned an unsuccessful status code
-    except requests.Timeout:
-        pass
+def send_message_template():
+    return json.dumps(
+            {
+                "messaging_product": "whatsapp",
+                "recipient_type": "individual",
+                "to": "+263779586059",
+                "type": "template",
+                "template": {
+                    "name": "clava_welcome",
+                    "language": {"code": "en-GB"}
+                },
+            }
+        )
+   
 
 
 def landlord_tenant_housing(mobile_number,message,name,page_number):
@@ -626,7 +652,7 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
     trial_response_ob = trial_response.format(name,end_date)
 
     if user_status_ob == new_user or user_status_ob != trial_mode or user_status_ob != welcome:
-        welcome_response = welcome_message
+        welcome_response = welcome_message #send_message(wa_id,template=True)
         try:
             session = Session()
             active_subscription_status = session.query(Subscription).filter_by(mobile_number=wa_id[0]).first()
@@ -1068,9 +1094,6 @@ def search_products(product_name, condition, budget, page_number, records_per_pa
     return matching_products
 
 
-
-
-
 def search_document(document_name, requester):
     if document_name.startswith("[") and len(document_name) > 40:
         file_name_list = eval(document_name)  # Convert the string to a list
@@ -1112,7 +1135,11 @@ def search_document(document_name, requester):
                     response = document.title
                     return response
                 else:
-                    return None
+                    modified_string = document_name.replace(" ", "-")
+                    document = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{modified_string}%"))).first()
+                    if document:
+                        response = document.title
+                        return response
 
         except Exception as e:
             return None
@@ -1128,7 +1155,7 @@ def library_contents_lookup(requester, message):
     
     if document_path:
         path=f"https://github.com/godfrey-tankan/My_projects/raw/godfrey-tankan-patch-1/{document_path.strip()}"
-        data = get_text_message_input(current_app.config["RECIPIENT_WAID"], document_path, path)
+        data = get_text_message_input(requester, document_path, path)
         response =send_message(data)
         return response
         # response = send_message("",media_files)
