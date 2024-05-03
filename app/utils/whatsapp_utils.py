@@ -1057,7 +1057,6 @@ def validate_payment(message,phone_number):
                     Subscription_status.trial_start_date = datetime.now().date()
                     Subscription_status.trial_end_date = end_date
                     Subscription_status.is_active = True
-                    subscription_status.subscription_referral = transaction_message_input
                     Subscription_status.user_status = Subscription_status.user_type
                     session.commit()
                     response = eccocash_transaction_success_response
