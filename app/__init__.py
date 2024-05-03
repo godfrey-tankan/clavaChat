@@ -1,10 +1,12 @@
 from flask import Flask
 from app.config import load_configurations, configure_logging
 from .views import webhook_blueprint
+from app.utils.model import *
+import os
 
 
 app = Flask(__name__)
-
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 # Load configurations and logging settings
 load_configurations(app)
 configure_logging()

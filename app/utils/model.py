@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Date, ForeignKey,Boolean,DateTime
+from sqlalchemy import Column, Integer, String, Date, ForeignKey, Boolean, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, relationship
@@ -22,7 +22,7 @@ class Subscription(Base):
     is_active = Column(Boolean, default=True)
     landlord_id = Column(Integer, ForeignKey('landlords.id'))
     landlord = relationship("Landlord", back_populates="subscriptions")
-    students = relationship("Student", backref="subscription")  
+    students = relationship("Student", backref="subscription")
     seller = relationship("Seller", back_populates="subscription")
 
     @classmethod
@@ -57,8 +57,6 @@ class RentalProperty(Base):
     description = Column(String)
     picture = Column(String)
     landlord = relationship("Landlord", back_populates="rental_properties")
-    
-
 
 class Document(Base):
     __tablename__ = 'documents'
@@ -141,9 +139,12 @@ class Seller(Base):
     subscription_id = Column(Integer, ForeignKey('subscriptions.id'))
     subscription = relationship("Subscription", back_populates="seller")
 
-engine = create_engine('sqlite:///subscriptions.db')
+# Update the database connection URL for PostgreSQL
+engine = create_engine('postgresql://clava_db_user:qSaLutxFV9xEfEIBvGq4bnDVMN584nJW@dpg-coq0b4cf7o1s73e8k2l0-a.oregon-postgres.render.com/clava_db')
 Base.metadata.create_all(engine)  # Create the tables if they don't exist
 
+# Create a session
 Session = sessionmaker(bind=engine)
 session = Session()
+
 today = datetime.now().date()
