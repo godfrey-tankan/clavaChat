@@ -643,7 +643,7 @@ def activate_subscription(wa_id,status,message,expiry_date,subscription_status_o
                     response = subs_cancel_response
                     return response
             if len(message) >5  and message[:1] == "0" or "ecocash" in message.lower() or "onemoney" in message.lower() or "bank" in message.lower():
-                validate_payment(message,wa_id)
+                response = validate_payment(message,wa_id)
             return response
         return response
     except Exception as e:
