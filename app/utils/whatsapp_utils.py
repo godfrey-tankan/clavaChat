@@ -138,10 +138,13 @@ def generate_response(response, wa_id, name):
             if  user_status_mode == subs_status:
                 response = activate_subscription(wa_id,user_status_mode,response,expiry_date,subscription_status_ob)
                 return response
+            
             elif user_status_mode == payment_status:
                 response = activate_subscription(wa_id,user_status_mode,response,expiry_date,subscription_status_ob)
                 return response
             response = subs_response_default
+            user_status.user_status = subs_status
+            session.commit()
             return response
         elif user_status.user_type != chat_user:
             print("calling function welcome page ....")
