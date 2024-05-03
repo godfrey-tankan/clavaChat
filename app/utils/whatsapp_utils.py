@@ -128,8 +128,8 @@ def generate_response(response, wa_id, name):
         try:
             Subscription_status = create_subscription(wa_id[0], name, trial_mode)
         except Exception as e:
-            Subscription_status = f"error!{e}"
-            return Subscription_status
+            Subscription_status = "error!"
+            return None
         conversation.append({"role": "user", "content": response})
         if Subscription_status == "created":
             response = welcome_message
@@ -622,7 +622,7 @@ def activate_subscription(wa_id,status,message,expiry_date,subscription_status_o
                         active_subscription_status.subscription_status = "Subscription Activation"
                         session.commit()
                     except Exception as e:
-                        return e
+                        return response
                     return response
                 if message.lower() == "n":
                     response = subs_payment_deny_response
