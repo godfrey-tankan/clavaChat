@@ -592,6 +592,15 @@ def is_valid_whatsapp_message(body):
 def activate_subscription(wa_id,status,message,expiry_date,subscription_status_ob):
 
     try:
+        if message.lower() == "exit" :
+            try:
+                active_subscription_status = session.query(Subscription).filter_by(mobile_number=wa_id[0]).first()
+                active_subscription_status.user_status = welcome
+                active_subscription_status.user_type = new_user
+                session.commit()
+            except Exception as e:
+                ...
+            return welcome_message
         if status ==subs_status:
             try:
                 response = subs_response_default
