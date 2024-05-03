@@ -150,7 +150,7 @@ def generate_response(response, wa_id, name):
             print("calling function welcome page ....")
             response_ob = welcome_page(wa_id,response,subscription_status_ob,name,page_number=1)
             return response_ob
-        else:
+        elif user_status.user_status == chat_status:
             if response.lower() == "exit" :
                     try:
                         user_status.user_status = welcome
@@ -190,6 +190,8 @@ def generate_response(response, wa_id, name):
                 conversation.append({"role": "assistant", "content": response.choices[0].message.content.strip()})
 
             return response.choices[0].message.content.strip()
+        else:
+            return "choose an option"
 
 def send_message(data,template=False):
     if template:
