@@ -1044,6 +1044,7 @@ def validate_payment(message,phone_number):
         if match:
             transaction_message_input = match.group(1).strip()
             if transaction_message_input == transaction_message.strip():
+                end_date = datetime.now().date() + timedelta(days=30)
                 try:
                     Subscription_status = session.query(Subscription).filter_by(mobile_number=phone_number).first()
                     if Subscription_status.subscription_status == monthly_mode:
