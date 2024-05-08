@@ -1156,7 +1156,7 @@ def search_document(document_name, requester):
                         return response
 
         except Exception as e:
-            return None
+            pass
     return None
 
 
