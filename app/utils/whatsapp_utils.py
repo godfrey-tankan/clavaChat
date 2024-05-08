@@ -1143,13 +1143,13 @@ def search_document(document_name, requester):
                 response = document.title
                 return response
             else:
-                modified_string = '_'.join(document_name.split()[:4])  
+                modified_string = '_'.join(document_name.split()[:5])  
                 document = session.query(Document).filter(func.lower(Document.title.ilike(func.lower(f"%{modified_string}%")))).first()
                 if document:
                     response = document.title
                     return response
                 else:
-                    modified_string = '-'.join(document_name.split()[:4])  
+                    modified_string = '-'.join(document_name.split()[:5])  
                     document = session.query(Document).filter(func.lower(Document.title.ilike(func.lower(f"%{modified_string}%")))).first()
                     if document:
                         response = document.title
