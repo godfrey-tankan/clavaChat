@@ -1099,7 +1099,7 @@ def search_products(product_name, condition, budget, page_number, records_per_pa
     try:
         offset = (page_number - 1) * records_per_page
         matching_products = session.query(Electronics).join(Electronics.seller).\
-            filter(Electronics.gadget_name.ilike(f'%{product_name[:10]}%')).\
+            filter(Electronics.gadget_name.ilike(f'%{product_name[:5]}%')).\
             filter(Electronics.condition.ilike(f'%{condition}%')).\
             filter(Electronics.price.between(budget - 100, budget + 100)).\
             offset(offset).limit(records_per_page).all()
@@ -1138,19 +1138,19 @@ def search_document(document_name, requester):
             return None
     else:
         try:
-            document = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{document_name}%"))).first()
+            document = session.query(Document).filter(func.lower(Document.title.ilike(func.lower(f"{document_name}%")))).first()
             if document:
                 response = document.title
                 return response
             else:
-                modified_string = document_name.replace(" ", "_")
-                document = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{modified_string}%"))).first()
+                modified_string = '_'.join(document_name.split()[:4])  
+                document = session.query(Document).filter(func.lower(Document.title.ilike(func.lower(f"%{modified_string}%")))).first()
                 if document:
                     response = document.title
                     return response
                 else:
-                    modified_string = document_name.replace(" ", "-")
-                    document = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{modified_string}%"))).first()
+                    modified_string = '-'.join(document_name.split()[:4])  
+                    document = session.query(Document).filter(func.lower(Document.title.ilike(func.lower(f"%{modified_string}%")))).first()
                     if document:
                         response = document.title
                         return response
