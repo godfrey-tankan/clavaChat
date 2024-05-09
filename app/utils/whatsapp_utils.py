@@ -501,6 +501,28 @@ def buying_and_selling(wa_id,message,name,page_number):
             response = seller_response
             page_number = page_number
             records_per_page = 10
+            if message.startswith("["):
+                seller_mobile = message.split()
+                try:
+                    seller = Seller(phone_number=seller_mobile[-1], name=seller_mobile[-2])
+                    session.add(seller)
+                    session.commit()
+                except Exception as e:
+                    ...
+                gadget_list = eval(message)  # Convert the string to a list
+                for gadget in gadget_list:
+                    product_info = gadget.split('$')
+                    product_name = product_info[0].strip()
+                    price = float(product_info[1].strip())
+                    try:
+                        electronics = Electronics(gadget_name=product_name, condition=condition, price=price, seller=seller,seller_id=seller.id)
+                        session.add(electronics)
+                        session.commit()
+                    except Exception as e:
+                        return "error adding gadget"
+                    
+                return "gadgets added successfully."
+                
             if message == "1":
                 response = seller_add_response
                 return response
