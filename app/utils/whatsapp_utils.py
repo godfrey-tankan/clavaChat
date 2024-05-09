@@ -533,7 +533,7 @@ def buying_and_selling(wa_id,message,name,page_number):
                     
                 return "gadgets added successfully."
                 
-            if message == "1":
+            elif message == "1":
                 response = seller_add_response
                 return response
             elif message == "2" or message.lower()=="more" or "delete" in message.lower() or "edit" in message.lower():
