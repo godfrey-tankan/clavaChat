@@ -509,7 +509,7 @@ def buying_and_selling(wa_id,message,name,page_number):
                     session.commit()
                 except Exception as e:
                     ...
-                gadget_list = eval(message)  # Convert the string to a list
+                gadget_list = re.findall(r"\S+ \d+/\d+ $\d+", message.strip("["))
                 for gadget in gadget_list:
                     product_info = gadget.split('$')
                     product_name = product_info[0].strip()
