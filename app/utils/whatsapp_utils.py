@@ -504,9 +504,13 @@ def buying_and_selling(wa_id,message,name,page_number):
             if message.startswith("["):
                 seller_mobile = message.split()
                 try:
-                    seller = Seller(phone_number=seller_mobile[-1], name=seller_mobile[-2])
-                    session.add(seller)
-                    session.commit()
+                    seller = session.query(Seller).filter_by(phone_number=seller_mobile[-1]).first()
+                    if seller:
+                        pass
+                    else:
+                        seller = Seller(phone_number=seller_mobile[-1], name=seller_mobile[-2])
+                        session.add(seller)
+                        session.commit()
                 except Exception as e:
                     ...
                 gadget_list = re.findall(r"\S+ \d+/\d+ $\d+", message.strip("["))
@@ -514,6 +518,10 @@ def buying_and_selling(wa_id,message,name,page_number):
                     product_info = gadget.split('$')
                     product_name = product_info[0].strip()
                     price = float(product_info[1].strip())
+                    if "boxed" in message.lower():
+                        condition = "boxed"
+                    else:
+                        condition = "pre-owned"
                     try:
                         electronics = Electronics(gadget_name=product_name, condition=condition, price=price, seller=seller,seller_id=seller.id)
                         session.add(electronics)
