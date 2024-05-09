@@ -513,16 +513,18 @@ def buying_and_selling(wa_id,message,name,page_number):
                         session.commit()
                 except Exception as e:
                     ...
-                gadget_list = re.findall(r"\S+ \d+/\d+ $\d+", message)
+                gadget_list = re.findall(r"[a-zA-Z]+ \d+/\d+ \$\d+", message)
+                if "boxed" in message.lower():
+                    condition = "boxed"
+                else:
+                    condition = "pre-owned"
                 for gadget in gadget_list:
                     product_info = gadget.split('$')
                     product_name = product_info[0].strip()
                     price = float(product_info[1].strip())
-                    if "boxed" in message.lower():
-                        condition = "boxed"
-                    else:
-                        condition = "pre-owned"
+                  
                     try:
+                        session = Session()
                         electronics = Electronics(gadget_name=product_name, condition=condition, price=price, seller=seller,seller_id=seller.id)
                         session.add(electronics)
                         session.commit()
