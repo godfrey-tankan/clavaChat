@@ -501,7 +501,7 @@ def buying_and_selling(wa_id,message,name,page_number):
             response = seller_response
             page_number = page_number
             records_per_page = 10
-            if message.startswith("["):
+            if "[" in message:
                 seller_mobile = message.split(']')[1].strip()
                 try:
                     seller = session.query(Seller).filter_by(phone_number=seller_mobile.split()[-1]).first()
@@ -523,9 +523,7 @@ def buying_and_selling(wa_id,message,name,page_number):
                     product_info = gadget.split('$')
                     product_name = product_info[0].strip()
                     price = float(product_info[1].strip())
-                  
                     try:
-                        session = Session()
                         electronics = Electronics(gadget_name=product_name, condition=condition, price=price, seller=seller,seller_id=seller.id)
                         session.add(electronics)
                         session.commit()
@@ -1140,7 +1138,6 @@ def search_products(product_name, condition, budget, page_number, records_per_pa
         matching_products = None
     return matching_products
 
-
 def search_document(document_name, requester):
     if document_name.startswith("[") and len(document_name) > 40:
         file_name_list = eval(document_name)  # Convert the string to a list
@@ -1191,7 +1188,6 @@ def search_document(document_name, requester):
         except Exception as e:
             return None
     return None
-
 
 def library_contents_lookup(requester, message):
     document_path = search_document(message,requester)
