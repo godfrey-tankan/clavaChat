@@ -1159,7 +1159,6 @@ def search_document(document_name, requester):
             document_ob = session.query(Document).filter_by(title=new_name).first()
             if document_ob:
                 return "Document already exists."
-            new_name+=".pdf"
             document = Document(title=new_name, category="Library", file_path=requester)
             session.add(document)
             session.commit()
