@@ -854,6 +854,9 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                 except Exception as e:
                     ...
                 return response
+            if message == "5":
+                response = buying_selling_help_help_final
+                return response
             return welcome_response
     return "eeh"
 
