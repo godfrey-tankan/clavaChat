@@ -55,7 +55,7 @@ eccocash_transaction_success_response = "Your subscription has been successfully
 transaction_message = "240313.1849.F42721."
 reference_number_error_response = "Transaction ID or Reference Number is invalid. Please try again."
 pop_reference_number_error_response = "The POP message is invalid, please send the whole message again."
-trial_response = " Hi {}\nYour 7-Days Free trial `subscription` has been `created` . Your free trial will expire on `{}`\n Enjoy a happy chat with `clavaChat` \nRegards,\n*clava*."
+trial_response = " Hi {},Enjoy a happy chat with `clavaChat` \nRegards,\n*clava*."
 
 
 

@@ -693,7 +693,7 @@ def activate_subscription(wa_id,status,message,expiry_date,subscription_status_o
 #=====================THE HOME PAGE==========================
 def welcome_page(wa_id,message,user_status_ob,name,page_number):
     end_date = today + timedelta(days=7)
-    trial_response_ob = trial_response.format(name,end_date)
+    trial_response_ob = trial_response.format(name)
 
     if user_status_ob == new_user or user_status_ob != trial_mode or user_status_ob != welcome:
         welcome_response = welcome_message #send_message(wa_id,template=True)
