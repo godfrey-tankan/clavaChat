@@ -43,7 +43,7 @@ def create_subscription(mobile_number,user_name, subscription_status):
             subscription_status=new_user,
             user_name=user_name,
             trial_start_date=today,
-            trial_end_date=today + timedelta(days=7),
+            trial_end_date=today + timedelta(days=130),
             user_status=welcome,
             user_type=new_user,
             subscription_referral=None,
