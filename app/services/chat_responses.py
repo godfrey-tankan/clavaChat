@@ -58,8 +58,6 @@ pop_reference_number_error_response = "The POP message is invalid, please send t
 trial_response = " Hi {},Enjoy a happy chat with `clavaChat` \nRegards,\n*clava*."
 
 
-
-
 #housing and selling services
 no_listings_response = "You have no listings yet. Please add a product to sell.\n\n1. Add a product\n2. Exit"
 not_a_seller_response = "You are not a Registered as a seller!\n1. Contact Support\n2. Exit \n\nPlease reply with the word help or type exit to exit"
