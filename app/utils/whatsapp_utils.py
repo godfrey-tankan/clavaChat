@@ -502,22 +502,23 @@ def buying_and_selling(wa_id,message,name,page_number):
             page_number = page_number
             records_per_page = 10
             if message.startswith("["):
-                seller_mobile = message.split()
+                seller_mobile = message.split(']')[1].strip()
                 try:
-                    seller = session.query(Seller).filter_by(phone_number=seller_mobile[-1]).first()
+                    seller = session.query(Seller).filter_by(phone_number=seller_mobile.split()[-1]).first()
                     if seller:
                         pass
                     else:
-                        seller = Seller(phone_number=seller_mobile[-1], name=seller_mobile[-2])
+                        seller = Seller(phone_number=seller_mobile.split()[-1], name=seller_mobile.split()[-2])
                         session.add(seller)
                         session.commit()
                 except Exception as e:
                     ...
-                gadget_list = re.findall(r"[a-zA-Z]+ \d+/\d+ \$\d+", message)
                 if "boxed" in message.lower():
                     condition = "boxed"
                 else:
                     condition = "pre-owned"
+                gadget_list_ob = message.split("]")[0].strip() + "]"
+                gadget_list = eval(gadget_list_ob)
                 for gadget in gadget_list:
                     product_info = gadget.split('$')
                     product_name = product_info[0].strip()
