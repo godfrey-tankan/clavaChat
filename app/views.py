@@ -1,6 +1,6 @@
 import logging
 import json
-
+from flask import Flask, render_template
 from flask import Blueprint, request, jsonify, current_app
 
 from .decorators.security import signature_required
@@ -61,6 +61,12 @@ def webhook():
         return verify()
     elif request.method == "POST":
         return handle_message()
+
+@webhook_blueprint.route("/home", methods=["POST","GET"])
+def home():
+    text = "hey man!"
+    return render_template("home.html", text=text)
+
 
 
 

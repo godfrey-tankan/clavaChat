@@ -140,7 +140,8 @@ class Seller(Base):
     subscription = relationship("Subscription", back_populates="seller")
 
 # Update the database connection URL for PostgreSQL
-engine = create_engine('postgresql://clava_db_user:qSaLutxFV9xEfEIBvGq4bnDVMN584nJW@dpg-coq0b4cf7o1s73e8k2l0-a.oregon-postgres.render.com/clava_db')
+# engine = create_engine('postgresql://clava_db_user:qSaLutxFV9xEfEIBvGq4bnDVMN584nJW@dpg-coq0b4cf7o1s73e8k2l0-a.oregon-postgres.render.com/clava_db')
+engine = create_engine('sqlite:///clava_db.db')
 Base.metadata.create_all(engine)  # Create the tables if they don't exist
 
 # Create a session
