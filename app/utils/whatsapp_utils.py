@@ -108,8 +108,10 @@ def generate_response(response, wa_id, name):
     if last_message == response.strip() and (response != "1" and response !="2" and response !="3"):
         return None
     else:
-        if response.lower().startswith("post") and wa_id[0] == "263779586059" or wa_id[0] == "263717852804":
-            return publish_post(response)
+        if response.startswith("post") and wa_id[0] == "263779586059" or wa_id[0] == "263717852804":
+            print("calling function publish post ....")
+            response_ob = publish_post(response)
+            return response_ob
         if response.lower() == "help": 
             return buying_selling_help_help_final 
         try:
@@ -1209,9 +1211,8 @@ def search_document(document_name, requester):
     return None
 
 def publish_post(message):
-    message = message.split()
-    post_type = message[1]
-
+    new_message = message.split()
+    post_type = new_message[1]
     split_word = "please"
     words = message.split()
     second_word_index = words.index(split_word)
