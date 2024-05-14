@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/login.css') }}"
+    />
+    <!-- start -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/owl.carousel.min.css') }}"
+    />
+    <title>Login | clava</title>
+  </head>
+  <body style="margin-top: 10%">
+    <div class="content">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 order-md-2">
+            <img
+              src="{{ url_for('static', filename='images/undraw_file_sync_ot38.svg') }}"
+              alt="Image"
+              class="img-fluid"
+            />
+          </div>
+          <div class="col-md-6 contents">
+            <div class="row justify-content-center">
+              <div class="col-md-8">
+                <div class="mb-4">
+                  <h3>Sign In to <strong>clavaChat</strong></h3>
+                  <p class="mb-4">
+                    Manage your business with us and get insights on your
+                    data.{{text}}
+                  </p>
+                </div>
+                <form action="/login" method="post" id="login-form">
+                  <div class="form-group first">
+                    <label for="username">Username | Phone number</label>
+                    <input type="text" class="form-control" id="username" />
+                  </div>
+                  <div class="form-group last mb-4">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" />
+                  </div>
+                  <div class="d-flex mb-5 align-items-center">
+                    <label class="control control--checkbox mb-0"
+                      ><span class="caption">Remember me</span>
+                      <input type="checkbox" checked="checked" />
+                      <div class="control__indicator"></div>
+                    </label>
+                    <span class="ml-auto"
+                      ><a href="#" class="forgot-pass">Forgot Password</a></span
+                    >
+                  </div>
+                  <input
+                    type="submit"
+                    value="Log In"
+                    class="btn text-white btn-block btn-primary"
+                  />
+                  <span class="d-block text-left my-4 text-muted">
+                    or sign in with</span
+                  >
+                  <div class="social-login">
+                    <a href="#" class="facebook">
+                      <span class="icon-facebook mr-3"></span>
+                    </a>
+                    <a href="#" class="twitter">
+                      <span class="icon-twitter mr-3"></span>
+                    </a>
+                    <a href="#" class="google">
+                      <span class="icon-google mr-3"></span>
+                    </a>
+                  </div>
+                </form>
+                <div id="flash-message" class="flash-message"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      document
+        .getElementById("login-form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          var username = document.getElementById("username").value;
+          var password = document.getElementById("password").value;
+
+          var data = {
+            username: username,
+            password: password,
+          };
+
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "/login");
+          xhr.setRequestHeader("Content-Type", "application/json");
+          xhr.onload = function () {
+            if (xhr.status === 200) {
+              var flashMessage = document.getElementById("flash-message");
+              var response = JSON.parse(xhr.responseText);
+              flashMessage.textContent = response.message;
+
+              if (response.message === "success") {
+                // Login successful
+                window.location.href = "{{ url_for('webhook.home') }}";
+              }
+            } else {
+              console.error(xhr.responseText);
+            }
+          };
+          xhr.send(JSON.stringify(data));
+        });
+    </script>
+  </body>
+</html>

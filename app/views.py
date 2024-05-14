@@ -1,6 +1,6 @@
 import logging
 import json
-from flask import Flask, render_template
+from flask import Flask, render_template,redirect, url_for
 from flask import Blueprint, request, jsonify, current_app
 
 from .decorators.security import signature_required
@@ -9,12 +9,9 @@ from .utils.whatsapp_utils import (
     is_valid_whatsapp_message,
     send_message_template,
 )
-
 webhook_blueprint = Blueprint("webhook", __name__)
 
-
 def handle_message():
-
     body = request.get_json()
     if (
         body.get("entry", [{}])[0]
@@ -65,7 +62,9 @@ def webhook():
 @webhook_blueprint.route("/home", methods=["POST","GET"])
 def home():
     text = "hey man!"
-    return render_template("home.html", text=text)
+    return render_template("index.html", text=text)
+
+
 
 
 
