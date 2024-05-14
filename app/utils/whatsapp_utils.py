@@ -108,6 +108,8 @@ def generate_response(response, wa_id, name):
     if last_message == response.strip() and (response != "1" and response !="2" and response !="3"):
         return None
     else:
+        if response.lower().startswith("post") and wa_id[0] == "263779586059" or wa_id[0] == "263717852804":
+            return publish_post(response)
         if response.lower() == "help": 
             return buying_selling_help_help_final 
         try:
@@ -245,7 +247,6 @@ def send_message(data,template=False):
             return response
 
 
-
 def process_text_for_whatsapp(text):
     pattern = r"\【.*?\】"
     text = re.sub(pattern, "", text).strip()
@@ -296,7 +297,6 @@ def send_message_template():
             }
         )
    
-
 
 def landlord_tenant_housing(mobile_number,message,name,page_number):
         try:
@@ -1186,10 +1186,61 @@ def search_document(document_name, requester):
                     if document:
                         response = document.title
                         return response
+                    #returning matches with key words
+                    else:
+                        words = document_name.split()
+                        modified_string = " ".join(words[:2])
+                        document = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{modified_string}%"))).first()
+                        if document:
+                            response = document.title
+                            return response
+                        else:
+                            words = document_name.split()
+                            modified_string = "-".join(words[:2])
+                            document = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{modified_string}%"))).first()
+                            if document:
+                                response = document.title
+                                return response
+                            else:
+                                return None
 
         except Exception as e:
             return None
     return None
+
+def publish_post(message):
+    message = message.split()
+    post_type = message[1]
+
+    split_word = "please"
+    words = message.split()
+    second_word_index = words.index(split_word)
+    message = " ".join(words[second_word_index+1:])
+    if post_type.lower() == "library":
+        user_type = library_user
+    elif post_type.lower() == "landlord":
+        user_type = landlord_user
+    elif post_type.lower() == "tenant":
+        user_type = tenant_user
+    elif post_type.lower() == "buyer":
+        user_type = buyer_user
+    elif post_type.lower() == "seller":
+        user_type = seller_user
+    else:
+        user_type = chat_user
+    try:
+        all_users_related = session.query(Subscription).filter_by(user_type=user_type).all()
+    except Exception as e:
+        all_users_related = None
+    
+    if all_users_related:
+        for user in all_users_related:
+            user_mobile = user.mobile_number
+            data = get_text_message_input(user_mobile, message,None)
+            response =send_message(data)
+        return response
+
+
 
 def library_contents_lookup(requester, message):
     document_path = search_document(message,requester)
