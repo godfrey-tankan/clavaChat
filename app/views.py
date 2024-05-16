@@ -73,12 +73,9 @@ def home():
 def subscriptions():
     if request.method == "POST":
         data = request.get_json()
-        print("This is the received data:", data)
     else:
-        print("This is the received data:", request.args)
         args = request.args.to_dict(flat=False)
         userName = args.get("userName")[0] if "userName" in args else None
-        print("username", userName)
         if userName:
             if userName.startswith("0"):
                 mobile = userName.replace("0", "+263", 1)
