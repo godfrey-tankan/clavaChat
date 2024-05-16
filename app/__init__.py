@@ -13,10 +13,6 @@ from sqlalchemy.exc import PendingRollbackError
 from app.utils.model import rollback_session
 from flask_cors import CORS
 
-
-
-
-
 app = Flask(__name__,static_folder='static')
 CORS(app)
 CORS(app, origins=['http://localhost:8000','https://clava.onrender.com'])
@@ -33,7 +29,6 @@ jwt = JWTManager(app)
 load_configurations(app)
 configure_logging()
 
-# Import and register blueprints, if any
 app.register_blueprint(webhook_blueprint)
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -57,7 +52,6 @@ def login():
             return jsonify(message='Wrong Login Credentials!')
 
         if check_password_hash(user.password, password):
-            # Generate the access token
             access_token = create_access_token(identity=user.id, additional_claims={
             'name': user.username,
             'password': user.password
