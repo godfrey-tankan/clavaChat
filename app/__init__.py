@@ -11,12 +11,15 @@ from werkzeug.security import check_password_hash
 from datetime import timedelta
 from sqlalchemy.exc import PendingRollbackError
 from app.utils.model import rollback_session
+from flask_cors import CORS
 
 
 
 
 
 app = Flask(__name__,static_folder='static')
+CORS(app)
+CORS(app, origins=['http://localhost:8000','https://clava.onrender.com'])
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
