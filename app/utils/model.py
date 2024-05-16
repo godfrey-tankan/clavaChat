@@ -29,6 +29,23 @@ class Subscription(Base):
     def exists(cls, session, mobile_number):
         return session.query(cls).filter_by(mobile_number=mobile_number).first() is not None
 
+class User(Base):
+    __tablename__ = 'users'
+
+    id = Column(Integer, primary_key=True)
+    username = Column(String)
+    password = Column(String)
+    email = Column(String)
+    phone_number = Column(String)
+    is_active = Column(Boolean, default=True)
+    user_type = Column(String)
+    user_activity = Column(String)
+    subscription_id = Column(Integer, ForeignKey('subscriptions.id'))  # Foreign key linking the tables
+
+    @classmethod
+    def exists(cls, session, username):
+        return session.query(cls).filter_by(username=username).first() is not None
+
 class Message(Base):
     __tablename__ = 'messages'
 
@@ -140,12 +157,23 @@ class Seller(Base):
     subscription = relationship("Subscription", back_populates="seller")
 
 # Update the database connection URL for PostgreSQL
-# engine = create_engine('postgresql://clava_db_user:qSaLutxFV9xEfEIBvGq4bnDVMN584nJW@dpg-coq0b4cf7o1s73e8k2l0-a.oregon-postgres.render.com/clava_db')
-engine = create_engine('sqlite:///clava_db.db')
+engine = create_engine('postgresql://clavadb_owner:07dJHxYhXqMw@ep-white-firefly-a5yg5yyf.us-east-2.aws.neon.tech/clavadb?sslmode=require')
+
+# postgresql://clavadb_owner:07dJHxYhXqMw@ep-white-firefly-a5yg5yyf.us-east-2.aws.neon.tech/clavadb?sslmode=require
+
 Base.metadata.create_all(engine)  # Create the tables if they don't exist
 
 # Create a session
 Session = sessionmaker(bind=engine)
 session = Session()
-
-today = datetime.now().date()
+def rollback_session(session):
+    try:
+        session.rollback()
+    except Exception as e:
+        ...
+try:
+    today = datetime.now().date()
+except Exception as e:
+    rollback_session(session)
+finally:
+    session.close()

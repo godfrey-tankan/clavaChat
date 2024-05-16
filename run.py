@@ -2,6 +2,7 @@ import logging
 import time
 from subprocess import Popen
 from app import app
+from flask_jwt_extended import JWTManager
 
 @app.route('/about')
 def hello():

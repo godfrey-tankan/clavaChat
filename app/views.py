@@ -2,13 +2,14 @@ import logging
 import json
 from flask import Flask, render_template,redirect, url_for
 from flask import Blueprint, request, jsonify, current_app
-
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from .decorators.security import signature_required
 from .utils.whatsapp_utils import (
     process_whatsapp_message,
     is_valid_whatsapp_message,
     send_message_template,
 )
+from app.utils.model import *
 webhook_blueprint = Blueprint("webhook", __name__)
 
 def handle_message():
@@ -59,13 +60,38 @@ def webhook():
     elif request.method == "POST":
         return handle_message()
 
-@webhook_blueprint.route("/home", methods=["POST","GET"])
+@webhook_blueprint.route("/home", methods=["POST", "GET"])
 def home():
+    if request.method == "POST":
+        data = request.get_json()  # Retrieve JSON data from the request body
+        # Process the data as needed
+    
     text = "hey man!"
     return render_template("index.html", text=text)
 
-
-
+@webhook_blueprint.route("/subscriptions", methods=["POST", "GET"])
+def subscriptions():
+    if request.method == "POST":
+        data = request.get_json()
+        print("This is the received data:", data)
+    else:
+        print("This is the received data:", request.args)
+        args = request.args.to_dict(flat=False)
+        userName = args.get("userName")[0] if "userName" in args else None
+        print("username", userName)
+        if userName:
+            if userName.startswith("0"):
+                mobile = userName.replace("0", "+263", 1)
+        try:
+            subscription_plan = session.query(Subscription).filter_by(mobile_number=mobile).first()
+        except Exception as e:
+            subscription_plan = None
+        if not subscription_plan:
+            data = "No Subscription Plan."
+        else:
+            data = subscription_plan.subscription_status
+        # Use the userName in your logic
+    return render_template("subscriptions.html", data=data)
 
 
 

@@ -14,7 +14,7 @@
     <link
       rel="stylesheet"
       type="text/css"
-      href="{{ url_for('static', filename='css/styles.css') }}"
+      href="{{ url_for('static', filename='css/style.css') }}"
     />
     <link
       rel="stylesheet"
@@ -93,60 +93,67 @@
           <div class="row align-items-center">
             <div class="col-6 col-md-3 col-xl-4 d-block">
               <h1 class="mb-0 site-logo">
-                <a href="index.html" class="text-black h2 mb-0">
-                  <img
-                    src="{{ url_for('static', filename='path_to_user_icon.png') }}"
-                    alt="User Icon"
-                  />
+                <a href="home" class="text-black h2 mb-0">
                   clavaChat<span class="text-primary">.</span>
                 </a>
               </h1>
             </div>
             <div class="col-12 col-md-9 col-xl-8 main-menu">
-              <nav
-                class="site-navigation position-relative text-right"
-                role="navigation"
-              >
-                <ul
-                  class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block ml-0 pl-0"
-                >
+              <nav class="site-navigation position-relative text-right" role="navigation">
+                <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block ml-0 pl-0">
                   <li><a href="#home-section" class="nav-link">Home</a></li>
-                  <li>
-                    <a href="#features-section" class="nav-link">Services</a>
-                  </li>
-                  <li class="has-children">
-                    <a href="#about-section" class="nav-link">About Us</a>
+                  <li ><a href="#features-section" class="nav-link "id="services" >Services</a></li>
+                  <li class="has-children" >
+                    <a href="#about-section" class="nav-link" id="about-us">About Us</a>
                     <ul class="dropdown arrow-top">
-                      <li></li>
-                      <li>
-                        <a href="#our-team-section" class="nav-link"
-                          >Our Team</a
-                        >
-                      </li>
+                      <li ><a href="#our-team-section" class="nav-link"id="our-team" >Our Team</a></li>
                     </ul>
                   </li>
+                  <li id="unwanted"><a href="#testimonials-section" class="nav-link" id="testimonials">Testimonials</a></li>
+                  <li id="unwanted"><a href="#blog-section" class="nav-link" id="blog" >Blog</a></li>
+                  <li  id="unwanted"><a href="#contact-section" class="nav-link" id="contact" >Contact</a></li>
                   <li>
-                    <a href="#testimonials-section" class="nav-link"
-                      >Testimonials</a
-                    >
-                  </li>
-                  <li><a href="#blog-section" class="nav-link">Blog</a></li>
-                  <li>
-                    <a href="#contact-section" class="nav-link">Contact</a>
+                    <a
+                      style="padding: 8px; color: #fff"
+                      class="btn btn-primary"
+                      id="login-button"
+                      href="login"
+                      class="nav-link"
+                    >Login</a>
                   </li>
                 </ul>
               </nav>
             </div>
+            
+            
+            <span class="user-name"><script>
+            const username = localStorage.getItem("user_name");
+              if (username) {
+                document.write(username);
+              }</script></span>
+            <div class="user-profile">
+            
+              <img
+                style="
+                  max-width: 30px;
+                  max-height: 30px;
+                  margin-left: 10%;
+                "
+                src="{{url_for('static', filename='images/account.svg')}}"
+                alt="user"
+              />
+              
             <div class="col-6 col-md-9 d-inline-block d-lg-none ml-md-0">
               <a
                 href="#"
                 class="site-menu-toggle js-menu-toggle text-black float-right"
-                ><span class="icon-menu h3"></span
-              ></a>
+                ><span class="icon-menu h3"></span>
+                </a>
             </div>
           </div>
         </div>
       </header>
+
       <div class="site-blocks-cover" style="overflow: hidden">
         <div class="container">
           <div class="row align-items-center justify-content-center">
@@ -175,8 +182,8 @@
                   </p>
                   <div>
                     <a href="login" class="btn btn-primary mr-2 mb-2"
-                      >Get Started</a
-                    >
+                      >Get Started
+                      </a>
                   </div>
                 </div>
               </div>
@@ -204,7 +211,12 @@
               <div class="unit-4 d-block">
                 <div class="unit-4-icon mb-3">
                   <span class="icon-wrap">
-                    <span class="text-primary icon-chat"></span>
+                    <span class="text-primary icon-chat"
+                      ><img
+                        class="box-classes"
+                        src="{{url_for('static', filename='images/ai-platform-unified-svgrepo-com.svg')}}"
+                        alt=""
+                    /></span>
                   </span>
                 </div>
                 <div>
@@ -228,7 +240,12 @@
               <div class="unit-4 d-block">
                 <div class="unit-4-icon mb-3">
                   <span class="icon-wrap">
-                    <span class="text-primary icon-analytics"></span>
+                    <span class="text-primary icon-analytics"
+                      ><img
+                        class="box-classes"
+                        src="{{url_for('static', filename='images/page-analysis-svgrepo-com.svg')}}"
+                        alt=""
+                    /></span>
                   </span>
                 </div>
                 <div>
@@ -252,7 +269,13 @@
               <div class="unit-4 d-block">
                 <div class="unit-4-icon mb-3">
                   <span class="icon-wrap">
-                    <span class="text-primary icon-phone"></span>
+                    <span class="text-primary icon-phone">
+                      <img
+                        class="box-classes"
+                        src="{{url_for('static', filename='images/machine-vision-svgrepo-com.svg')}}"
+                        alt=""
+                      />
+                    </span>
                   </span>
                 </div>
                 <div>
@@ -271,7 +294,13 @@
               <div class="unit-4 d-block">
                 <div class="unit-4-icon mb-3">
                   <span class="icon-wrap">
-                    <span class="text-primary icon-security"></span>
+                    <span class="text-primary icon-security">
+                      <img
+                        class="box-classes"
+                        src="{{url_for('static', filename='images/safe-and-stable-svgrepo-com.svg')}}"
+                        alt=""
+                      />
+                    </span>
                   </span>
                 </div>
                 <div>
@@ -294,7 +323,13 @@
               <div class="unit-4 d-block">
                 <div class="unit-4-icon mb-3">
                   <span class="icon-wrap">
-                    <span class="text-primary icon-settings"></span>
+                    <span class="text-primary icon-settings">
+                      <img
+                        class="box-classes"
+                        src="{{url_for('static', filename='images/system-settings-svgrepo-com.svg')}}"
+                        alt=""
+                      />
+                    </span>
                   </span>
                 </div>
                 <div>
@@ -318,7 +353,13 @@
               <div class="unit-4 d-block">
                 <div class="unit-4-icon mb-3">
                   <span class="icon-wrap">
-                    <span class="text-primary icon-support"></span>
+                    <span class="text-primary icon-support">
+                      <img
+                        class="box-classes"
+                        src="{{url_for('static', filename='images/support-svgrepo-com.svg')}}"
+                        alt=""
+                      />
+                    </span>
                   </span>
                 </div>
                 <div>
@@ -512,8 +553,9 @@
             <div class="col-7 text-center mb-5">
               <h2 class="section-title">Our Team</h2>
               <p class="lead">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fuga
-                quos quaerat sapiente nam, id vero.
+                At ClavaChat, we have a dedicated team of professionals who are
+                passionate about delivering the best online marketplace
+                experience for our users.
               </p>
             </div>
           </div>
@@ -550,6 +592,39 @@
                 </p>
               </div>
             </div>
+
+            <div
+              class="col-lg-4 col-md-6 mb-4"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
+              <div class="person">
+                <div class="bio-img">
+                  <figure>
+                    <img
+                      src="{{ url_for('static', filename='images/person_3.jpg') }}"
+                      alt="Image"
+                      class="img-fluid"
+                    />
+                  </figure>
+                  <div class="social">
+                    <a href="#"><span class="icon-facebook"></span></a>
+                    <a href="#"><span class="icon-twitter"></span></a>
+                    <a href="#"><span class="icon-instagram"></span></a>
+                  </div>
+                </div>
+                <h2 class="text-black h1">Godfrey T. Tankan</h2>
+                <span class="sub-title d-block mb-3">Founder</span>
+                <p>
+                  Godfrey is the visionary behind ClavaChat. With a passion for
+                  innovation and a strong entrepreneurial spirit, he laid the
+                  foundation for the company. Godfrey's strategic thinking and
+                  leadership have been instrumental in shaping ClavaChat's
+                  success.
+                </p>
+              </div>
+            </div>
+
             <div
               class="col-lg-4 col-md-6 mb-4"
               data-aos="fade-up"
@@ -582,16 +657,17 @@
                 </p>
               </div>
             </div>
+
             <div
               class="col-lg-4 col-md-6 mb-4"
               data-aos="fade-up"
-              data-aos-delay="300"
+              data-aos-delay="200"
             >
               <div class="person">
                 <div class="bio-img">
                   <figure>
                     <img
-                      src="{{ url_for('static', filename='images/person_3.jpg') }}"
+                      src="{{ url_for('static', filename='images/person_4.jpg') }}"
                       alt="Image"
                       class="img-fluid"
                     />
@@ -602,18 +678,48 @@
                     <a href="#"><span class="icon-instagram"></span></a>
                   </div>
                 </div>
+                <h2 class="text-black h1">Kudzai T. Kandeya</h2>
+                <span class="sub-title d-block mb-3">Director</span>
+                <p>
+                  The director at ClavaChat oversees the company's operations and ensures that all departments are working cohesively towards the company's goals.
+                  They provide strategic guidance, make important decisions, and foster a collaborative work environment.
+                   The director's leadership and management skills contribute to ClavaChat's overall success.
+                </p>
               </div>
-              <h2 class="text-black h1">Godfrey Tankan</h2>
-              <span class="sub-title d-block mb-3">Founder</span>
-              <p>
-                Godfrey is the visionary behind ClavaChat. With a passion for
-                innovation and a strong entrepreneurial spirit, he laid the
-                foundation for the company. Godfrey's strategic thinking and
-                leadership have been instrumental in shaping ClavaChat's
-                success.
-              </p>
             </div>
-          </div>
+
+            <div
+              class="col-lg-4 col-md-6 mb-4"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
+              <div class="person">
+                <div class="bio-img">
+                  <figure>
+                    <img
+                      src="{{ url_for('static', filename='images/img_3.jpg') }}"
+                      alt="Image"
+                      class="img-fluid"
+                    />
+                  </figure>
+                  <div class="social">
+                    <a href="#"><span class="icon-facebook"></span></a>
+                    <a href="#"><span class="icon-twitter"></span></a>
+                    <a href="#"><span class="icon-instagram"></span></a>
+                  </div>
+                </div>
+                <h2 class="text-black h1">Michael H. Hamilton</h2>
+                <span class="sub-title d-block mb-3">Project Manager</span>
+                <p>
+                  The project manager at ClavaChat is responsible for planning, organizing, and executing various projects within the company.
+                  They coordinate with different teams, set project goals, allocate resources, and ensure timely completion of deliverables.
+                  The project manager's strong organizational and communication skills help streamline processes and drive project success.
+                </p>
+              </div>
+            </div>
+
+
+            
           <div
             class="col-lg-4 col-md-6 mb-4"
             data-aos="fade-up"
@@ -634,7 +740,7 @@
                   <a href="#"><span class="icon-instagram"></span></a>
                 </div>
               </div>
-              <h2 class="text-black h1">Tanatswa Kandeya</h2>
+              <h2 class="text-black h1">Anold tnqn</h2>
               <span class="sub-title d-block mb-3">Developer</span>
               <p>
                 Our team of skilled developers plays a crucial role in building
@@ -864,6 +970,7 @@
         </div>
       </div>
     </div>
+    <script src="{{url_for('static',filename='js/urls.js')}}"></script>
     <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jquery-ui.js') }}"></script>
     <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
@@ -877,25 +984,6 @@
     <script src="{{ url_for('static', filename='js/jquery.sticky.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-
-      gtag("config", "UA-23581568-13");
-    </script>
-    <script
-      defer
-      src="https://static.cloudflareinsights.com/beacon.min./app/js/vedd3670a3b1c4e178fdfb0cc912d969e1713874337387"
-      integrity="sha512-EzCudv2gYygrCcVhu65FkAxclf3mYM6BCwiGUm6BEuLzSb5ulVhgokzCZED7yMIkzYVg65mxfIBNdNra5ZFNyQ=="
-      data-cf-beacon='{"rayId":"883909be6ff773fe","version":"2024.4.1","token":"cd0b4b3a733644fc843ef0b185f98241"}'
-      crossorigin="anonymous"
-    ></script>
+    
   </body>
 </html>
