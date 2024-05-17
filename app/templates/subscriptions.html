@@ -88,12 +88,12 @@
                       </p>
                       <div>
                         <!-- Add your subscription plan details and options here -->
-                        <h3>Subscription Plan:{{data}} </h3>
-                        <p>Plan details and features.</p>
-                        <p>Current plan status: Active</p>
-                        <p>Next billing date: MM/DD/YYYY</p>
-                        <button class="btn btn-primary">Upgrade Plan</button>
-                        <button class="btn btn-primary">Change Plan</button>
+                        <h3>Subscription Plan: <span class="subs-plan" id="subs-history">***</span></h3>
+                        <p>Plan details and features:<span class="subs-features" id="subs-history">***</span></p>
+                        <p>Current plan status: <span class="subs-status" id="subs-history">***</span></p>
+                        <p>Next billing date: <span class="subs-expiry" id="subs-history">***</span></p>
+                        <button id="btn-upgrade" class="btn btn-primary">Upgrade Plan</button>
+                        <button id="btn-change" class="btn btn-primary">Change Plan</button>
                       </div>
                    
                   </div>
@@ -201,49 +201,107 @@
         </div>
       </div>
       <script>
-        $(document).ready(function() {
-          console.log("Document ready");
-      
-          // Retrieve the user name from localStorage
-          var userName = localStorage.getItem("user_name");
-      
-          // Send the GET request with the user name on page load
+  $(document).ready(function() {
+    console.log("Document ready");
+
+
+    // Retrieve the user name from localStorage
+    var accessToken = localStorage.getItem("access_token");
+    var userName = localStorage.getItem("user_name");
+
+    // Check if the access token exists in localStorage
+    if (accessToken) {
+      // Change the context of the "Upgrade Plan" button to "My Plan"
+      $("#btn-upgrade").text("My Plan");
+      $("#btn-change").hide();
+
+      $("#btn-upgrade").click(function() {
+        var context = $(this).text();
+
+        if (context === "My Plan") {
+          // Send a POST request to the backend endpoint with access_token and user_name
           $.ajax({
-            url: "/subscriptions",
-            method: "GET",
-            data: { userName: userName },
+            url: "/subscription_plan",
+            contentType: "application/json",
+            method: "POST",
+            data: JSON.stringify({
+              access_token: accessToken,
+              user_name: userName
+            }),
             success: function(response) {
-              // Handle the success response from the backend
-              alert("GET request successful!");
+              // Update the subscription plan details in the HTML elements
+              $(".subs-plan").text(response.subscription_status);
+              $(".subs-status").text(response.is_active);
+              $(".subs-expiry").text(response.expiry_date);
+              $("#btn-upgrade").text("Upgrade Plan");
+              $("#btn-change").show();
+
+              console.log("response:", response);
+              if (response.error) {
+                // Change the context of the "Upgrade Plan" button to "Change Plan"
+                $(".subs-plan").text(response.error);
+                $("#btn-upgrade").text("New Plan?");
+                $("#btn-change").hide();
+              }
+              // Update other subscription plan details as needed
             },
             error: function(error) {
               // Handle the error response from the backend
-              alert("GET request failed. Please try again.");
+              console.log("Error:", error);
             }
+            
           });
-      
-          // Handle click event for the "Subscribe" buttons
-          $("#subscribe-monthly, #subscribe-quarterly, #subscribe-yearly").click(function() {
-            // Retrieve the subscription ID
-            var subscriptionId = $(this).data("subscription-id");
-      
-            // Send the subscription ID and user name to the backend using a POST request
-            $.ajax({
-              url: "/subscriptions",
-              method: "POST",
-              contentType: "application/json",
-              data: JSON.stringify({ subscriptionId: subscriptionId, userName: userName }),
-              success: function(response) {
-                // Handle the success response from the backend
-                alert("Subscription successful!");
-              },
-              error: function(error) {
-                // Handle the error response from the backend
-                alert("Subscription failed. Please try again.");
-              }
-            });
-          });
-        });
+        } else if (context === "Upgrade Plan") {
+          // Open the payment form popup
+          openPaymentForm();
+        }
+      });
+    }
+
+    // Function to open the payment form popup
+    function openPaymentForm() {
+    
+    }
+
+    // Send the GET request with the user name on page load
+    if (userName) {
+      $.ajax({
+        url: "/subscriptions",
+        method: "GET",
+        data: { userName: userName },
+        success: function(response) {
+          // Handle the success response from the backend
+          alert("GET request successful!");
+        },
+        error: function(error) {
+          // Handle the error response from the backend
+          alert("GET request failed. Please try again.");
+        }
+      });
+    }
+
+    // Handle click event for the "Subscribe" buttons
+    $("#subscribe-monthly, #subscribe-quarterly, #subscribe-yearly").click(function() {
+      // Retrieve the subscription ID
+      var subscriptionId = $(this).data("subscription-id");
+
+      // Send the subscription ID and user name to the backend using a POST request
+      $.ajax({
+        url: "/subscriptions",
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({ subscriptionId: subscriptionId, userName: userName }),
+        success: function(response) {
+          // Handle the success response from the backend
+          alert("Subscription successful!");
+        },
+        error: function(error) {
+          // Handle the error response from the backend
+          alert("Subscription failed. Please try again.");
+        }
+      });
+    });
+  });
       </script>
     <div class="footer py-5 text-center">
         <div class="container">

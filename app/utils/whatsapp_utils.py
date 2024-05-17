@@ -297,7 +297,6 @@ def send_message_template():
                 },
             }
         )
-   
 
 def landlord_tenant_housing(mobile_number,message,name,page_number):
         try:
@@ -1239,8 +1238,6 @@ def publish_post(message):
             data = get_text_message_input(user_mobile, message,None)
             response =send_message(data)
         return response
-
-
 
 def library_contents_lookup(requester, message):
     document_path = search_document(message,requester)
