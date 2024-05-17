@@ -62,7 +62,7 @@ h5,
 
 .user-name {
   position: fixed;
-  top: 10px;
+  top: 15px;
   opacity: 0.8;
   right: 100px;
   display: flex;
@@ -73,7 +73,7 @@ h5,
 
 .user-profile {
   position: fixed;
-  top: 10px;
+  top: 15px;
   opacity: 0.8;
   right: 40px;
   display: flex;

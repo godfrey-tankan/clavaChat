@@ -75,7 +75,6 @@ def subscriptions():
     elif request.method == "GET":
         args = request.args.to_dict(flat=False)
        
-        print("args...data", args)
         if 'userName' in args:
             userName = args['userName'][0]
             userName = userName.replace("0", "263", 1)
@@ -92,11 +91,9 @@ def subscriptions():
 def subscription_plan():
     if request.method == "POST":
         data = request.get_json()
-        # Process the data and retrieve the subscription plan based on the provided information
         userName = data.get("user_name")
         if userName:
             userName = userName.replace("0", "263", 1)
-        # Perform any necessary validation and data processing
         try:
             subscription_plan = session.query(Subscription).filter_by(mobile_number=userName).first()
         except Exception as e:
@@ -106,7 +103,6 @@ def subscription_plan():
                 "subscription_status": subscription_plan.subscription_status,
                 "expiry_date": subscription_plan.trial_end_date,
                 "is_active": subscription_plan.is_active,
-                # Add other subscription plan details as needed
             }
             return jsonify(data)
         else:
@@ -124,7 +120,6 @@ def subscription_plan():
             if subscription_plan:
                 data = {
                     "subscription_status": subscription_plan.subscription_status,
-                    # Add other subscription plan details as needed
                 }
                 return jsonify(data)
 
