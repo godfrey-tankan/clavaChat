@@ -78,7 +78,7 @@ def subscriptions():
         userName = args.get("userName")[0] if "userName" in args else None
         if userName:
             if userName.startswith("0"):
-                mobile = userName.replace("0", "+263", 1)
+                mobile = userName.replace("0", "263", 1)
         try:
             subscription_plan = session.query(Subscription).filter_by(mobile_number=mobile).first()
         except Exception as e:
