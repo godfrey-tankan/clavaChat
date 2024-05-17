@@ -109,7 +109,6 @@ def generate_response(response, wa_id, name):
         return None
     else:
         if response.startswith("post") and wa_id[0] == "263779586059" or wa_id[0] == "263717852804":
-            print("calling function publish post ....")
             response_ob = publish_post(response)
             return response_ob
         if response.lower() == "help": 
