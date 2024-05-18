@@ -160,7 +160,6 @@ class Seller(Base):
 # engine = create_engine('postgresql://clavadb_owner:07dJHxYhXqMw@ep-white-firefly-a5yg5yyf.us-east-2.aws.neon.tech/clavadb?sslmode=require')
 
 engine = create_engine('postgresql://clava_db_user:qSaLutxFV9xEfEIBvGq4bnDVMN584nJW@dpg-coq0b4cf7o1s73e8k2l0-a.oregon-postgres.render.com/clava_db')
-
 Base.metadata.create_all(engine)  # Create the tables if they don't exist
 # Create a session
 Session = sessionmaker(bind=engine)
