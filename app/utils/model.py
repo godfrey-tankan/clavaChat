@@ -162,18 +162,6 @@ engine = create_engine('postgresql://clavadb_owner:07dJHxYhXqMw@ep-white-firefly
 # postgresql://clavadb_owner:07dJHxYhXqMw@ep-white-firefly-a5yg5yyf.us-east-2.aws.neon.tech/clavadb?sslmode=require
 
 Base.metadata.create_all(engine)  # Create the tables if they don't exist
-
 # Create a session
 Session = sessionmaker(bind=engine)
 session = Session()
-def rollback_session(session):
-    try:
-        session.rollback()
-    except Exception as e:
-        ...
-try:
-    today = datetime.now().date()
-except Exception as e:
-    rollback_session(session)
-finally:
-    session.close()

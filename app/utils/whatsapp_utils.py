@@ -17,6 +17,7 @@ from .model import *
 from app.services.chat_responses import *
 from app.services.user_types import *
 from app.config import *
+
 # import spacy
 
 openai.api_key = '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'

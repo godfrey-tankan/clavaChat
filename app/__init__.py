@@ -10,7 +10,6 @@ from flask_jwt_extended import JWTManager, jwt_required, create_access_token, ge
 from werkzeug.security import check_password_hash
 from datetime import timedelta
 from sqlalchemy.exc import PendingRollbackError
-from app.utils.model import rollback_session
 from flask_cors import CORS
 
 app = Flask(__name__,static_folder='static')
@@ -48,7 +47,6 @@ def login():
             user = None
 
         if not user:
-            rollback_session(session)
             return jsonify(message='Wrong Login Credentials!')
 
         if check_password_hash(user.password, password):
@@ -88,7 +86,6 @@ def register():
         try:
             session.commit()
         except PendingRollbackError:
-            rollback_session(session)
             return jsonify(message='An error occurred during registration. Please try again.'), 500
 
         user = User(username=username, password=hashed_password, subscription_id=user_subscription.id)
@@ -97,7 +94,6 @@ def register():
         try:
             session.commit()
         except PendingRollbackError:
-            rollback_session(session)
             return jsonify(message='An error occurred during registration. Please try again.'), 500
 
         # Generate the access token

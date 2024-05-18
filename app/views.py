@@ -97,7 +97,7 @@ def subscription_plan():
         try:
             subscription_plan = session.query(Subscription).filter_by(mobile_number=userName).first()
         except Exception as e:
-            rollback_session(session)
+            ...
         if subscription_plan:
             data = {
                 "subscription_status": subscription_plan.subscription_status,
@@ -116,7 +116,7 @@ def subscription_plan():
             try:
                 subscription_plan = session.query(Subscription).filter_by(mobile_number=userName).first()
             except Exception as e:
-                rollback_session(session)
+                ...
             if subscription_plan:
                 data = {
                     "subscription_status": subscription_plan.subscription_status,
