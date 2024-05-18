@@ -195,7 +195,6 @@ def generate_response(response, wa_id, name):
 
             return response.choices[0].message.content.strip()
     
-
 def send_message(data,template=False):
     if template:
         headers = {
@@ -247,7 +246,6 @@ def send_message(data,template=False):
             # Process the response as normal
             log_http_response(response)
             return response
-
 
 def process_text_for_whatsapp(text):
     pattern = r"\【.*?\】"
