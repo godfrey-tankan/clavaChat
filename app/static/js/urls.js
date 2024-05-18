@@ -22,15 +22,12 @@ document.addEventListener("DOMContentLoaded", function () {
     ourTeam.textContent = "Boost My Bussiness";
     ourTeam.setAttribute("href", "/boost-my-business");
     testimonials.setAttribute("href", "/boost-my-business");
-
     loginButton.textContent = "Logout";
     loginButton.setAttribute("href", "/home");
-    // You can also modify other elements or perform other actions here
   }
 
   loginButton.addEventListener("click", function () {
     if (loginButton.textContent === "Logout") {
-      // Clear the localStorage
       window.location.href = "{{ url_for('webhook.home') }}";
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
@@ -44,15 +41,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const xhr = new XMLHttpRequest();
     xhr.open(method, url, true);
     xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
-    xhr.setRequestHeader("Content-Type", "application/json"); // Set the correct content type
+    xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function () {
       if (xhr.readyState === XMLHttpRequest.DONE) {
         if (xhr.status === 200) {
-          // Request successful, handle response here
           const response = JSON.parse(xhr.responseText);
           console.log(response);
         } else {
-          // Request failed, handle error here
           console.error("Request failed with status:", xhr.status);
         }
       }
