@@ -1129,7 +1129,6 @@ def validate_payment(message,phone_number):
     return response
 
 def search_products(product_name, condition, budget, page_number, records_per_page):
-
     if condition.lower() == "boxed" or condition.lower() == "new":
         condition = "boxed"
     else:
@@ -1137,9 +1136,9 @@ def search_products(product_name, condition, budget, page_number, records_per_pa
     try:
         offset = (page_number - 1) * records_per_page
         matching_products = session.query(Electronics).join(Electronics.seller).\
-            filter(Electronics.gadget_name.ilike(f'%{product_name[:6]}%')).\
+            filter(Electronics.gadget_name.ilike(f'{product_name.split()[:3]}%')).\
             filter(Electronics.condition.ilike(f'%{condition}%')).\
-            filter(Electronics.price.between(budget - 20, budget + 20)).\
+            filter(Electronics.price.between(budget - 50, budget + 50)).\
             offset(offset).limit(records_per_page).all()
     except Exception as e:
         matching_products = None
