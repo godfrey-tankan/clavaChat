@@ -699,6 +699,7 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
         if message == "template":
             data = send_message_template(wa_id[0])
             welcome_response = send_message(data,template=True)
+            return welcome_response
 
         try:
             session = Session()
