@@ -18,7 +18,7 @@ from app.services.chat_responses import *
 from app.services.user_types import *
 from app.config import *
 
-openai.api_key = 'sk-proj-8wiZRtyNappjDoTT2Qm1T3BlbkFJC68rVYo2XSjV9k1jUWXE'
+openai.api_key = current_app.config["OPENAI_API_KEY"]
 conversation = []
 today = datetime.now().date()
 
