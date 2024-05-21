@@ -1136,7 +1136,7 @@ def search_products(product_name, condition, budget, page_number, records_per_pa
     try:
         offset = (page_number - 1) * records_per_page
         matching_products = session.query(Electronics).join(Electronics.seller).\
-            filter(Electronics.gadget_name.ilike(f'{product_name.split()[:3]}%')).\
+            filter(Electronics.gadget_name.ilike(f'{product_name[:15]}%')).\
             filter(Electronics.condition.ilike(f'%{condition}%')).\
             filter(Electronics.price.between(budget - 50, budget + 50)).\
             offset(offset).limit(records_per_page).all()
