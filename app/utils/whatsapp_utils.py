@@ -18,8 +18,7 @@ from app.services.chat_responses import *
 from app.services.user_types import *
 from app.config import *
 
-
-
+openai.api_key = "sk-proj-Od6qr4tcN03EcYs9AJNvT3BlbkFJDQ1emJCEdEOEFFUFH1gz"
 conversation = []
 today = datetime.now().date()
 
@@ -99,8 +98,7 @@ def get_text_message_input(recipient, text,media,template=False):
     )
 
 def generate_response(response, wa_id, name):
-    open_ai_key = current_app.config["OPENAI_API_KEY"]
-    openai.api_key = f"{open_ai_key}"
+
     global conversation
     try:
         last_message = session.query(Subscription).filter_by(phone_number=wa_id[0]).first().user_activity
