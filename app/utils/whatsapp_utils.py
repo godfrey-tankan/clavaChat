@@ -18,6 +18,9 @@ from app.services.chat_responses import *
 from app.services.user_types import *
 from app.config import *
 
+
+open_ai_key = current_app.config["OPENAI_API_KEY"]
+openai.api_key = f"{open_ai_key}"
 conversation = []
 today = datetime.now().date()
 
@@ -152,8 +155,7 @@ def generate_response(response, wa_id, name):
             response_ob = welcome_page(wa_id,response,subscription_status_ob,name,page_number=1)
             return response_ob
         else:
-            open_ai_key = current_app.config["OPENAI_API_KEY"]
-            openai.api_key = f"{open_ai_key}"
+            
 
             if response.lower() == "exit" :
                     try:
