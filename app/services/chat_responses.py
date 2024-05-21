@@ -45,7 +45,6 @@ landlord_subs_response = "Landlord Subscription Plan:\n\n *Features* \n1. Manage
 landlord_proceed_with_subs_response = "Your *{}* subscription is being created. You will be billed $`{}`/month. Please reply with your Ecocash mobile number in the form: `07XX` to proceed.\n\nTo cancel your subscription, please reply with *exit*."
 landlord_monthly_subs_response = "Your subscription is on {}"
 
-
 #Payment section
 payment_response_default_response = "You are about to create a Monthly `Subscription` Plan 💳\n\n1. Confirm Subscription \n2. Cancel Subscription\n3. Help\n4. Exit\n\nPlease reply with the number of your choice."
 ecocash_number_valid_response = "Please wait for the popup on your phone to confirm the payment.\n\n Once you confirm the payment, send us the transaction sms here on whatsApp\n *DISCLAIMER* _the subscription activation may take up to 1-3 minutes_ .If there is no feedback of `subscription` update from us, please contact support by typing word *help*.\n\n Your subscription will be activated once the payment is confirmed."
@@ -56,7 +55,6 @@ transaction_message = "240313.1849.F42721."
 reference_number_error_response = "Transaction ID or Reference Number is invalid. Please try again."
 pop_reference_number_error_response = "The POP message is invalid, please send the whole message again."
 trial_response = " Hi {},Enjoy a happy chat with `clavaChat` \nRegards,\n*clava*."
-
 
 #housing and selling services
 no_listings_response = "You have no listings yet. Please add a product to sell.\n\n1. Add a product\n2. Exit"
