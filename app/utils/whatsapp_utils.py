@@ -455,7 +455,7 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
                         return no_houses_found_response
                 else:
                     return invalid_house_information
-            return welcome_tenant_response
+            return tenant_response
 
 def buying_and_selling(wa_id,message,name,page_number):
     message_ob = message
@@ -803,7 +803,7 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                         # return e
                     return response
                 elif message == "2":
-                    response = welcome_tenant_response
+                    response = tenant_response
                     try:
                         active_subscription_status.user_type = tenant_user
                         active_subscription_status.user_status = tenant_user
