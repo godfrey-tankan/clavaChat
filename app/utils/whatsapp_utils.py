@@ -204,7 +204,7 @@ def send_message(data,template=False):
         url = f"https://graph.facebook.com/{current_app.config['VERSION']}/{current_app.config['PHONE_NUMBER_ID']}/messages"
         try:
             response = requests.post(
-                url, data=send_message_template(), headers=headers, timeout=10
+                url, data=data, headers=headers, timeout=10
             )  
             response.raise_for_status()  # Raises an HTTPError if the HTTP request returned an unsuccessful status code
         except requests.Timeout:
@@ -283,16 +283,16 @@ def process_whatsapp_message(body):
     except Exception as e:
         pass
 
-def send_message_template():
+def send_message_template(recepient):
     return json.dumps(
             {
                 "messaging_product": "whatsapp",
                 "recipient_type": "individual",
-                "to": "+263779586059",
+                "to":recepient,
                 "type": "template",
                 "template": {
-                    "name": "clava_welcome",
-                    "language": {"code": "en-GB"}
+                    "name": "clava_home",
+                    "language": {"code": "en_US"}
                 },
             }
         )
@@ -695,7 +695,11 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
     trial_response_ob = trial_response.format(name)
 
     if user_status_ob == new_user or user_status_ob != trial_mode or user_status_ob != welcome:
-        welcome_response = welcome_message #send_message(wa_id,template=True)
+        welcome_response = welcome_message
+        if message == "template":
+            data = send_message_template(wa_id[0])
+            welcome_response = send_message(data,template=True)
+
         try:
             session = Session()
             active_subscription_status = session.query(Subscription).filter_by(mobile_number=wa_id[0]).first()
@@ -1125,7 +1129,7 @@ def validate_payment(message,phone_number):
 
 def search_products(product_name, condition, budget, page_number, records_per_page):
 
-    if condition == "boxed" or condition == "new":
+    if condition.lower() == "boxed" or condition.lower() == "new":
         condition = "boxed"
     else:
         condition = "pre-owned"
@@ -1134,7 +1138,7 @@ def search_products(product_name, condition, budget, page_number, records_per_pa
         matching_products = session.query(Electronics).join(Electronics.seller).\
             filter(Electronics.gadget_name.ilike(f'%{product_name[:6]}%')).\
             filter(Electronics.condition.ilike(f'%{condition}%')).\
-            filter(Electronics.price.between(budget - 100, budget + 100)).\
+            filter(Electronics.price.between(budget - 20, budget + 20)).\
             offset(offset).limit(records_per_page).all()
     except Exception as e:
         matching_products = None
@@ -1188,7 +1192,7 @@ def search_document(document_name, requester):
                     #returning matches with key words
                     else:
                         words = document_name.split()
-                        modified_string = " ".join(words[:2])
+                        modified_string = " ".join(words[:3])
                         document = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{modified_string}%"))).first()
                         if document:
                             response = document.title
