@@ -4,6 +4,7 @@ from datetime import timedelta
 from flask import current_app, jsonify
 import json
 import requests
+import os
 import openai
 # from app.services.openai_service import generate_response
 import re
@@ -17,8 +18,10 @@ from .model import *
 from app.services.chat_responses import *
 from app.services.user_types import *
 from app.config import *
+from dotenv import load_dotenv
+load_dotenv()
 
-openai.api_key = current_app.config["OPENAI_API_KEY"]
+openai.api_key = os.getenv("OPENAI_API_KEY")
 conversation = []
 today = datetime.now().date()
 
