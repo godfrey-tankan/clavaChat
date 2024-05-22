@@ -1192,14 +1192,14 @@ def search_document(document_name, requester):
                     #returning matches with key words
                     else:
                         words = document_name.split()
-                        modified_string = " ".join(words[:3])
+                        modified_string = " ".join(words[:4])
                         document = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{modified_string}%"))).first()
                         if document:
                             response = document.title
                             return response
                         else:
                             words = document_name.split()
-                            modified_string = "-".join(words[:2])
+                            modified_string = "-".join(words[:4])
                             document = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{modified_string}%"))).first()
                             if document:
                                 response = document.title
