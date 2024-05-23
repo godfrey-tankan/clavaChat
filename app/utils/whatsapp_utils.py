@@ -324,6 +324,31 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
                 except Exception as e:
                     ...
                 return welcome_message
+            if "[" in message:
+                landlord_details = message.split(']')[1].strip()
+                try:
+                    landlord = session.query(Landlord).filter_by(phone_number=landlord_details.split()[-1]).first()
+                    if landlord:
+                        pass
+                    else:
+                        landlord = Landlord(phone_number=landlord_details.split()[-1], name=landlord_details.split()[-2])
+                        session.add(landlord)
+                        session.commit()
+                except Exception as e:
+                    ...
+                property_list = message.split("]")[0].strip() + "]"
+                properties = eval(property_list)
+                for single_property in properties:
+                    description,location, rentals = extract_house_details(single_property)
+                    try:
+                        rental_property = RentalProperty(landlord_id=landlord.id, location=location, description=description, price=rentals,house_info=description,)
+                        session.add(rental_property)
+                        session.commit()
+                    except Exception as e:
+                        return "error adding property"
+                    
+                return "properties added successfully."
+                
             
             if len(message) > 7:
                 analyze_messages(mobile_number,message)
