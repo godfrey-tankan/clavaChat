@@ -204,7 +204,7 @@ def send_message(data,template=False):
         url = f"https://graph.facebook.com/{current_app.config['VERSION']}/{current_app.config['PHONE_NUMBER_ID']}/messages"
         try:
             response = requests.post(
-                url, data=data, headers=headers, timeout=10
+                url, data=data, headers=headers, timeout=15
             )  
             response.raise_for_status()  # Raises an HTTPError if the HTTP request returned an unsuccessful status code
         except requests.Timeout:
