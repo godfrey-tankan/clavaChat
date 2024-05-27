@@ -21,7 +21,6 @@ class Subscription(Base):
     user_activity = Column(String)
     is_active = Column(Boolean, default=True)
     landlord_id = Column(Integer, ForeignKey('landlords.id'))
-    seller_id = Column(Integer, ForeignKey('sellers.id'))
     landlord = relationship("Landlord", back_populates="subscriptions")
     students = relationship("Student", backref="subscription")
     seller = relationship("Seller", back_populates="subscription")
