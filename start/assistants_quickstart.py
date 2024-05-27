@@ -5,14 +5,18 @@
 from paynow import Paynow
 import time
 
+from paynow import Paynow
+
+
 paynow = Paynow(
-    '17264', 
-    '35848eb0-f1d7-446a-8978-e937926a8f77',
-    'https://www.paynow.co.zw', 
-    'http://google.com'
-    )
+	'17264',
+	'35848eb0-f1d7-446a-8978-e937926a8f77',
+	'http://google.com',
+	'http://google.com'
+	)
 
 payment = paynow.create_payment('Order', 'gtkandeya@gmail.com')
+
 
 payment.add('Payment for stuff', 1)
 
@@ -26,8 +30,8 @@ if(response.success):
 
     status = paynow.check_transaction_status(poll_url)
 
-    time.sleep(1)
+    time.sleep(30)
 
     print("Payment Status: ", status.status)
 else:
-    print("error something went wrong", response.error)
+    print(response.error)
