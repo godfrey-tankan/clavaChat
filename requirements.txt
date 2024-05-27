@@ -13,11 +13,13 @@ click==8.1.7
 cloudpathlib==0.16.0
 confection==0.1.4
 cymem==2.0.8
-gunicorn
 distro==1.9.0
 en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.7.1/en_core_web_sm-3.7.1-py3-none-any.whl#sha256=86cc141f63942d4b2c5fcee06630fd6f904788d2f0ab005cce45aadb8fb73889
 exceptiongroup==1.2.0
 Flask==3.0.2
+Flask-Cors==4.0.1
+Flask-JWT==0.3.2
+Flask-JWT-Extended==4.6.0
 frozenlist==1.4.1
 greenlet==3.0.3
 h11==0.14.0
@@ -34,12 +36,13 @@ numpy==1.26.4
 openai==0.28.0
 openapi-python-client==0.19.0
 packaging==24.0
-paynow==1.0.6
+paynow==1.0.7
+pillow==10.3.0
 preshed==3.0.9
 psycopg2-binary==2.9.9
 pydantic==2.6.4
 pydantic_core==2.16.3
-flask-jwt-extended
+PyJWT==2.8.0
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 PyYAML==6.0.1
@@ -63,4 +66,3 @@ wasabi==1.1.2
 weasel==0.3.4
 Werkzeug==3.0.1
 yarl==1.9.4
-flask-cors

@@ -5,6 +5,8 @@ from flask import current_app, jsonify
 import json
 import requests
 import openai
+import time
+from paynow import Paynow
 # from app.services.openai_service import generate_response
 import re
 from openai import ChatCompletion
@@ -153,7 +155,7 @@ def generate_response(response, wa_id, name):
             response_ob = welcome_page(wa_id,response,subscription_status_ob,name,page_number=1)
             return response_ob
         else:
-            
+            return "Please *note* that the clavaChat AI Chatbot is currently under maintenance.\Regards clavaTeam."      
 
             if response.lower() == "exit" :
                     try:
@@ -555,6 +557,10 @@ def buying_and_selling(wa_id,message,name,page_number):
                         return "error adding gadget"
                     
                 return "gadgets added successfully."
+            
+            if active_subscription_status.user_status == subscription_status:
+                response = create_seller_subscription(message, wa_id[0])
+                return response
                 
             elif message == "1":
                 response = seller_add_response
@@ -608,7 +614,16 @@ def buying_and_selling(wa_id,message,name,page_number):
                         return no_listings_response
                 else:
                     return not_a_seller_response
-                
+            
+            elif message.lower() == "3" :
+                response = seller_subs_response
+                try:
+                    active_subscription_status.user_status = subscription_status
+                    session.commit()
+                except Exception as e:
+                    ...
+                return response
+
             elif len(message) > 7:
                 analyze_messages(wa_id[0],message)
                 if get_number_range(message):
@@ -1053,6 +1068,68 @@ def edit_property(property_id, new_price):
     else:
         return f"Please provide a valid new price for the property `{property_id}`."
 
+def create_seller_subscription(message, mobile_number):
+    response = landlord_subs_response
+    monthly_pricing,quarterly_pricing,half_yearly,yearly_pricing = 1, 2.30, 4,7
+    monthly_sub,quarterly_sub,half_yearly_sub,yearly_sub = "Monthly Subscription","Quarterly Subscription","Half Yearly Subscription","Yearly Subscription"
+    try:
+        subscription_status = session.query(Subscription).filter_by(mobile_number=mobile_number).first()
+        landlord_subscription = session.query(Seller).filter_by(phone_number=mobile_number).first()
+        landlord_subscription.subscription=subscription_status.id
+        session.commit()
+    except Exception as e:
+        ...
+    if message == "1":
+        try:
+            subscription_status.subscription_status =monthly_mode
+            session.commit()
+        except Exception as e:
+            ...
+            response = error_response
+        return response
+    elif message == "2":
+        response = landlord_proceed_with_subs_response.format(quarterly_sub,quarterly_pricing)
+        try:
+            subscription_status.subscription_status =quarterly_mode
+            session.commit()
+        except Exception as e:
+            ...
+            response = error_response
+        return response
+    elif message == "3":
+        response = landlord_proceed_with_subs_response.format(half_yearly_sub,half_yearly)
+        try:
+            subscription_status.subscription_status =half_yearly_mode
+            session.commit()
+        except Exception as e:
+            ...
+            response = error_response
+        return response
+    elif message == "4":
+        
+        response = landlord_proceed_with_subs_response.format(yearly_sub,yearly_pricing)
+        try:
+            subscription_status.subscription_status =yearly_mode
+            session.commit()
+        except Exception as e:
+            ...
+            response = error_response
+        return response
+    
+    if message.lower() == "exit" :
+        try:
+            landlord_subs_cancelling = session.query(Subscription).filter_by(mobile_number=mobile_number).first()
+            landlord_subs_cancelling.subscription_status = new_user
+            landlord_subs_cancelling.user_status = landlord_user
+            session.commit()
+        except Exception as e:
+            ...
+        return welcome_landlord_response
+    if len(message) > 5 and message[:1] == "0" or "ecocash" in message.lower():
+        response =validate_payment(message, mobile_number)
+        return response
+    return response
+
 def create_landlord_subscription(message, mobile_number):
     response = landlord_subs_response
     monthly_pricing,quarterly_pricing,half_yearly,yearly_pricing = 5.77, 13.80, 22.80,39.90
@@ -1070,7 +1147,8 @@ def create_landlord_subscription(message, mobile_number):
             session.commit()
         except Exception as e:
             ...
-        return landlord_proceed_with_subs_response.format(monthly_sub,monthly_pricing)
+            response = error_response
+        return response
     elif message == "2":
         response = landlord_proceed_with_subs_response.format(quarterly_sub,quarterly_pricing)
         try:
@@ -1078,22 +1156,27 @@ def create_landlord_subscription(message, mobile_number):
             session.commit()
         except Exception as e:
             ...
+            response = error_response
         return response
     elif message == "3":
         response = landlord_proceed_with_subs_response.format(half_yearly_sub,half_yearly)
         try:
             subscription_status.subscription_status =half_yearly_mode
             session.commit()
+            return response
         except Exception as e:
             ...
+            response = error_response
         return response
     elif message == "4":
+        
         response = landlord_proceed_with_subs_response.format(yearly_sub,yearly_pricing)
         try:
             subscription_status.subscription_status =yearly_mode
             session.commit()
         except Exception as e:
             ...
+            response = error_response
         return response
     
     if message.lower() == "exit" :
@@ -1110,8 +1193,37 @@ def create_landlord_subscription(message, mobile_number):
         return response
     return response
 
+def create_payment_subscription(amount, mobile_number,subs_plan):
+    paynow = Paynow(
+        '17264',
+        '35848eb0-f1d7-446a-8978-e937926a8f77',
+        'http://google.com',
+        'http://google.com'
+        )
+
+    payment = paynow.create_payment('Order', 'gtkandeya@gmail.com')
+
+
+    payment.add(f'Subscription for{subs_plan}', float(amount))
+
+    response = paynow.send_mobile(payment, f'{mobile_number}', 'ecocash')
+
+
+    if(response.success):
+        poll_url = response.poll_url
+        status = paynow.check_transaction_status(poll_url)
+        time.sleep(30)
+        return "Payment successful. Your subscription has been activated."
+    else:
+        return "There was an error creating the subscription. Please try again."
+
 #PAYMENT CREATION
 def validate_payment(message,phone_number):
+    try:
+        Subscription_status = session.query(Subscription).filter_by(mobile_number=phone_number).first()
+    except Exception as e:
+        ...
+    response = "Payment validation..."
     if "transfer confirmation" in message.lower():
         pattern = r"PP(.*?)\bNew wallet"
         match = re.search(pattern, message)
@@ -1120,7 +1232,6 @@ def validate_payment(message,phone_number):
             if transaction_message_input == transaction_message.strip():
                 end_date = datetime.now().date() + timedelta(days=30)
                 try:
-                    Subscription_status = session.query(Subscription).filter_by(mobile_number=phone_number).first()
                     if Subscription_status.subscription_status == monthly_mode:
                         end_date = datetime.now().date() + timedelta(days=30)
                     elif Subscription_status.subscription_status == quarterly_mode:
@@ -1147,7 +1258,51 @@ def validate_payment(message,phone_number):
     pattern = r'^(077|078)\d{7}$'
     match = re.match(pattern, message)
     if match:
-        response = ecocash_number_valid_response
+        if Subscription_status.user_type == seller_user:
+
+            if Subscription_status.subscription_status == monthly_mode:
+                end_date = datetime.now().date() + timedelta(days=30)
+                payment_amount = 1
+                subs_period = "Monthly Subscription"
+            elif Subscription_status.subscription_status == quarterly_mode:
+                end_date = datetime.now().date() + timedelta(days=90)
+                payment_amount = 2.30
+                subs_period = "Quarterly Subscription"
+            elif Subscription_status.subscription_status == half_yearly_mode:
+                payment_amount = 4
+                end_date = datetime.now().date() + timedelta(days=18)
+                subs_period = "Half Yearly Subscription"
+            elif Subscription_status.subscription_status == yearly_mode:
+                payment_amount = 7
+                end_date = datetime.now().date() + timedelta(days=365)
+                subs_period = "Yearly Subscription"
+        else:
+            if Subscription_status.subscription_status == monthly_mode:
+                end_date = datetime.now().date() + timedelta(days=30)
+                payment_amount = 5.77
+                subs_period = "Monthly Subscription"
+            elif Subscription_status.subscription_status == quarterly_mode:
+                end_date = datetime.now().date() + timedelta(days=90)
+                payment_amount = 13.50
+                subs_period = "Quarterly Subscription"
+            elif Subscription_status.subscription_status == half_yearly_mode:
+                payment_amount = 22.10
+                end_date = datetime.now().date() + timedelta(days=180)
+                subs_period = "Half Yearly Subscription"
+            elif Subscription_status.subscription_status == yearly_mode:
+                payment_amount = 39
+                end_date = datetime.now().date() + timedelta(days=365)
+                subs_period = "Yearly Subscription"
+        response = create_payment_subscription(payment_amount, f'{message}',subs_period)
+        if 'successful' in response.lower():
+            try:
+                Subscription_status.trial_end_date = end_date
+                Subscription_status.is_active = True
+                Subscription_status.user_status = "activated"
+                session.commit()
+            except Exception as e:
+                ...
+            return response
     else:
         response = ecocash_number_invalid_response
         return response
