@@ -16,7 +16,7 @@ payment = paynow.create_payment('Order', 'gtkandeya@gmail.com')
 
 payment.add('Payment for stuff', 1)
 
-response = paynow.send_mobile(payment, '0771111111', 'ecocash')
+response = paynow.send_mobile(payment, '0779586059', 'ecocash')
 
 
 if(response.success):
