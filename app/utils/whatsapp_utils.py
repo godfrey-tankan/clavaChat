@@ -1080,6 +1080,7 @@ def create_seller_subscription(message, mobile_number):
     except Exception as e:
         ...
     if message == "1":
+        response = landlord_proceed_with_subs_response.format(monthly_sub,monthly_pricing)
         try:
             subscription_status.subscription_status =monthly_mode
             session.commit()
@@ -1142,7 +1143,7 @@ def create_landlord_subscription(message, mobile_number):
     except Exception as e:
         ...
     if message == "1":
-        response = landlord_proceed_with_subs_response.format(quarterly_sub,quarterly_pricing)
+        response = landlord_proceed_with_subs_response.format(monthly_sub,monthly_pricing)
         try:
             subscription_status.subscription_status =monthly_mode
             session.commit()
