@@ -155,8 +155,6 @@ def generate_response(response, wa_id, name):
             response_ob = welcome_page(wa_id,response,subscription_status_ob,name,page_number=1)
             return response_ob
         else:
-            return "Please *note* that the clavaChat AI Chatbot is currently under maintenance.\nRegards clavaTeam."      
-
             if response.lower() == "exit" :
                     try:
                         user_status.user_status = welcome
@@ -166,6 +164,8 @@ def generate_response(response, wa_id, name):
                     except Exception as e:
                         ...
                     return welcome_message
+            return "Please *note* that the clavaChat AI Chatbot is currently under maintenance.\nRegards clavaTeam."      
+
             if response.lower().endswith("bypasslimit"):
                 response = ChatCompletion.create(
                     model="gpt-3.5-turbo",
