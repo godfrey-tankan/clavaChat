@@ -155,7 +155,7 @@ def generate_response(response, wa_id, name):
             response_ob = welcome_page(wa_id,response,subscription_status_ob,name,page_number=1)
             return response_ob
         else:
-            return "Please *note* that the clavaChat AI Chatbot is currently under maintenance.\Regards clavaTeam."      
+            return "Please *note* that the clavaChat AI Chatbot is currently under maintenance.\nRegards clavaTeam."      
 
             if response.lower() == "exit" :
                     try:
@@ -1142,6 +1142,7 @@ def create_landlord_subscription(message, mobile_number):
     except Exception as e:
         ...
     if message == "1":
+        response = landlord_proceed_with_subs_response.format(quarterly_sub,quarterly_pricing)
         try:
             subscription_status.subscription_status =monthly_mode
             session.commit()
@@ -1202,8 +1203,7 @@ def create_payment_subscription(amount, mobile_number,subs_plan):
         )
 
     payment = paynow.create_payment('Order', 'gtkandeya@gmail.com')
-
-
+    payment.items=[]
     payment.add(f'Subscription for{subs_plan}', float(amount))
 
     response = paynow.send_mobile(payment, f'{mobile_number}', 'ecocash')
@@ -1215,7 +1215,7 @@ def create_payment_subscription(amount, mobile_number,subs_plan):
         time.sleep(30)
         return "Payment successful. Your subscription has been activated."
     else:
-        return "There was an error creating the subscription. Please try again."
+        pass
 
 #PAYMENT CREATION
 def validate_payment(message,phone_number):
@@ -1303,6 +1303,8 @@ def validate_payment(message,phone_number):
             except Exception as e:
                 ...
             return response
+        else:
+            return "Payment failed. Please try again."
     else:
         response = ecocash_number_invalid_response
         return response
