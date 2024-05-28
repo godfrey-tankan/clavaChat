@@ -43,7 +43,7 @@ subs_error_response = "An error occurred. Please try again later."
 subs_cancel_response = "Your subscription has been cancelled. To reactivate, please reply with *1* to subscribe."
 landlord_subs_response = "Landlord Subscription Plan:\n\n *Features* \n1. Manage all your properties\n2. 24/7 Customer Support\n3. Cancel Anytime - `guaranteed money back within first week` if you decided to change otherwise.\n\n *Pricing List* \n- 1. $5.77/monthly\n- 2. $13.80/quarterly\n- 3. $22.00/half-yearly\n- 4. $39.90/Yearly  \n\n To subscribe, please reply with your subscription choice to proceed or exit to exit."
 seller_subs_response = "Seller Subscription Plan:\n\n *Features* \n1. Manage all your products\n2. 24/7 Customer Support\n3. Cancel Anytime - `guaranteed money back within first week` if you decided to change otherwise.\n\n *Pricing List* \n- 1. $1/monthly\n- 2. $2.30/quarterly\n- 3. $4/half-yearly\n- 4. $7/Yearly  \n\n To subscribe, please reply with your subscription choice to proceed or exit to exit."
-landlord_proceed_with_subs_response = "Your *{}* subscription is being created. You will be billed $`{}`/month. Please reply with your Ecocash mobile number in the form: `07XX` to proceed.\n\nTo cancel your subscription, please reply with *exit*."
+landlord_proceed_with_subs_response = "Your *{}* subscription is being created.Subscription amount is $`{}`. Please reply with your Ecocash mobile number in the form: `07XX` to proceed.\n\nTo cancel your subscription, please reply with *exit*."
 landlord_monthly_subs_response = "Your subscription is on {}"
 
 #Payment section
