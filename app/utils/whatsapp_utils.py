@@ -1202,20 +1202,22 @@ def create_payment_subscription(amount, mobile_number,subs_plan):
         'http://google.com',
         'http://google.com'
         )
+    try:
+        payment = paynow.create_payment('Order', 'gtkandeya@gmail.com')
+        payment.items=[]
+        payment.add(f'Subscription for{subs_plan}', float(amount))
 
-    payment = paynow.create_payment('Order', 'gtkandeya@gmail.com')
-    payment.items=[]
-    payment.add(f'Subscription for{subs_plan}', float(amount))
-
-    response = paynow.send_mobile(payment, f'{mobile_number}', 'ecocash')
+        response = paynow.send_mobile(payment, f'{mobile_number}', 'ecocash')
 
 
-    if(response.success):
-        poll_url = response.poll_url
-        status = paynow.check_transaction_status(poll_url)
-        time.sleep(30)
-        return "Payment successful. Your subscription has been activated."
-    else:
+        if(response.success):
+            poll_url = response.poll_url
+            status = paynow.check_transaction_status(poll_url)
+            time.sleep(30)
+            return "Payment successful. Your subscription has been activated."
+        else:
+            pass
+    except Exception as e:
         pass
 
 #PAYMENT CREATION
