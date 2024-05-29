@@ -509,6 +509,7 @@ def buying_and_selling(wa_id,message,name,page_number):
                             result += after_buyer_listing_response
                             return result
                         else:
+
                             return no_products_found_response
                     else:
                         return invalid_product_information
@@ -1020,8 +1021,16 @@ def search_rental_properties(house_info, location, budget, page_number, records_
         offset = (page_number - 1) * records_per_page
         properties = session.query(RentalProperty).join(RentalProperty.landlord).\
             filter(RentalProperty.location.ilike(f'%{location}%')).\
-            filter(RentalProperty.price.between(budget - 100, budget + 100)).\
+            filter(RentalProperty.price.between(0, budget + 100)).\
             offset(offset).limit(records_per_page).all()
+        if properties:
+            return properties
+        else:
+            new_location = location.split(" ")[0]
+            properties = session.query(RentalProperty).join(RentalProperty.landlord).\
+                filter(RentalProperty.location.ilike(f'%{new_location}%')).\
+                filter(RentalProperty.price.between(0, budget + 100)).\
+                offset(offset).limit(records_per_page).all()
     except Exception as e:
         properties = None
     return properties
@@ -1321,9 +1330,16 @@ def search_products(product_name, condition, budget, page_number, records_per_pa
     try:
         offset = (page_number - 1) * records_per_page
         matching_products = session.query(Electronics).join(Electronics.seller).\
-            filter(Electronics.gadget_name.ilike(f'{product_name[:15]}%')).\
+            filter(Electronics.gadget_name.ilike(f'{product_name}%')).\
             filter(Electronics.condition.ilike(f'%{condition}%')).\
-            filter(Electronics.price.between(budget - 50, budget + 50)).\
+            filter(Electronics.price.between(0, budget + 100)).\
+            offset(offset).limit(records_per_page).all()
+        if matching_products:
+            return matching_products
+        else:
+            # matching_products = session.query(Electronics).filter(Electronics.gadget_name.ilike(f'%{product_name}%')).all()
+            offset = (page_number - 1) * records_per_page
+            matching_products = session.query(Electronics).filter(Electronics.gadget_name.ilike(f'%{product_name}%')).\
             offset(offset).limit(records_per_page).all()
     except Exception as e:
         matching_products = None
