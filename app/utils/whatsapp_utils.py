@@ -1338,7 +1338,6 @@ def search_products(product_name, condition, budget, page_number, records_per_pa
             return matching_products
         else:
             # matching_products = session.query(Electronics).filter(Electronics.gadget_name.ilike(f'%{product_name}%')).all()
-            offset = (page_number - 1) * records_per_page
             matching_products = session.query(Electronics).filter(Electronics.gadget_name.ilike(f'%{product_name}%')).\
             offset(offset).limit(records_per_page).all()
     except Exception as e:
