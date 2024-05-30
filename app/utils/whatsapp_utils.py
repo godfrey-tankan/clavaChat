@@ -1305,12 +1305,13 @@ def validate_payment(message,phone_number):
                 end_date = datetime.now().date() + timedelta(days=365)
                 subs_period = "Yearly Subscription"
         response = create_payment_subscription(payment_amount, f'{message}',subs_period)
-        if 'successful' in response.lower():
+        if 'subscription' in response.lower():
             try:
-                Subscription_status.trial_end_date = end_date
-                Subscription_status.is_active = True
-                Subscription_status.user_status = "activated"
-                session.commit()
+                ...
+                # Subscription_status.trial_end_date = end_date
+                # Subscription_status.is_active = True
+                # Subscription_status.user_status = "activated"
+                # session.commit()
             except Exception as e:
                 ...
             return response
