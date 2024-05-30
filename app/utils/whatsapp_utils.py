@@ -20,7 +20,7 @@ from app.services.chat_responses import *
 from app.services.user_types import *
 from app.config import *
 
-openai.api_key = "sk-proj-DRFskTR7uoc8HJZlxsROT3BlbkFJmLJQ1Xrq5haHUaMp1tYW"
+openai.api_key = "sk-proj-SkReMgl3Pl1y0OFBOV3ST3BlbkFJov4gOKUpEUfe3BgEiXEk"
 conversation = []
 today = datetime.now().date()
 
@@ -164,7 +164,7 @@ def generate_response(response, wa_id, name):
                     except Exception as e:
                         ...
                     return welcome_message
-            return "Please *note* that the clavaChat AI Chatbot is currently under maintenance.\nRegards clavaTeam."      
+            # return "Please *note* that the clavaChat AI Chatbot is currently under maintenance.\nRegards clavaTeam."      
 
             if response.lower().endswith("bypasslimit"):
                 response = ChatCompletion.create(
