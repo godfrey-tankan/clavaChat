@@ -1222,7 +1222,6 @@ def create_payment_subscription(amount, mobile_number,subs_plan):
         if(response.success):
             poll_url = response.poll_url
             status = paynow.check_transaction_status(poll_url)
-            time.sleep(30)
             return "Payment successful. Your subscription has been activated."
         else:
             pass
