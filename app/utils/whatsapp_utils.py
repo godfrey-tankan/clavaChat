@@ -1345,18 +1345,18 @@ def search_products(product_name, condition, budget, page_number, records_per_pa
     return matching_products
 
 def search_document(document_name, requester):
-    try:
-        user_subscription = session.query(Subscription).filter_by(mobile_number=requester).first()
-    except Exception as e:
-        user_subscription = None
-    if user_subscription:
-        if user_subscription.subscription_status == book_choosing:
-            try:
-                document = session.query(Document).filter_by(id=document_name).first()
-            except Exception as e:
-                document = None
-            if document:
-                return document.title
+    # try:
+    #     user_subscription = session.query(Subscription).filter_by(mobile_number=requester).first()
+    # except Exception as e:
+    #     user_subscription = None
+    # if user_subscription:
+    #     if user_subscription.subscription_status == book_choosing:
+    #         try:
+    #             document = session.query(Document).filter_by(id=document_name).first()
+    #         except Exception as e:
+    #             document = None
+    #         if document:
+    #             return document.title
 
     if document_name.startswith("[") and len(document_name) > 40:
         file_name_list = eval(document_name)  # Convert the string to a list
@@ -1412,17 +1412,18 @@ def search_document(document_name, requester):
                         except Exception as e:
                             ...
                         offset =  10
-                        documents = session.query(Document).filter(Document.title.ilike(f'%{modified_string[:6]}%')).\
-                        offset(offset).limit(10).all()
-                        if documents:
-                            result = "* We could not find your document, however you may be interested in one of these:*\n\n"
-                            for i,document in enumerate(documents, start=1) :
-                                result += f"*code:* *{i}* *Document Name* {document.title}\n\n"
-                            result += underline_response
-                            result += after_books_listing_response
-                            return result
-                        response = document.title
-                        return response
+                        documents = session.query(Document).filter(Document.title.ilike(f'%{modified_string[:6]}%')).first()
+                        return documents.title
+                        # offset(offset).limit(10).all()
+                        # if documents:
+                        #     result = "* We could not find your document, however you may be interested in one of these:*\n\n"
+                        #     for i,document in enumerate(documents, start=1) :
+                        #         result += f"*code:* *{i}* *Document Name* {document.title}\n\n"
+                        #     result += underline_response
+                        #     result += after_books_listing_response
+                        #     return result
+                        # response = document.title
+                        # return response
                             
 
         except Exception as e:
