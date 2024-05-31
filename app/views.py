@@ -58,7 +58,7 @@ def webhook():
     elif request.method == "POST":
         return handle_message()
 
-@webhook_blueprint.route("/home", methods=["POST", "GET"])
+@webhook_blueprint.route("/", methods=["POST", "GET"])
 def home():
     if request.method == "POST":
         data = request.get_json()  # Retrieve JSON data from the request body
