@@ -1,27 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>clavaChat &mdash;</title>
-        <meta charset="utf-8" />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, shrink-to-fit=no"
-        />
-        <link
-        href="https://fonts.googleapis.com/css?family=Nunito:300,400,700"
-        rel="stylesheet"
-      />
-      <link
+  <head>
+    <title>clavaChat &mdash;</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+      name="description"
+      content="Unlock the full potential of ClavaChat's intelligent Marketing Solutions. Explore our subscription plans and choose the one that best fits your business needs. Revolutionize your customer interactions, boost efficiency, and drive unparalleled customer satisfaction. Get the best insights about your customer behavior through our intelligent WhatsApp chatbot +263717003473."
+    />
+    <meta
+      name="keywords"
+      content="clavachat subscriptions, clavachat pricing, clavachat plans, clavachat business subscription, clavachat chatbot subscription, clavachat free trial, clavachat enterprise solution, clavachat custom pricing"
+    />
+    <meta name="author" content="Clava" />
+    <meta name="robots" content="index, follow" />
+    <meta
+      property="og:title"
+      content="ClavaChat Business - Take Your Business to the Next Level"
+    />
+    <meta
+      property="og:description"
+      content="Empower your business with ClavaChat's intelligent chatbot solution. Revolutionize customer interactions, boost efficiency, and drive customer satisfaction."
+    />
+    <meta property="og:url" content="https://www.clavachat.co.zw" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://www.clavachat.co.zw/logo.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="ClavaChat Business - Take Your Business to the Next Level"
+    />
+    <meta
+      name="twitter:description"
+      content="Empower your business with ClavaChat's intelligent chatbot solution. Revolutionize customer interactions, boost efficiency, and drive customer satisfaction."
+    />
+    <meta name="twitter:image" content="https://www.clavachat.com/logo.png" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Nunito:300,400,700"
+      rel="stylesheet"
+    />
+    <link
       rel="stylesheet"
       type="text/css"
       href="{{ url_for('static', filename='css/style.css') }}"
     />
     <link
-    rel="stylesheet"
-    type="text/css"
-    href="{{ url_for('static', filename='theme/fonts/icomoon/style.css') }}"
-  />
-  <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='theme/fonts/icomoon/style.css') }}"
+    />
+    <link
       rel="stylesheet"
       type="text/css"
       href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
@@ -63,46 +94,62 @@
       type="text/css"
       href="{{ url_for('static', filename='css/style.css') }}"
     />
-      </head>
+  </head>
   <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
-
     <div class="site-blocks-cover" style="overflow: hidden">
-        <div class="container">
-          <div class="row align-items-center justify-content-center">
-            <div
-              class="col-md-12"
-              style="position: relative"
-              data-aos="fade-up"
-              data-aos-delay="200"
-            >
-              <img
-                src="{{ url_for('static', filename='images/undraw_investing_7u74.svg') }}"
-                alt="Image"
-                class="img-fluid img-absolute"
-              />
-              <div class="row mb-4" data-aos="fade-up" data-aos-delay="200">
-                <div class="col-lg-6 mr-auto">
-                    <h1>Manage Your Subscriptions</h1>
-                    <p class="mb-5">
-                        View and manage your subscription plans with ease.
-                      </p>
-                      <div>
-                        <!-- Add your subscription plan details and options here -->
-                        <h3>Subscription Plan: <span class="subs-plan" id="subs-history">***</span></h3>
-                        <p>Plan details and features:<span class="subs-features" id="subs-history">***</span></p>
-                        <p>Current plan status: <span class="subs-status" id="subs-history">***</span></p>
-                        <p>Next billing date: <span class="subs-expiry" id="subs-history">***</span></p>
-                        <button id="btn-upgrade" class="btn btn-primary">Upgrade Plan</button>
-                        <button id="btn-change" class="btn btn-primary">Change Plan</button>
-                      </div>
-                   
-                  </div>
+      <div class="container">
+        <div class="row align-items-center justify-content-center">
+          <div
+            class="col-md-12"
+            style="position: relative"
+            data-aos="fade-up"
+            data-aos-delay="200"
+          >
+            <img
+              src="{{ url_for('static', filename='images/undraw_investing_7u74.svg') }}"
+              alt="Image"
+              class="img-fluid img-absolute"
+            />
+            <div class="row mb-4" data-aos="fade-up" data-aos-delay="200">
+              <div class="col-lg-6 mr-auto">
+                <h1>Manage Your Subscriptions</h1>
+                <p class="mb-5">
+                  View and manage your subscription plans with ease.
+                </p>
+                <div>
+                  <!-- Add your subscription plan details and options here -->
+                  <h3>
+                    Subscription Plan:
+                    <span class="subs-plan" id="subs-history">***</span>
+                  </h3>
+                  <p>
+                    Plan details and features:<span
+                      class="subs-features"
+                      id="subs-history"
+                      >***</span
+                    >
+                  </p>
+                  <p>
+                    Current plan status:
+                    <span class="subs-status" id="subs-history">***</span>
+                  </p>
+                  <p>
+                    Next billing date:
+                    <span class="subs-expiry" id="subs-history">***</span>
+                  </p>
+                  <button id="btn-upgrade" class="btn btn-primary">
+                    Upgrade Plan
+                  </button>
+                  <button id="btn-change" class="btn btn-primary">
+                    Change Plan
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
     <div id="overlayer"></div>
     <div class="loader">
       <div class="spinner-border text-primary" role="status">
@@ -114,80 +161,138 @@
 
       <div class="site-section" id="features-section">
         <div class="container">
-          <div class="row mb-5 justify-content-center text-center" data-aos="fade-up">
+          <div
+            class="row mb-5 justify-content-center text-center"
+            data-aos="fade-up"
+          >
             <div class="col-7 text-center mb-5">
               <h2 class="section-title">ClavaChat Services</h2>
               <p class="lead">
-                Discover the powerful services offered by ClavaChat to revolutionize your business communication, customer support, and streamline your operations.
+                Discover the powerful services offered by ClavaChat to
+                revolutionize your business communication, customer support, and
+                streamline your operations.
               </p>
             </div>
           </div>
-          <style>
-           
-          </style>
+          <style></style>
           <div class="row align-items-stretch">
             <div class="col-md-4 mb-4 mb-lg-4" data-aos="fade-up">
               <div class="unit-4 d-block">
                 <div class="unit-4-icon mb-3">
                   <span class="icon-wrap">
                     <span class="text-primary icon-chat">
-                      <img class="box-classes" src="{{url_for('static', filename='images/cash4.svg')}}" alt="" />
+                      <img
+                        class="box-classes"
+                        src="{{url_for('static', filename='images/cash4.svg')}}"
+                        alt=""
+                      />
                     </span>
                   </span>
                 </div>
                 <div>
                   <h3>Monthly Subscription</h3>
-                  <p>Leverage the power of AI-driven chatbots to automate customer interactions, provide instant support, and boost engagement. Our chatbots are trained to handle various tasks, including lease management, buying and selling inquiries, and more.</p>
+                  <p>
+                    Leverage the power of AI-driven chatbots to automate
+                    customer interactions, provide instant support, and boost
+                    engagement. Our chatbots are trained to handle various
+                    tasks, including lease management, buying and selling
+                    inquiries, and more.
+                  </p>
                   <p><a href="#">Learn More</a></p>
                   <div class="subscription-details">
                     <h4>Subscription Plan: Monthly</h4>
                     <p>Plan details and features.</p>
                     <p>Price: $X/month</p>
-                    <button class="btn btn-primary" id="subscribe-monthly" data-subscription-id="monthly">Subscribe</button>
+                    <button
+                      class="btn btn-primary"
+                      id="subscribe-monthly"
+                      data-subscription-id="monthly"
+                    >
+                      Subscribe
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="col-md-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="100">
+            <div
+              class="col-md-4 mb-4 mb-lg-4"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            >
               <div class="unit-4 d-block">
                 <div class="unit-4-icon mb-3">
                   <span class="icon-wrap">
                     <span class="text-primary icon-analytics">
-                      <img class="box-classes" src="{{url_for('static', filename='images/cash.svg')}}" alt="" />
+                      <img
+                        class="box-classes"
+                        src="{{url_for('static', filename='images/cash.svg')}}"
+                        alt=""
+                      />
                     </span>
                   </span>
                 </div>
                 <div>
                   <h3>Quarterly Subscription</h3>
-                  <p>Gain valuable insights into customer behavior, preferences, and trends with ClavaChat's comprehensive analytics and reporting features. Monitor the performance of your lease management, buying and selling processes, and chatbot interactions to optimize your operations.</p>
+                  <p>
+                    Gain valuable insights into customer behavior, preferences,
+                    and trends with ClavaChat's comprehensive analytics and
+                    reporting features. Monitor the performance of your lease
+                    management, buying and selling processes, and chatbot
+                    interactions to optimize your operations.
+                  </p>
                   <p><a href="#">Learn More</a></p>
                   <div class="subscription-details">
                     <h4>Subscription Plan: Quarterly</h4>
                     <p>Plan details and features.</p>
                     <p>Price: $X/quarter</p>
-                    <button class="btn btn-primary" id="subscribe-quarterly" data-subscription-id="quarterly">Subscribe</button>
+                    <button
+                      class="btn btn-primary"
+                      id="subscribe-quarterly"
+                      data-subscription-id="quarterly"
+                    >
+                      Subscribe
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="col-md-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="200">
+            <div
+              class="col-md-4 mb-4 mb-lg-4"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
               <div class="unit-4 d-block">
                 <div class="unit-4-icon mb-3">
                   <span class="icon-wrap">
                     <span class="text-primary icon-phone">
-                      <img class="box-classes" src="{{url_for('static', filename='images/cash.svg')}}" alt="" />
+                      <img
+                        class="box-classes"
+                        src="{{url_for('static', filename='images/cash.svg')}}"
+                        alt=""
+                      />
                     </span>
                   </span>
                 </div>
                 <div>
                   <h3>Yearly Subscription</h3>
-                  <p>Engage with customers across various channels including website chat, social media platforms, and messaging apps for seamless communication. Provide support for lease management inquiries, buying and selling requests, and more.</p>
+                  <p>
+                    Engage with customers across various channels including
+                    website chat, social media platforms, and messaging apps for
+                    seamless communication. Provide support for lease management
+                    inquiries, buying and selling requests, and more.
+                  </p>
                   <p><a href="#">Learn More</a></p>
                   <div class="subscription-details">
                     <h4>Subscription Plan: Yearly</h4>
                     <p>Plan details and features.</p>
                     <p>Price: $X/year</p>
-                    <button class="btn btn-primary" id="subscribe-yearly" data-subscription-id="yearly">Subscribe</button>
+                    <button
+                      class="btn btn-primary"
+                      id="subscribe-yearly"
+                      data-subscription-id="yearly"
+                    >
+                      Subscribe
+                    </button>
                   </div>
                 </div>
               </div>
@@ -196,109 +301,110 @@
         </div>
       </div>
       <script>
-  $(document).ready(function() {
-    console.log("Document ready");
+        $(document).ready(function () {
+          console.log("Document ready");
 
+          // Retrieve the user name from localStorage
+          var accessToken = localStorage.getItem("access_token");
+          var userName = localStorage.getItem("user_name");
 
-    // Retrieve the user name from localStorage
-    var accessToken = localStorage.getItem("access_token");
-    var userName = localStorage.getItem("user_name");
+          // Check if the access token exists in localStorage
+          if (accessToken) {
+            // Change the context of the "Upgrade Plan" button to "My Plan"
+            $("#btn-upgrade").text("My Plan");
+            $("#btn-change").hide();
 
-    // Check if the access token exists in localStorage
-    if (accessToken) {
-      // Change the context of the "Upgrade Plan" button to "My Plan"
-      $("#btn-upgrade").text("My Plan");
-      $("#btn-change").hide();
+            $("#btn-upgrade").click(function () {
+              var context = $(this).text();
 
-      $("#btn-upgrade").click(function() {
-        var context = $(this).text();
+              if (context === "My Plan") {
+                // Send a POST request to the backend endpoint with access_token and user_name
+                $.ajax({
+                  url: "/subscription_plan",
+                  contentType: "application/json",
+                  method: "POST",
+                  data: JSON.stringify({
+                    access_token: accessToken,
+                    user_name: userName,
+                  }),
+                  success: function (response) {
+                    // Update the subscription plan details in the HTML elements
+                    $(".subs-plan").text(response.subscription_status);
+                    $(".subs-status").text(response.is_active);
+                    $(".subs-expiry").text(response.expiry_date);
+                    $("#btn-upgrade").text("Upgrade Plan");
+                    $("#btn-change").show();
 
-        if (context === "My Plan") {
-          // Send a POST request to the backend endpoint with access_token and user_name
-          $.ajax({
-            url: "/subscription_plan",
-            contentType: "application/json",
-            method: "POST",
-            data: JSON.stringify({
-              access_token: accessToken,
-              user_name: userName
-            }),
-            success: function(response) {
-              // Update the subscription plan details in the HTML elements
-              $(".subs-plan").text(response.subscription_status);
-              $(".subs-status").text(response.is_active);
-              $(".subs-expiry").text(response.expiry_date);
-              $("#btn-upgrade").text("Upgrade Plan");
-              $("#btn-change").show();
-
-              console.log("response:", response);
-              if (response.error) {
-                // Change the context of the "Upgrade Plan" button to "Change Plan"
-                $(".subs-plan").text(response.error);
-                $("#btn-upgrade").text("New Plan?");
-                $("#btn-change").hide();
+                    console.log("response:", response);
+                    if (response.error) {
+                      // Change the context of the "Upgrade Plan" button to "Change Plan"
+                      $(".subs-plan").text(response.error);
+                      $("#btn-upgrade").text("New Plan?");
+                      $("#btn-change").hide();
+                    }
+                    // Update other subscription plan details as needed
+                  },
+                  error: function (error) {
+                    // Handle the error response from the backend
+                    console.log("Error:", error);
+                  },
+                });
+              } else if (context === "Upgrade Plan") {
+                // Open the payment form popup
+                openPaymentForm();
               }
-              // Update other subscription plan details as needed
-            },
-            error: function(error) {
-              // Handle the error response from the backend
-              console.log("Error:", error);
-            }
-            
+            });
+          }
+
+          // Function to open the payment form popup
+          function openPaymentForm() {}
+
+          // Send the GET request with the user name on page load
+          if (userName) {
+            $.ajax({
+              url: "/subscriptions",
+              method: "GET",
+              data: { userName: userName },
+              success: function (response) {
+                // Handle the success response from the backend
+                alert("GET request successful!");
+              },
+              error: function (error) {
+                // Handle the error response from the backend
+                alert("GET request failed. Please try again.");
+              },
+            });
+          }
+
+          // Handle click event for the "Subscribe" buttons
+          $(
+            "#subscribe-monthly, #subscribe-quarterly, #subscribe-yearly"
+          ).click(function () {
+            // Retrieve the subscription ID
+            var subscriptionId = $(this).data("subscription-id");
+
+            // Send the subscription ID and user name to the backend using a POST request
+            $.ajax({
+              url: "/subscriptions",
+              method: "POST",
+              contentType: "application/json",
+              data: JSON.stringify({
+                subscriptionId: subscriptionId,
+                userName: userName,
+              }),
+              success: function (response) {
+                // Handle the success response from the backend
+                alert("Subscription successful!");
+              },
+              error: function (error) {
+                // Handle the error response from the backend
+                alert("Subscription failed. Please try again.");
+              },
+            });
           });
-        } else if (context === "Upgrade Plan") {
-          // Open the payment form popup
-          openPaymentForm();
-        }
-      });
-    }
-
-    // Function to open the payment form popup
-    function openPaymentForm() {
-    
-    }
-
-    // Send the GET request with the user name on page load
-    if (userName) {
-      $.ajax({
-        url: "/subscriptions",
-        method: "GET",
-        data: { userName: userName },
-        success: function(response) {
-          // Handle the success response from the backend
-          alert("GET request successful!");
-        },
-        error: function(error) {
-          // Handle the error response from the backend
-          alert("GET request failed. Please try again.");
-        }
-      });
-    }
-
-    // Handle click event for the "Subscribe" buttons
-    $("#subscribe-monthly, #subscribe-quarterly, #subscribe-yearly").click(function() {
-      // Retrieve the subscription ID
-      var subscriptionId = $(this).data("subscription-id");
-
-      // Send the subscription ID and user name to the backend using a POST request
-      $.ajax({
-        url: "/subscriptions",
-        method: "POST",
-        contentType: "application/json",
-        data: JSON.stringify({ subscriptionId: subscriptionId, userName: userName }),
-        success: function(response) {
-          // Handle the success response from the backend
-          alert("Subscription successful!");
-        },
-        error: function(error) {
-          // Handle the error response from the backend
-          alert("Subscription failed. Please try again.");
-        }
-      });
-    });
-  });
+        });
       </script>
-    <div class="footer py-5 text-center">
+      <div class="footer py-5 text-center">
         <div class="container">
           <div class="row mb-5">
             <div class="col-12">
@@ -311,7 +417,7 @@
               </p>
             </div>
           </div>
-          
+
           <div class="row">
             <div class="col-md-12">
               <p class="mb-0">
@@ -326,7 +432,7 @@
         </div>
       </div>
     </div>
-   
+
     <script src="{{url_for('static',filename='js/urls.js')}}"></script>
     <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jquery-ui.js') }}"></script>
@@ -340,7 +446,5 @@
     <script src="{{ url_for('static', filename='js/jquery.fancybox.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jquery.sticky.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-
-    
   </body>
 </html>
