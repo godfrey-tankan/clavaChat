@@ -1347,7 +1347,7 @@ def search_products(product_name, condition, budget, page_number, records_per_pa
         matching_products = None
     return matching_products
 
-def search_document(document_name, requester):
+def search_document(document_name, requester,request_type):
     try:
         document_code = int(document_name)
         document = session.query(Document).filter_by(id=document_code).first()
@@ -1410,7 +1410,7 @@ def search_document(document_name, requester):
                         all_documents = session.query(Document)\
                         .offset(random.randint(1, int(documents_count))).limit(10).all()
                         if all_documents:
-                            response = "*Here are some alternatives you might be interested in*:\n\n"
+                            response = f"{request_type}\n\n"
                             for i, document in enumerate(all_documents, start=random.randint(1, 10)):
                                 response += f"📚 *TITLE*: _{document.title}_\n- *code #️⃣:* {document.id}  \n\n"
                             response += underline_response
@@ -1458,21 +1458,27 @@ def publish_post(message):
 def library_contents_lookup(requester, message):
     if message.lower() == "more":
         message = "vvvvbvb"
-    
-    document_path = search_document(message,requester)
-    if document_path == "Document already exists.":
-        return "Document already exists."
-    elif document_path == "Document added successfully.":
-        return "Document added successfully."
-    if document_path:
-        path=f"https://github.com/godfrey-tankan/My_projects/raw/godfrey-tankan-patch-1/{document_path.strip()}"
-        data = get_text_message_input(requester, document_path, path)
-        response =send_message(data)
+        request_type = '*here are some other random documents you might be interested in:*'
+        document_path = search_document(message,requester,request_type)
+        data = get_text_message_input(requester, document_path, None)
+        response = send_message(data)
         return response
-        # response = send_message("",media_files)
-    
-        # except FileNotFoundError as e:
-        #     # Handle the FileNotFoundError appropriately
-        #     return f"error somewhere..{e}"
     else:
-        return "Document not found! Please check the document name and try again."
+        custom_message = '*We couldn`t find any match,here are some alternatives you might be interested in*'
+        document_path = search_document(message,requester,custom_message)
+        if document_path == "Document already exists.":
+            return "Document already exists."
+        elif document_path == "Document added successfully.":
+            return "Document added successfully."
+        if document_path:
+            path=f"https://github.com/godfrey-tankan/My_projects/raw/godfrey-tankan-patch-1/{document_path.strip()}"
+            data = get_text_message_input(requester, document_path, path)
+            response =send_message(data)
+            return response
+            # response = send_message("",media_files)
+        
+            # except FileNotFoundError as e:
+            #     # Handle the FileNotFoundError appropriately
+            #     return f"error somewhere..{e}"
+        else:
+            return "Document not found! Please check the document name and try again."
