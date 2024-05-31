@@ -1345,18 +1345,12 @@ def search_products(product_name, condition, budget, page_number, records_per_pa
     return matching_products
 
 def search_document(document_name, requester):
-    # try:
-    #     user_subscription = session.query(Subscription).filter_by(mobile_number=requester).first()
-    # except Exception as e:
-    #     user_subscription = None
-    # if user_subscription:
-    #     if user_subscription.subscription_status == book_choosing:
-    #         try:
-    #             document = session.query(Document).filter_by(id=document_name).first()
-    #         except Exception as e:
-    #             document = None
-    #         if document:
-    #             return document.title
+    try:
+        document_code = int(document_name)
+        document = session.query(Document).filter_by(id=document_code).first()
+        return document.title
+    except Exception as e:
+        ...
 
     if document_name.startswith("[") and len(document_name) > 40:
         file_name_list = eval(document_name)  # Convert the string to a list
@@ -1391,6 +1385,21 @@ def search_document(document_name, requester):
                 response = document.title
                 return response
             else:
+                try:
+                    offset =  10
+                    documents = session.query(Document).filter(Document.title.ilike(f'%{modified_string}%')).\
+                    offset(offset).limit(10).all()
+                    # return documents.title
+                    if documents:
+                        result = "* We could not find your document, however you may be interested in one of these:*\n\n"
+                        for i,document in enumerate(documents, start=1) :
+                            result += f"*code:* *{i}* | *Document Name:* {document.title}\n\n"
+                        result += underline_response
+                        result += after_books_listing_response
+                        return result
+                    return response
+                except Exception as e:
+                    ...
                 modified_string = document_name.replace(" ", "_")
                 document = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{modified_string}%"))).first()
                 if document:
@@ -1404,26 +1413,25 @@ def search_document(document_name, requester):
                         return response
                     #returning matches with key words
                     else:
-                        try:
-                            user_subscription = session.query(Subscription).filter_by(mobile_number=requester).first()
-                            if user_subscription:
-                                user_subscription.subscription_status=book_choosing
-                                session.commit()
-                        except Exception as e:
-                            ...
                         offset =  10
-                        documents = session.query(Document).filter(Document.title.ilike(f'%{modified_string[:6]}%')).first()
-                        return documents.title
-                        # offset(offset).limit(10).all()
-                        # if documents:
-                        #     result = "* We could not find your document, however you may be interested in one of these:*\n\n"
-                        #     for i,document in enumerate(documents, start=1) :
-                        #         result += f"*code:* *{i}* *Document Name* {document.title}\n\n"
-                        #     result += underline_response
-                        #     result += after_books_listing_response
-                        #     return result
-                        # response = document.title
-                        # return response
+                        if '-' in modified_string:
+                            modified_string = modified_string.split("-")
+                        elif '_' in modified_string:
+                            modified_string = modified_string.split("_")
+                        else:
+                            modified_string = modified_string.split(' ')
+                        modified_string = ' '.join(modified_string[:2])
+                        documents = session.query(Document).filter(Document.title.ilike(f'%{modified_string}%')).\
+                        offset(offset).limit(10).all()
+                        # return documents.title
+                        if documents:
+                            result = "* We could not find your document, however you may be interested in one of these:*\n\n"
+                            for i,document in enumerate(documents, start=1) :
+                                result += f"*code:* *{i}* | *Document Name:* {document.title}\n\n"
+                            result += underline_response
+                            result += after_books_listing_response
+                            return result
+                        return response
                             
 
         except Exception as e:
@@ -1467,6 +1475,10 @@ def library_contents_lookup(requester, message):
         return "Document already exists."
     elif document_path == "Document added successfully.":
         return "Document added successfully."
+    if 'We could not find' in document_path.lower():
+        data = get_text_message_input(requester, document_path, None)
+        response =send_message(data)
+        return response
     
     if document_path:
         path=f"https://github.com/godfrey-tankan/My_projects/raw/godfrey-tankan-patch-1/{document_path.strip()}"

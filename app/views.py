@@ -49,6 +49,7 @@ def verify():
         logging.info("MISSING_PARAMETER")
         return jsonify({"status": "error", "message": "Missing parameters"}), 400
 
+
 @webhook_blueprint.route("/webhook", methods=["POST","GET"])
 # @signature_required
 def webhook():
