@@ -18,6 +18,7 @@ from datetime import datetime
 from .model import *
 from app.services.chat_responses import *
 from app.services.user_types import *
+import random
 from app.config import *
 
 openai.api_key = "sk-proj-uwITlARPsdn9IZZZ3NSjT3BlbkFJ4qiGtpvo1haVqNJP7DG3"
@@ -28,6 +29,8 @@ def create_subscription(mobile_number,user_name, subscription_status):
     if Subscription.exists(session, mobile_number):
         sub_end = session.query(Subscription).filter_by(mobile_number=mobile_number).first()
         if sub_end.trial_end_date < today:
+            # sub_end.trial_end_date = today + timedelta(days=100)
+            # session.commit()
             message = "expired"
             if sub_end.subscription_status != "Free Trial" and sub_end.subscription_status != "Monthly Subscription":
                 pass
@@ -1385,21 +1388,6 @@ def search_document(document_name, requester):
                 response = document.title
                 return response
             else:
-                try:
-                    offset =  10
-                    documents = session.query(Document).filter(Document.title.ilike(f'%{modified_string}%')).\
-                    offset(offset).limit(10).all()
-                    # return documents.title
-                    if documents:
-                        result = "* We could not find your document, however you may be interested in one of these:*\n\n"
-                        for i,document in enumerate(documents, start=1) :
-                            result += f"*code:* *{i}* | *Document Name:* {document.title}\n\n"
-                        result += underline_response
-                        result += after_books_listing_response
-                        return result
-                    return response
-                except Exception as e:
-                    ...
                 modified_string = document_name.replace(" ", "_")
                 document = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{modified_string}%"))).first()
                 if document:
@@ -1411,31 +1399,29 @@ def search_document(document_name, requester):
                     if document:
                         response = document.title
                         return response
-                    #returning matches with key words
                     else:
-                        offset =  10
                         if '-' in modified_string:
-                            modified_string = modified_string.split("-")
+                            modified_string = modified_string.split("-")[0]
                         elif '_' in modified_string:
-                            modified_string = modified_string.split("_")
+                            modified_string = modified_string.split("_")[0]
                         else:
-                            modified_string = modified_string.split(' ')
-                        modified_string = ' '.join(modified_string[:2])
-                        documents = session.query(Document).filter(Document.title.ilike(f'%{modified_string}%')).\
-                        offset(offset).limit(10).all()
-                        # return documents.title
-                        if documents:
-                            result = "* We could not find your document, however you may be interested in one of these:*\n\n"
-                            for i,document in enumerate(documents, start=1) :
-                                result += f"*code:* *{i}* | *Document Name:* {document.title}\n\n"
-                            result += underline_response
-                            result += after_books_listing_response
-                            return result
-                        return response
-                            
-
+                            modified_string = modified_string.split(" ")[0]
+                        documents_count = session.query(Document).count()
+                        all_documents = session.query(Document)\
+                        .offset(random.randint(1, int(documents_count))).limit(10).all()
+                        if all_documents:
+                            response = "*Here are some alternatives you might be interested in*:\n\n"
+                            for i, document in enumerate(all_documents, start=random.randint(1, 10)):
+                                response += f"📚 *TITLE*: _{document.title}_\n- *code #️⃣:* {document.id}  \n\n"
+                            response += underline_response
+                            response += after_books_listing_response
+                            data = get_text_message_input(requester, response, None)
+                            response = send_message(data)
+                            return response
+                    #returning matches with key words
         except Exception as e:
-            return None
+            ...
+        return None
     return None
 
 def publish_post(message):
@@ -1470,16 +1456,14 @@ def publish_post(message):
         return response
 
 def library_contents_lookup(requester, message):
+    if message.lower() == "more":
+        message = "vvvvbvb"
+    
     document_path = search_document(message,requester)
     if document_path == "Document already exists.":
         return "Document already exists."
     elif document_path == "Document added successfully.":
         return "Document added successfully."
-    if 'We could not find' in document_path.lower():
-        data = get_text_message_input(requester, document_path, None)
-        response =send_message(data)
-        return response
-    
     if document_path:
         path=f"https://github.com/godfrey-tankan/My_projects/raw/godfrey-tankan-patch-1/{document_path.strip()}"
         data = get_text_message_input(requester, document_path, path)
