@@ -101,986 +101,918 @@
       href="{{ url_for('static', filename='css/style.css') }}"
     />
   </head>
-  <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
-    <div id="overlayer"></div>
-    <div class="loader">
-      <div class="spinner-border text-primary" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
-    </div>
-    <div class="site-wrap" id="home-section">
-      <div class="site-mobile-menu site-navbar-target">
-        <div class="site-mobile-menu-header">
-          <div class="site-mobile-menu-close mt-3">
-            <span class="icon-close2 js-menu-toggle"></span>
-          </div>
+    <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+      <div id="overlayer"></div>
+      <div class="loader">
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only">Loading...</span>
         </div>
-        <div class="site-mobile-menu-body"></div>
       </div>
-      <header
-        class="site-navbar py-4 js-sticky-header site-navbar-target"
-        role="banner"
-      >
-        <div class="container">
-          <div class="row align-items-center">
-            <div class="col-6 col-md-3 col-xl-4 d-block">
-              <h1 class="mb-0 site-logo">
-                <a href="home" class="text-black h2 mb-0">
-                  clavaChat<span class="text-primary">.</span>
-                </a>
-              </h1>
+      <div class="site-wrap" id="home-section">
+        <div class="site-mobile-menu site-navbar-target">
+          <div class="site-mobile-menu-header">
+            <div class="site-mobile-menu-close mt-3">
+              <span class="icon-close2 js-menu-toggle"></span>
             </div>
-            <div class="col-12 col-md-9 col-xl-8 main-menu">
-              <nav
-                class="site-navigation position-relative text-right"
-                role="navigation"
-              >
-                <ul
-                  class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block ml-0 pl-0"
-                >
-                  <li><a href="#home-section" class="nav-link">Home</a></li>
-                  <li>
-                    <a href="#features-section" class="nav-link" id="services"
-                      >Services</a
-                    >
-                  </li>
-                  <li class="has-children">
-                    <a href="#about-section" class="nav-link" id="about-us"
-                      >About Us</a
-                    >
-                    <ul class="dropdown arrow-top">
-                      <li>
-                        <a
-                          href="#our-team-section"
-                          class="nav-link"
-                          id="our-team"
-                          >Our Team</a
-                        >
-                      </li>
-                    </ul>
-                  </li>
-                  <li id="unwanted">
-                    <a
-                      href="#testimonials-section"
-                      class="nav-link"
-                      id="testimonials"
-                      >Testimonials</a
-                    >
-                  </li>
-                  <li id="unwanted">
-                    <a href="#blog-section" class="nav-link" id="blog">Blog</a>
-                  </li>
-                  <li id="unwanted">
-                    <a href="#contact-section" class="nav-link" id="contact"
-                      >Contact</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      style="padding: 8px; color: #fff"
-                      class="btn btn-primary"
-                      id="login-button"
-                      href="login"
-                      class="nav-link"
-                      >Login</a
-                    >
-                  </li>
-                </ul>
-              </nav>
-            </div>
-
-            <span class="user-name"
-              ><script>
-                const username = localStorage.getItem("user_name");
+          </div>
+          <div class="site-mobile-menu-body"></div>
+        </div>
+        <header
+          class="site-navbar py-4 js-sticky-header site-navbar-target"
+          role="banner"
+        >
+          <div class="container">
+            <div class="row align-items-center">
+              <div class="col-6 col-md-3 col-xl-4 d-block">
+                <h1 class="mb-0 site-logo">
+                  <a href="home" class="text-black h2 mb-0">
+                    clavaChat<span class="text-primary">.</span>
+                  </a>
+                </h1>
+              </div>
+              <div class="col-12 col-md-9 col-xl-8 main-menu">
+                <nav class="site-navigation position-relative text-right" role="navigation">
+                  <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block ml-0 pl-0">
+                    <li><a href="#home-section" class="nav-link">Home</a></li>
+                    <li ><a href="#features-section" class="nav-link "id="services" >Services</a></li>
+                    <li class="has-children" >
+                      <a href="#about-section" class="nav-link" id="about-us">About Us</a>
+                      <ul class="dropdown arrow-top">
+                        <li ><a href="#our-team-section" class="nav-link"id="our-team" >Our Team</a></li>
+                      </ul>
+                    </li>
+                    <li id="unwanted"><a href="#testimonials-section" class="nav-link" id="testimonials">Testimonials</a></li>
+                    <li id="unwanted"><a href="#blog-section" class="nav-link" id="blog" >Blog</a></li>
+                    <li  id="unwanted"><a href="#contact-section" class="nav-link" id="contact" >Contact</a></li>
+                    <li>
+                      <a
+                        style="padding: 8px; color: #fff"
+                        class="btn btn-primary"
+                        id="login-button"
+                        href="login"
+                        class="nav-link"
+                      >Login</a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+              
+              
+              <span class="user-name"><script>
+              const username = localStorage.getItem("user_name");
                 if (username) {
                   document.write(username);
-                }
-              </script></span
-            >
-            <div class="user-profile">
-              <img
-                style="max-width: 30px; max-height: 30px; margin-left: 10%"
-                src="{{url_for('static', filename='images/account.svg')}}"
-                alt="user"
-              />
-
+                }</script></span>
+              <div class="user-profile">
+              
+                <img
+                  style="
+                    max-width: 30px;
+                    max-height: 30px;
+                    margin-left: 10%;
+                  "
+                  src="{{url_for('static', filename='images/account.svg')}}"
+                  alt="user"
+                />
+                
               <div class="col-6 col-md-9 d-inline-block d-lg-none ml-md-0">
                 <a
                   href="#"
                   class="site-menu-toggle js-menu-toggle text-black float-right"
                   ><span class="icon-menu h3"></span>
-                </a>
+                  </a>
               </div>
             </div>
           </div>
-
-          <div class="site-blocks-cover" style="overflow: hidden">
-            <div class="container">
-              <div class="row align-items-center justify-content-center">
-                <div
-                  class="col-md-12"
-                  style="position: relative"
-                  data-aos="fade-up"
-                  data-aos-delay="200"
-                >
-                  <img
-                    src="{{ url_for('static', filename='images/undraw_investing_7u74.svg') }}"
-                    alt="Image"
-                    class="img-fluid img-absolute"
-                  />
-                  <div class="row mb-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="col-lg-6 mr-auto">
-                      <h1>
-                        Take Your Business to the Next Level with ClavaChat
-                        Business
-                      </h1>
-                      <p class="mb-5">
-                        ClavaChat Business empowers you with an intelligent
-                        chatbot solution that revolutionizes customer
-                        interactions. Seamlessly integrate automated
-                        conversational agents into your operations and unlock
-                        new levels of efficiency and customer satisfaction.
-                      </p>
-                      <div>
-                        <a href="login" class="btn btn-primary mr-2 mb-2"
-                          >Get Started
+        </header>
+  
+        <div class="site-blocks-cover" style="overflow: hidden">
+          <div class="container">
+            <div class="row align-items-center justify-content-center">
+              <div
+                class="col-md-12"
+                style="position: relative"
+                data-aos="fade-up"
+                data-aos-delay="200"
+              >
+                <img
+                  src="{{ url_for('static', filename='images/undraw_investing_7u74.svg') }}"
+                  alt="Image"
+                  class="img-fluid img-absolute"
+                />
+                <div class="row mb-4" data-aos="fade-up" data-aos-delay="200">
+                  <div class="col-lg-6 mr-auto">
+                    <h1>
+                      Take Your Business to the Next Level with ClavaChat Business
+                    </h1>
+                    <p class="mb-5">
+                      ClavaChat Business empowers you with an intelligent chatbot
+                      solution that revolutionizes customer interactions.
+                      Seamlessly integrate automated conversational agents into
+                      your operations and unlock new levels of efficiency and
+                      customer satisfaction.
+                    </p>
+                    <div>
+                      <a href="login" class="btn btn-primary mr-2 mb-2"
+                        >Get Started
                         </a>
-                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="site-section" id="features-section">
-            <div class="container">
+        </div>
+        <div class="site-section" id="features-section">
+          <div class="container">
+            <div
+              class="row mb-5 justify-content-center text-center"
+              data-aos="fade-up"
+            >
+              <div class="col-7 text-center mb-5">
+                <h2 class="section-title">ClavaChat Services</h2>
+                <p class="lead">
+                  Discover the powerful services offered by ClavaChat to
+                  revolutionize your business communication, customer support, and
+                  streamline your operations.
+                </p>
+              </div>
+            </div>
+            <div class="row align-items-stretch">
+              <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up">
+                <div class="unit-4 d-block">
+                  <div class="unit-4-icon mb-3">
+                    <span class="icon-wrap">
+                      <span class="text-primary icon-chat"
+                        ><img
+                          class="box-classes"
+                          src="{{url_for('static', filename='images/ai-platform-unified-svgrepo-com.svg')}}"
+                          alt=""
+                      /></span>
+                    </span>
+                  </div>
+                  <div>
+                    <h3>Intelligent Chatbots</h3>
+                    <p>
+                      Leverage the power of AI-driven chatbots to automate
+                      customer interactions, provide instant support, and boost
+                      engagement. Our chatbots are trained to handle various
+                      tasks, including lease management, buying and selling
+                      inquiries, and more.
+                    </p>
+                    <p><a href="#">Learn More</a></p>
+                  </div>
+                </div>
+              </div>
               <div
-                class="row mb-5 justify-content-center text-center"
+                class="col-md-6 col-lg-4 mb-4 mb-lg-4"
                 data-aos="fade-up"
+                data-aos-delay="100"
               >
-                <div class="col-7 text-center mb-5">
-                  <h2 class="section-title">ClavaChat Services</h2>
-                  <p class="lead">
-                    Discover the powerful services offered by ClavaChat to
-                    revolutionize your business communication, customer support,
-                    and streamline your operations.
-                  </p>
-                </div>
-              </div>
-              <div class="row align-items-stretch">
-                <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up">
-                  <div class="unit-4 d-block">
-                    <div class="unit-4-icon mb-3">
-                      <span class="icon-wrap">
-                        <span class="text-primary icon-chat"
-                          ><img
-                            class="box-classes"
-                            src="{{url_for('static', filename='images/ai-platform-unified-svgrepo-com.svg')}}"
-                            alt=""
-                        /></span>
-                      </span>
-                    </div>
-                    <div>
-                      <h3>Intelligent Chatbots</h3>
-                      <p>
-                        Leverage the power of AI-driven chatbots to automate
-                        customer interactions, provide instant support, and
-                        boost engagement. Our chatbots are trained to handle
-                        various tasks, including lease management, buying and
-                        selling inquiries, and more.
-                      </p>
-                      <p><a href="#">Learn More</a></p>
-                    </div>
+                <div class="unit-4 d-block">
+                  <div class="unit-4-icon mb-3">
+                    <span class="icon-wrap">
+                      <span class="text-primary icon-analytics"
+                        ><img
+                          class="box-classes"
+                          src="{{url_for('static', filename='images/page-analysis-svgrepo-com.svg')}}"
+                          alt=""
+                      /></span>
+                    </span>
                   </div>
-                </div>
-                <div
-                  class="col-md-6 col-lg-4 mb-4 mb-lg-4"
-                  data-aos="fade-up"
-                  data-aos-delay="100"
-                >
-                  <div class="unit-4 d-block">
-                    <div class="unit-4-icon mb-3">
-                      <span class="icon-wrap">
-                        <span class="text-primary icon-analytics"
-                          ><img
-                            class="box-classes"
-                            src="{{url_for('static', filename='images/page-analysis-svgrepo-com.svg')}}"
-                            alt=""
-                        /></span>
-                      </span>
-                    </div>
-                    <div>
-                      <h3>Advanced Analytics</h3>
-                      <p>
-                        Gain valuable insights into customer behavior,
-                        preferences, and trends with ClavaChat's comprehensive
-                        analytics and reporting features. Monitor the
-                        performance of your lease management, buying and selling
-                        processes, and chatbot interactions to optimize your
-                        operations.
-                      </p>
-                      <p><a href="#">Learn More</a></p>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="col-md-6 col-lg-4 mb-4 mb-lg-4"
-                  data-aos="fade-up"
-                  data-aos-delay="200"
-                >
-                  <div class="unit-4 d-block">
-                    <div class="unit-4-icon mb-3">
-                      <span class="icon-wrap">
-                        <span class="text-primary icon-phone">
-                          <img
-                            class="box-classes"
-                            src="{{url_for('static', filename='images/machine-vision-svgrepo-com.svg')}}"
-                            alt=""
-                          />
-                        </span>
-                      </span>
-                    </div>
-                    <div>
-                      <h3>Multi-channel Support</h3>
-                      <p>
-                        Engage with customers across various channels including
-                        website chat, social media platforms, and messaging apps
-                        for seamless communication. Provide support for lease
-                        management inquiries, buying and selling requests, and
-                        more.
-                      </p>
-                      <p><a href="#">Learn More</a></p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up">
-                  <div class="unit-4 d-block">
-                    <div class="unit-4-icon mb-3">
-                      <span class="icon-wrap">
-                        <span class="text-primary icon-security">
-                          <img
-                            class="box-classes"
-                            src="{{url_for('static', filename='images/safe-and-stable-svgrepo-com.svg')}}"
-                            alt=""
-                          />
-                        </span>
-                      </span>
-                    </div>
-                    <div>
-                      <h3>Robust Security</h3>
-                      <p>
-                        Ensure data privacy and protect sensitive information
-                        with ClavaChat's robust security measures and encryption
-                        protocols. Safeguard lease management data, buying and
-                        selling transactions, and customer interactions.
-                      </p>
-                      <p><a href="#">Learn More</a></p>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="col-md-6 col-lg-4 mb-4 mb-lg-4"
-                  data-aos="fade-up"
-                  data-aos-delay="100"
-                >
-                  <div class="unit-4 d-block">
-                    <div class="unit-4-icon mb-3">
-                      <span class="icon-wrap">
-                        <span class="text-primary icon-settings">
-                          <img
-                            class="box-classes"
-                            src="{{url_for('static', filename='images/system-settings-svgrepo-com.svg')}}"
-                            alt=""
-                          />
-                        </span>
-                      </span>
-                    </div>
-                    <div>
-                      <h3>Customizable Settings</h3>
-                      <p>
-                        Tailor ClavaChat's features and settings to match your
-                        business requirements and deliver a personalized chat
-                        experience to your customers. Customize lease management
-                        workflows, buying and selling processes, and chatbot
-                        behavior using our flexible settings.
-                      </p>
-                      <p><a href="#">Learn More</a></p>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="col-md-6 col-lg-4 mb-4 mb-lg-4"
-                  data-aos="fade-up"
-                  data-aos-delay="200"
-                >
-                  <div class="unit-4 d-block">
-                    <div class="unit-4-icon mb-3">
-                      <span class="icon-wrap">
-                        <span class="text-primary icon-support">
-                          <img
-                            class="box-classes"
-                            src="{{url_for('static', filename='images/support-svgrepo-com.svg')}}"
-                            alt=""
-                          />
-                        </span>
-                      </span>
-                    </div>
-                    <div>
-                      <h3>Dedicated Support</h3>
-                      <p>
-                        Get access to a dedicated support team that is ready to
-                        assist you with any questions, technical issues, or
-                        customization needs you may have. We provide support for
-                        lease management, buying and selling processes, chatbot
-                        integration, and utilizing the ClavaChat library
-                        effectively.
-                      </p>
-                      <p><a href="#">Learn More</a></p>
-                    </div>
+                  <div>
+                    <h3>Advanced Analytics</h3>
+                    <p>
+                      Gain valuable insights into customer behavior, preferences,
+                      and trends with ClavaChat's comprehensive analytics and
+                      reporting features. Monitor the performance of your lease
+                      management, buying and selling processes, and chatbot
+                      interactions to optimize your operations.
+                    </p>
+                    <p><a href="#">Learn More</a></p>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div class="feature-big">
-            <div class="container">
-              <div class="row mb-5 site-section">
-                <div class="col-lg-7" data-aos="fade-right">
-                  <img
-                    src="{{ url_for('static', filename='images/undraw_gift_card_6ekc.svg') }}"
-                    alt="Image"
-                    class="img-fluid"
-                  />
-                </div>
-                <div class="col-lg-5 pl-lg-5 ml-auto mt-md-5">
-                  <h2 class="text-black">Boost Your Sales</h2>
-                  <p class="mb-4">
-                    At our store, we offer a wide range of high-quality products
-                    that will help you achieve your goals. Whether it's
-                    electronics, clothing, or home goods, we have it all.
-                  </p>
-                  <div class="author-box" data-aos="fade-left">
-                    <div class="d-flex mb-4">
-                      <div class="mr-3">
-                        <img
-                          src="{{ url_for('static', filename='images/person_4.jpg') }}"
-                          alt="Image"
-                          class="img-fluid rounded-circle"
-                        />
-                      </div>
-                      <div class="mr-auto text-black">
-                        <strong class="font-weight-bold mb-0"
-                          >Godfrey Tankan</strong
-                        >
-                        <br />
-                        CEO | clavaChat
-                      </div>
-                    </div>
-                    <blockquote>
-                      &ldquo;Our products are carefully curated to meet the
-                      needs and preferences of our customers.Do business with us
-                      and experience the difference.&rdquo;
-                    </blockquote>
-                  </div>
-                </div>
-              </div>
-              <div class="mt-5 row mb-5 site-section">
-                <div class="col-lg-7 order-1 order-lg-2" data-aos="fade-left">
-                  <img
-                    src="{{ url_for('static', filename='images/undraw_gift_card_6ekc.svg') }}"
-                    alt="Image"
-                    class="img-fluid"
-                  />
-                </div>
-                <div class="col-lg-5 pr-lg-5 mr-auto mt-5 order-2 order-lg-1">
-                  <h2 class="text-black">Stay Fashionable</h2>
-                  <p class="mb-4">
-                    Discover the latest fashion trends and create your unique
-                    style. From casual wear to formal attire, we have the
-                    perfect outfits for every occasion.
-                  </p>
-                  <div class="author-box" data-aos="fade-right">
-                    <div class="d-flex mb-4">
-                      <div class="mr-3">
-                        <img
-                          src="{{ url_for('static', filename='images/person_1.jpg') }}"
-                          alt="Image"
-                          class="img-fluid rounded-circle"
-                        />
-                      </div>
-                      <div class="mr-auto text-black">
-                        <strong class="font-weight-bold mb-0"
-                          >Jane Smith</strong
-                        >
-                        <br />
-                        Fashion Designer, | wardrobeupgrade
-                      </div>
-                    </div>
-                    <blockquote>
-                      &ldquo;Our collection is designed to make you look and
-                      feel confident. Explore our range of stylish clothing and
-                      accessories today.&rdquo;
-                    </blockquote>
-                  </div>
-                </div>
-              </div>
-              <div class="row mb-5 site-section">
-                <div class="col-lg-7" data-aos="fade-right">
-                  <img
-                    src="{{ url_for('static', filename='images/undraw_gift_card_6ekc.svg') }}"
-                    alt="Image"
-                    class="img-fluid"
-                  />
-                </div>
-                <div class="col-lg-5 pl-lg-5 ml-auto mt-md-5">
-                  <h2 class="text-black">Create Your Dream Home</h2>
-                  <p class="mb-4">
-                    Turn your house into a home with our exquisite collection of
-                    furniture and decor. We offer unique and timeless pieces
-                    that will transform any space.
-                  </p>
-                  <div class="author-box" data-aos="fade-left">
-                    <div class="d-flex mb-4">
-                      <div class="mr-3">
-                        <img
-                          src="{{ url_for('static', filename='images/person_4.jpg') }}"
-                          alt="Image"
-                          class="img-fluid rounded-circle"
-                        />
-                      </div>
-                      <div class="mr-auto text-black">
-                        <strong class="font-weight-bold mb-0"
-                          >Emily Davis</strong
-                        >
-                        <br />
-                        Interior Designer | Homedecour
-                      </div>
-                    </div>
-                    <blockquote>
-                      &ldquo;Let us help you bring your vision to life. Browse
-                      our collection and create a home that reflects your style
-                      and personality.&rdquo;
-                    </blockquote>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="site-section bg-light" id="about-section">
-            <div class="container">
-              <div class="row mb-5">
-                <div class="col-12 text-center">
-                  <h2 class="section-title mb-3">About Us</h2>
-                </div>
-              </div>
-              <div class="row mb-5">
-                <div class="col-lg-6" data-aos="fade-right">
-                  <img
-                    src="{{ url_for('static', filename='images/undraw_bookmarks_r6up.svg') }}"
-                    alt="Image"
-                    class="img-fluid"
-                  />
-                </div>
-                <div class="col-lg-5 ml-auto pl-lg-5">
-                  <h2 class="text-black mb-4 h3 font-weight-bold">
-                    Our Mission
-                  </h2>
-                  <p class="mb-4">
-                    At ClavaChat, our mission is to provide a centralized
-                    platform for individuals and businesses to market, sell, or
-                    buy goods and services online seamlessly. We aim to connect
-                    buyers and sellers on various platforms, including WhatsApp
-                    and others, offering a one-stop solution for all their
-                    needs. Our focus is on delivering quality products, ensuring
-                    trust, and providing assurance to both buyers and sellers
-                    within a convenient and user-friendly environment.
-                  </p>
-                  <ul class="ul-check mb-5 list-unstyled success">
-                    <li>Connect buyers and sellers in one place</li>
-                    <li>Connect Landlords and Tenants in one place</li>
-                    <li>Offer a seamless online marketplace experience</li>
-                    <li>Build trust and assurance among users</li>
-                    <li>
-                      Also providing quality services that can help our users
-                      relax and have good times like our clavaChat Library.
-                    </li>
-                  </ul>
-                  <p><a href="#" class="btn btn-primary">Learn More</a></p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="site-section" id="our-team-section">
-            <div class="container">
               <div
-                class="row mb-5 justify-content-center text-center"
+                class="col-md-6 col-lg-4 mb-4 mb-lg-4"
                 data-aos="fade-up"
+                data-aos-delay="200"
               >
-                <div class="col-7 text-center mb-5">
-                  <h2 class="section-title">Our Team</h2>
-                  <p class="lead">
-                    At ClavaChat, we have a dedicated team of professionals who
-                    are passionate about delivering the best online marketplace
-                    experience for our users.
-                  </p>
+                <div class="unit-4 d-block">
+                  <div class="unit-4-icon mb-3">
+                    <span class="icon-wrap">
+                      <span class="text-primary icon-phone">
+                        <img
+                          class="box-classes"
+                          src="{{url_for('static', filename='images/machine-vision-svgrepo-com.svg')}}"
+                          alt=""
+                        />
+                      </span>
+                    </span>
+                  </div>
+                  <div>
+                    <h3>Multi-channel Support</h3>
+                    <p>
+                      Engage with customers across various channels including
+                      website chat, social media platforms, and messaging apps for
+                      seamless communication. Provide support for lease management
+                      inquiries, buying and selling requests, and more.
+                    </p>
+                    <p><a href="#">Learn More</a></p>
+                  </div>
                 </div>
               </div>
-              <div class="row">
-                <div
-                  class="col-lg-4 col-md-6 mb-4"
-                  data-aos="fade-up"
-                  data-aos-delay="100"
-                >
-                  <div class="person">
-                    <div class="bio-img">
-                      <figure>
+              <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up">
+                <div class="unit-4 d-block">
+                  <div class="unit-4-icon mb-3">
+                    <span class="icon-wrap">
+                      <span class="text-primary icon-security">
                         <img
-                          src="{{ url_for('static', filename='images/person_1.jpg') }}"
-                          alt="Image"
-                          class="img-fluid"
+                          class="box-classes"
+                          src="{{url_for('static', filename='images/safe-and-stable-svgrepo-com.svg')}}"
+                          alt=""
                         />
-                      </figure>
-                      <div class="social">
-                        <a href="#"><span class="icon-facebook"></span></a>
-                        <a href="#"><span class="icon-twitter"></span></a>
-                        <a href="#"><span class="icon-instagram"></span></a>
-                      </div>
-                    </div>
-                    <h2 class="text-black h1">Cloe Marena</h2>
-                    <span class="sub-title d-block mb-3">CEO</span>
+                      </span>
+                    </span>
+                  </div>
+                  <div>
+                    <h3>Robust Security</h3>
                     <p>
-                      As the CEO of ClavaChat, Cloe provides overall direction
-                      and guidance to the company. With extensive experience in
-                      the industry, she leads the team with a clear vision and
-                      ensures that ClavaChat remains at the forefront of the
-                      online marketplace. Cloe's strong leadership skills and
-                      business acumen drive the company's growth.
+                      Ensure data privacy and protect sensitive information with
+                      ClavaChat's robust security measures and encryption
+                      protocols. Safeguard lease management data, buying and
+                      selling transactions, and customer interactions.
                     </p>
+                    <p><a href="#">Learn More</a></p>
                   </div>
                 </div>
-
-                <div
-                  class="col-lg-4 col-md-6 mb-4"
-                  data-aos="fade-up"
-                  data-aos-delay="200"
-                >
-                  <div class="person">
-                    <div class="bio-img">
-                      <figure>
+              </div>
+              <div
+                class="col-md-6 col-lg-4 mb-4 mb-lg-4"
+                data-aos="fade-up"
+                data-aos-delay="100"
+              >
+                <div class="unit-4 d-block">
+                  <div class="unit-4-icon mb-3">
+                    <span class="icon-wrap">
+                      <span class="text-primary icon-settings">
                         <img
-                          src="{{ url_for('static', filename='images/person_3.jpg') }}"
-                          alt="Image"
-                          class="img-fluid"
+                          class="box-classes"
+                          src="{{url_for('static', filename='images/system-settings-svgrepo-com.svg')}}"
+                          alt=""
                         />
-                      </figure>
-                      <div class="social">
-                        <a href="#"><span class="icon-facebook"></span></a>
-                        <a href="#"><span class="icon-twitter"></span></a>
-                        <a href="#"><span class="icon-instagram"></span></a>
-                      </div>
-                    </div>
-                    <h2 class="text-black h1">Godfrey T. Tankan</h2>
-                    <span class="sub-title d-block mb-3">Founder</span>
+                      </span>
+                    </span>
+                  </div>
+                  <div>
+                    <h3>Customizable Settings</h3>
                     <p>
-                      Godfrey is the visionary behind ClavaChat. With a passion
-                      for innovation and a strong entrepreneurial spirit, he
-                      laid the foundation for the company. Godfrey's strategic
-                      thinking and leadership have been instrumental in shaping
-                      ClavaChat's success.
+                      Tailor ClavaChat's features and settings to match your
+                      business requirements and deliver a personalized chat
+                      experience to your customers. Customize lease management
+                      workflows, buying and selling processes, and chatbot
+                      behavior using our flexible settings.
                     </p>
+                    <p><a href="#">Learn More</a></p>
                   </div>
                 </div>
-
-                <div
-                  class="col-lg-4 col-md-6 mb-4"
-                  data-aos="fade-up"
-                  data-aos-delay="200"
-                >
-                  <div class="person">
-                    <div class="bio-img">
-                      <figure>
+              </div>
+              <div
+                class="col-md-6 col-lg-4 mb-4 mb-lg-4"
+                data-aos="fade-up"
+                data-aos-delay="200"
+              >
+                <div class="unit-4 d-block">
+                  <div class="unit-4-icon mb-3">
+                    <span class="icon-wrap">
+                      <span class="text-primary icon-support">
                         <img
-                          src="{{ url_for('static', filename='images/person_2.jpg') }}"
-                          alt="Image"
-                          class="img-fluid"
+                          class="box-classes"
+                          src="{{url_for('static', filename='images/support-svgrepo-com.svg')}}"
+                          alt=""
                         />
-                      </figure>
-                      <div class="social">
-                        <a href="#"><span class="icon-facebook"></span></a>
-                        <a href="#"><span class="icon-twitter"></span></a>
-                        <a href="#"><span class="icon-instagram"></span></a>
-                      </div>
-                    </div>
-                    <h2 class="text-black h1">John S. Creg</h2>
-                    <span class="sub-title d-block mb-3">Marketing</span>
-                    <p>
-                      John is a creative and results-driven marketer at
-                      ClavaChat. With a deep understanding of market trends and
-                      consumer behavior, he develops and implements effective
-                      marketing strategies to promote the platform. John's
-                      expertise in digital marketing helps ClavaChat reach a
-                      wider audience and attract more users.
-                    </p>
+                      </span>
+                    </span>
                   </div>
-                </div>
-
-                <div
-                  class="col-lg-4 col-md-6 mb-4"
-                  data-aos="fade-up"
-                  data-aos-delay="200"
-                >
-                  <div class="person">
-                    <div class="bio-img">
-                      <figure>
-                        <img
-                          src="{{ url_for('static', filename='images/person_4.jpg') }}"
-                          alt="Image"
-                          class="img-fluid"
-                        />
-                      </figure>
-                      <div class="social">
-                        <a href="#"><span class="icon-facebook"></span></a>
-                        <a href="#"><span class="icon-twitter"></span></a>
-                        <a href="#"><span class="icon-instagram"></span></a>
-                      </div>
-                    </div>
-                    <h2 class="text-black h1">Kudzai T. Kandeya</h2>
-                    <span class="sub-title d-block mb-3">Director</span>
+                  <div>
+                    <h3>Dedicated Support</h3>
                     <p>
-                      The director at ClavaChat oversees the company's
-                      operations and ensures that all departments are working
-                      cohesively towards the company's goals. They provide
-                      strategic guidance, make important decisions, and foster a
-                      collaborative work environment. The director's leadership
-                      and management skills contribute to ClavaChat's overall
-                      success.
+                      Get access to a dedicated support team that is ready to
+                      assist you with any questions, technical issues, or
+                      customization needs you may have. We provide support for
+                      lease management, buying and selling processes, chatbot
+                      integration, and utilizing the ClavaChat library
+                      effectively.
                     </p>
-                  </div>
-                </div>
-
-                <div
-                  class="col-lg-4 col-md-6 mb-4"
-                  data-aos="fade-up"
-                  data-aos-delay="200"
-                >
-                  <div class="person">
-                    <div class="bio-img">
-                      <figure>
-                        <img
-                          src="{{ url_for('static', filename='images/img_3.jpg') }}"
-                          alt="Image"
-                          class="img-fluid"
-                        />
-                      </figure>
-                      <div class="social">
-                        <a href="#"><span class="icon-facebook"></span></a>
-                        <a href="#"><span class="icon-twitter"></span></a>
-                        <a href="#"><span class="icon-instagram"></span></a>
-                      </div>
-                    </div>
-                    <h2 class="text-black h1">Michael H. Hamilton</h2>
-                    <span class="sub-title d-block mb-3">Project Manager</span>
-                    <p>
-                      The project manager at ClavaChat is responsible for
-                      planning, organizing, and executing various projects
-                      within the company. They coordinate with different teams,
-                      set project goals, allocate resources, and ensure timely
-                      completion of deliverables. The project manager's strong
-                      organizational and communication skills help streamline
-                      processes and drive project success.
-                    </p>
-                  </div>
-                </div>
-
-                <div
-                  class="col-lg-4 col-md-6 mb-4"
-                  data-aos="fade-up"
-                  data-aos-delay="200"
-                >
-                  <div class="person">
-                    <div class="bio-img">
-                      <figure>
-                        <img
-                          src="{{ url_for('static', filename='images/person_6.png') }}"
-                          alt="Image"
-                          class="img-fluid"
-                        />
-                      </figure>
-                      <div class="social">
-                        <a href="#"><span class="icon-facebook"></span></a>
-                        <a href="#"><span class="icon-twitter"></span></a>
-                        <a href="#"><span class="icon-instagram"></span></a>
-                      </div>
-                    </div>
-                    <h2 class="text-black h1">Anold tnqn</h2>
-                    <span class="sub-title d-block mb-3">Developer</span>
-                    <p>
-                      Our team of skilled developers plays a crucial role in
-                      building and maintaining the ClavaChat platform.They are
-                      responsible for coding, testing, and implementing new
-                      features, ensuring a smooth and user-friendly experience.
-                      Their expertise in software development and
-                      problem-solving helps ClavaChat deliver a high-quality
-                      product.
-                    </p>
+                    <p><a href="#">Learn More</a></p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div
-            class="site-section testimonial-wrap bg-light"
-            id="testimonials-section"
-          >
-            <div class="container">
-              <div class="row mb-5">
-                <div class="col-12 text-center">
-                  <h2 class="section-title mb-3">Testimonials</h2>
-                </div>
+        </div>
+        <div class="feature-big">
+          <div class="container">
+            <div class="row mb-5 site-section">
+              <div class="col-lg-7" data-aos="fade-right">
+                <img
+                  src="{{ url_for('static', filename='images/undraw_gift_card_6ekc.svg') }}"
+                  alt="Image"
+                  class="img-fluid"
+                />
               </div>
-            </div>
-            <div class="slide-one-item home-slider owl-carousel">
-              <div>
-                <div class="testimonial">
-                  <figure
-                    class="mb-4 d-block align-items-center justify-content-center"
-                  >
-                    <div>
-                      <img
-                        src="{{ url_for('static', filename='images/person_3.jpg') }}"
-                        alt="Image"
-                        class="w-100 img-fluid mb-3 shadow"
-                      />
-                    </div>
-                  </figure>
-                  <blockquote class="mb-3">
-                    <p>
-                      &ldquo;ClavaChat has revolutionized the way I communicate
-                      with my team. The platform is intuitive and user-friendly,
-                      making collaboration effortless. I highly recommend
-                      it!&rdquo;
-                    </p>
-                  </blockquote>
-                  <p class="text-black"><strong>Kennedy Gross</strong></p>
-                </div>
-              </div>
-              <div>
-                <div class="testimonial">
-                  <figure
-                    class="mb-4 d-block align-items-center justify-content-center"
-                  >
-                    <div>
-                      <img
-                        src="{{ url_for('static', filename='images/person_2.jpg') }}"
-                        alt="Image"
-                        class="w-100 img-fluid mb-3 shadow"
-                      />
-                    </div>
-                  </figure>
-                  <blockquote class="mb-3">
-                    <p>
-                      &ldquo;ClavaChat has significantly improved our team's
-                      productivity. The real-time messaging and file sharing
-                      features have streamlined our workflow and enhanced
-                      collaboration. It's a game-changer!&rdquo;
-                    </p>
-                  </blockquote>
-                  <p class="text-black"><strong>Robert Aguilar</strong></p>
-                </div>
-              </div>
-              <div>
-                <div class="testimonial">
-                  <figure
-                    class="mb-4 d-block align-items-center justify-content-center"
-                  >
-                    <div>
+              <div class="col-lg-5 pl-lg-5 ml-auto mt-md-5">
+                <h2 class="text-black">Boost Your Sales</h2>
+                <p class="mb-4">
+                  At our store, we offer a wide range of high-quality products
+                  that will help you achieve your goals. Whether it's electronics,
+                  clothing, or home goods, we have it all.
+                </p>
+                <div class="author-box" data-aos="fade-left">
+                  <div class="d-flex mb-4">
+                    <div class="mr-3">
                       <img
                         src="{{ url_for('static', filename='images/person_4.jpg') }}"
                         alt="Image"
-                        class="w-100 img-fluid mb-3 shadow"
+                        class="img-fluid rounded-circle"
                       />
                     </div>
-                  </figure>
-                  <blockquote class="mb-3">
-                    <p>
-                      &ldquo;I've tried numerous communication tools, but
-                      ClavaChat stands out from the rest. Its advanced features
-                      and seamless integration with other apps have made it an
-                      indispensable tool for our team. Highly
-                      recommended!&rdquo;
-                    </p>
+                    <div class="mr-auto text-black">
+                      <strong class="font-weight-bold mb-0">Godfrey Tankan</strong>
+                      <br />
+                      CEO | clavaChat
+                    </div>
+                  </div>
+                  <blockquote>
+                    &ldquo;Our products are carefully curated to meet the needs
+                    and preferences of our customers.Do business with us and experience
+                    the difference.&rdquo;
                   </blockquote>
-                  <p class="text-black"><strong>Roger Spears</strong></p>
                 </div>
               </div>
-              <div>
-                <div class="testimonial">
-                  <figure
-                    class="mb-4 d-block align-items-center justify-content-center"
-                  >
-                    <div>
+            </div>
+            <div class="mt-5 row mb-5 site-section">
+              <div class="col-lg-7 order-1 order-lg-2" data-aos="fade-left">
+                <img
+                  src="{{ url_for('static', filename='images/undraw_gift_card_6ekc.svg') }}"
+                  alt="Image"
+                  class="img-fluid"
+                />
+              </div>
+              <div class="col-lg-5 pr-lg-5 mr-auto mt-5 order-2 order-lg-1">
+                <h2 class="text-black">Stay Fashionable</h2>
+                <p class="mb-4">
+                  Discover the latest fashion trends and create your unique style.
+                  From casual wear to formal attire, we have the perfect outfits
+                  for every occasion.
+                </p>
+                <div class="author-box" data-aos="fade-right">
+                  <div class="d-flex mb-4">
+                    <div class="mr-3">
                       <img
                         src="{{ url_for('static', filename='images/person_1.jpg') }}"
                         alt="Image"
-                        class="w-100 img-fluid mb-3 shadow"
+                        class="img-fluid rounded-circle"
                       />
                     </div>
-                  </figure>
-                  <blockquote class="mb-3">
-                    <p>
-                      &ldquo;ClavaChat has transformed the way our remote team
-                      collaborates. The video conferencing and screen sharing
-                      capabilities have bridged the distance and made remote
-                      work seamless. It's a must-have tool for distributed
-                      teams!&rdquo;
-                    </p>
+                    <div class="mr-auto text-black">
+                      <strong class="font-weight-bold mb-0">Jane Smith</strong>
+                      <br />
+                      Fashion Designer, | wardrobeupgrade
+                    </div>
+                  </div>
+                  <blockquote>
+                    &ldquo;Our collection is designed to make you look and feel
+                    confident. Explore our range of stylish clothing and
+                    accessories today.&rdquo;
                   </blockquote>
-                  <p class="text-black"><strong>Kyle McDonald</strong></p>
                 </div>
               </div>
             </div>
-            <div
-              class="site-section bg-image2 overlay"
-              id="contact-section"
-              style="background-image: url('{{ url_for('static', filename='images/logo.png') }}');"
-            >
-              <div class="container">
-                <div class="row mb-5">
-                  <div class="col-12 text-center">
-                    <h2 class="section-title mb-3 text-white">Contact Us</h2>
-                  </div>
-                </div>
-                <div class="row justify-content-center">
-                  <div class="col-lg-7 mb-5">
-                    <form action="#" class="p-5 bg-white">
-                      <h2 class="h4 text-black mb-5">Contact Form</h2>
-                      <div class="row form-group">
-                        <div class="col-md-6 mb-3 mb-md-0">
-                          <label class="text-black" for="fname"
-                            >First Name</label
-                          >
-                          <input
-                            type="text"
-                            id="fname"
-                            class="form-control rounded-0"
-                          />
-                        </div>
-                        <div class="col-md-6">
-                          <label class="text-black" for="lname"
-                            >Last Name</label
-                          >
-                          <input
-                            type="text"
-                            id="lname"
-                            class="form-control rounded-0"
-                          />
-                        </div>
-                      </div>
-                      <div class="row form-group">
-                        <div class="col-md-12">
-                          <label class="text-black" for="email">Email</label>
-                          <input
-                            type="email"
-                            id="email"
-                            class="form-control rounded-0"
-                          />
-                        </div>
-                      </div>
-                      <div class="row form-group">
-                        <div class="col-md-12">
-                          <label class="text-black" for="subject"
-                            >Subject</label
-                          >
-                          <input
-                            type="subject"
-                            id="subject"
-                            class="form-control rounded-0"
-                          />
-                        </div>
-                      </div>
-                      <div class="row form-group">
-                        <div class="col-md-12">
-                          <label class="text-black" for="message"
-                            >Message</label
-                          >
-                          <textarea
-                            name="message"
-                            id="message"
-                            cols="30"
-                            rows="7"
-                            class="form-control rounded-0"
-                            placeholder="Leave your message here..."
-                          ></textarea>
-                        </div>
-                      </div>
-                      <div class="row form-group">
-                        <div class="col-md-12">
-                          <input
-                            type="submit"
-                            value="Send Message"
-                            class="btn btn-primary mr-2 mb-2"
-                          />
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                </div>
+            <div class="row mb-5 site-section">
+              <div class="col-lg-7" data-aos="fade-right">
+                <img
+                  src="{{ url_for('static', filename='images/undraw_gift_card_6ekc.svg') }}"
+                  alt="Image"
+                  class="img-fluid"
+                />
               </div>
-            </div>
-            <div class="footer py-5 text-center">
-              <div class="container">
-                <div class="row mb-5">
-                  <div class="col-12">
-                    <p class="mb-0">
-                      <a href="#" class="p-3"
-                        ><span class="icon-facebook"></span
-                      ></a>
-                      <a href="#" class="p-3"
-                        ><span class="icon-twitter"></span
-                      ></a>
-                      <a href="#" class="p-3"
-                        ><span class="icon-instagram"></span
-                      ></a>
-                      <a href="#" class="p-3"
-                        ><span class="icon-linkedin"></span
-                      ></a>
-                      <a href="#" class="p-3"
-                        ><span class="icon-pinterest"></span
-                      ></a>
-                    </p>
+              <div class="col-lg-5 pl-lg-5 ml-auto mt-md-5">
+                <h2 class="text-black">Create Your Dream Home</h2>
+                <p class="mb-4">
+                  Turn your house into a home with our exquisite collection of
+                  furniture and decor. We offer unique and timeless pieces that
+                  will transform any space.
+                </p>
+                <div class="author-box" data-aos="fade-left">
+                  <div class="d-flex mb-4">
+                    <div class="mr-3">
+                      <img
+                        src="{{ url_for('static', filename='images/person_4.jpg') }}"
+                        alt="Image"
+                        class="img-fluid rounded-circle"
+                      />
+                    </div>
+                    <div class="mr-auto text-black">
+                      <strong class="font-weight-bold mb-0">Emily Davis</strong>
+                      <br />
+                      Interior Designer | Homedecour
+                    </div>
                   </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12">
-                    <p class="mb-0">
-                      clava &copy;
-                      <script>
-                        document.write(new Date().getFullYear());
-                      </script>
-                      All rights reserved.
-                    </p>
-                  </div>
+                  <blockquote>
+                    &ldquo;Let us help you bring your vision to life. Browse our
+                    collection and create a home that reflects your style and
+                    personality.&rdquo;
+                  </blockquote>
                 </div>
               </div>
             </div>
           </div>
-          <script src="{{url_for('static',filename='js/urls.js')}}"></script>
-          <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
-          <script src="{{ url_for('static', filename='js/jquery-ui.js') }}"></script>
-          <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
-          <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-          <script src="{{ url_for('static', filename='js/owl.carousel.min.js') }}"></script>
-          <script src="{{ url_for('static', filename='js/jquery.countdown.min.js') }}"></script>
-          <script src="{{ url_for('static', filename='js/bootstrap-datepicker.min.js') }}"></script>
-          <script src="{{ url_for('static', filename='js/jquery.easing.1.3.js') }}"></script>
-          <script src="{{ url_for('static', filename='js/aos.js') }}"></script>
-          <script src="{{ url_for('static', filename='js/jquery.fancybox.min.js') }}"></script>
-          <script src="{{ url_for('static', filename='js/jquery.sticky.js') }}"></script>
-          <script src="{{ url_for('static', filename='js/main.js') }}"></script>
         </div>
-      </header>
-    </div>
-  </body>
-</html>
+  
+        <div class="site-section bg-light" id="about-section">
+          <div class="container">
+            <div class="row mb-5">
+              <div class="col-12 text-center">
+                <h2 class="section-title mb-3">About Us</h2>
+              </div>
+            </div>
+            <div class="row mb-5">
+              <div class="col-lg-6" data-aos="fade-right">
+                <img
+                  src="{{ url_for('static', filename='images/undraw_bookmarks_r6up.svg') }}"
+                  alt="Image"
+                  class="img-fluid"
+                />
+              </div>
+              <div class="col-lg-5 ml-auto pl-lg-5">
+                <h2 class="text-black mb-4 h3 font-weight-bold">Our Mission</h2>
+                <p class="mb-4">
+                  At ClavaChat, our mission is to provide a centralized platform
+                  for individuals and businesses to market, sell, or buy goods and
+                  services online seamlessly. We aim to connect buyers and sellers
+                  on various platforms, including WhatsApp and others, offering a
+                  one-stop solution for all their needs. Our focus is on
+                  delivering quality products, ensuring trust, and providing
+                  assurance to both buyers and sellers within a convenient and
+                  user-friendly environment.
+                </p>
+                <ul class="ul-check mb-5 list-unstyled success">
+                  <li>Connect buyers and sellers in one place</li>
+                  <li>Connect Landlords and Tenants in one place</li>
+                  <li>Offer a seamless online marketplace experience</li>
+                  <li>Build trust and assurance among users</li>
+                  <li>
+                    Also providing quality services that can help our users relax
+                    and have good times like our clavaChat Library.
+                  </li>
+                </ul>
+                <p><a href="#" class="btn btn-primary">Learn More</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div class="site-section" id="our-team-section">
+          <div class="container">
+            <div
+              class="row mb-5 justify-content-center text-center"
+              data-aos="fade-up"
+            >
+              <div class="col-7 text-center mb-5">
+                <h2 class="section-title">Our Team</h2>
+                <p class="lead">
+                  At ClavaChat, we have a dedicated team of professionals who are
+                  passionate about delivering the best online marketplace
+                  experience for our users.
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div
+                class="col-lg-4 col-md-6 mb-4"
+                data-aos="fade-up"
+                data-aos-delay="100"
+              >
+                <div class="person">
+                  <div class="bio-img">
+                    <figure>
+                      <img
+                        src="{{ url_for('static', filename='images/person_1.jpg') }}"
+                        alt="Image"
+                        class="img-fluid"
+                      />
+                    </figure>
+                    <div class="social">
+                      <a href="#"><span class="icon-facebook"></span></a>
+                      <a href="#"><span class="icon-twitter"></span></a>
+                      <a href="#"><span class="icon-instagram"></span></a>
+                    </div>
+                  </div>
+                  <h2 class="text-black h1">Cloe Marena</h2>
+                  <span class="sub-title d-block mb-3">CEO</span>
+                  <p>
+                    As the CEO of ClavaChat, Cloe provides overall direction and
+                    guidance to the company. With extensive experience in the
+                    industry, she leads the team with a clear vision and ensures
+                    that ClavaChat remains at the forefront of the online
+                    marketplace. Cloe's strong leadership skills and business
+                    acumen drive the company's growth.
+                  </p>
+                </div>
+              </div>
+  
+              <div
+                class="col-lg-4 col-md-6 mb-4"
+                data-aos="fade-up"
+                data-aos-delay="200"
+              >
+                <div class="person">
+                  <div class="bio-img">
+                    <figure>
+                      <img
+                        src="{{ url_for('static', filename='images/person_3.jpg') }}"
+                        alt="Image"
+                        class="img-fluid"
+                      />
+                    </figure>
+                    <div class="social">
+                      <a href="#"><span class="icon-facebook"></span></a>
+                      <a href="#"><span class="icon-twitter"></span></a>
+                      <a href="#"><span class="icon-instagram"></span></a>
+                    </div>
+                  </div>
+                  <h2 class="text-black h1">Godfrey T. Tankan</h2>
+                  <span class="sub-title d-block mb-3">Founder</span>
+                  <p>
+                    Godfrey is the visionary behind ClavaChat. With a passion for
+                    innovation and a strong entrepreneurial spirit, he laid the
+                    foundation for the company. Godfrey's strategic thinking and
+                    leadership have been instrumental in shaping ClavaChat's
+                    success.
+                  </p>
+                </div>
+              </div>
+  
+              <div
+                class="col-lg-4 col-md-6 mb-4"
+                data-aos="fade-up"
+                data-aos-delay="200"
+              >
+                <div class="person">
+                  <div class="bio-img">
+                    <figure>
+                      <img
+                        src="{{ url_for('static', filename='images/person_2.jpg') }}"
+                        alt="Image"
+                        class="img-fluid"
+                      />
+                    </figure>
+                    <div class="social">
+                      <a href="#"><span class="icon-facebook"></span></a>
+                      <a href="#"><span class="icon-twitter"></span></a>
+                      <a href="#"><span class="icon-instagram"></span></a>
+                    </div>
+                  </div>
+                  <h2 class="text-black h1">John S. Creg</h2>
+                  <span class="sub-title d-block mb-3">Marketing</span>
+                  <p>
+                    John is a creative and results-driven marketer at ClavaChat.
+                    With a deep understanding of market trends and consumer
+                    behavior, he develops and implements effective marketing
+                    strategies to promote the platform. John's expertise in
+                    digital marketing helps ClavaChat reach a wider audience and
+                    attract more users.
+                  </p>
+                </div>
+              </div>
+  
+              <div
+                class="col-lg-4 col-md-6 mb-4"
+                data-aos="fade-up"
+                data-aos-delay="200"
+              >
+                <div class="person">
+                  <div class="bio-img">
+                    <figure>
+                      <img
+                        src="{{ url_for('static', filename='images/person_4.jpg') }}"
+                        alt="Image"
+                        class="img-fluid"
+                      />
+                    </figure>
+                    <div class="social">
+                      <a href="#"><span class="icon-facebook"></span></a>
+                      <a href="#"><span class="icon-twitter"></span></a>
+                      <a href="#"><span class="icon-instagram"></span></a>
+                    </div>
+                  </div>
+                  <h2 class="text-black h1">Kudzai T. Kandeya</h2>
+                  <span class="sub-title d-block mb-3">Director</span>
+                  <p>
+                    The director at ClavaChat oversees the company's operations and ensures that all departments are working cohesively towards the company's goals.
+                    They provide strategic guidance, make important decisions, and foster a collaborative work environment.
+                     The director's leadership and management skills contribute to ClavaChat's overall success.
+                  </p>
+                </div>
+              </div>
+  
+              <div
+                class="col-lg-4 col-md-6 mb-4"
+                data-aos="fade-up"
+                data-aos-delay="200"
+              >
+                <div class="person">
+                  <div class="bio-img">
+                    <figure>
+                      <img
+                        src="{{ url_for('static', filename='images/img_3.jpg') }}"
+                        alt="Image"
+                        class="img-fluid"
+                      />
+                    </figure>
+                    <div class="social">
+                      <a href="#"><span class="icon-facebook"></span></a>
+                      <a href="#"><span class="icon-twitter"></span></a>
+                      <a href="#"><span class="icon-instagram"></span></a>
+                    </div>
+                  </div>
+                  <h2 class="text-black h1">Michael H. Hamilton</h2>
+                  <span class="sub-title d-block mb-3">Project Manager</span>
+                  <p>
+                    The project manager at ClavaChat is responsible for planning, organizing, and executing various projects within the company.
+                    They coordinate with different teams, set project goals, allocate resources, and ensure timely completion of deliverables.
+                    The project manager's strong organizational and communication skills help streamline processes and drive project success.
+                  </p>
+                </div>
+              </div>
+  
+  
+              
+            <div
+              class="col-lg-4 col-md-6 mb-4"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
+              <div class="person">
+                <div class="bio-img">
+                  <figure>
+                    <img
+                      src="{{ url_for('static', filename='images/person_6.png') }}"
+                      alt="Image"
+                      class="img-fluid"
+                    />
+                  </figure>
+                  <div class="social">
+                    <a href="#"><span class="icon-facebook"></span></a>
+                    <a href="#"><span class="icon-twitter"></span></a>
+                    <a href="#"><span class="icon-instagram"></span></a>
+                  </div>
+                </div>
+                <h2 class="text-black h1">Anold tnqn</h2>
+                <span class="sub-title d-block mb-3">Developer</span>
+                <p>
+                  Our team of skilled developers plays a crucial role in building
+                  and maintaining the ClavaChat platform.They are responsible for
+                  coding, testing, and implementing new features, ensuring a
+                  smooth and user-friendly experience. Their expertise in software
+                  development and problem-solving helps ClavaChat deliver a
+                  high-quality product.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="site-section testimonial-wrap bg-light"
+        id="testimonials-section"
+      >
+        <div class="container">
+          <div class="row mb-5">
+            <div class="col-12 text-center">
+              <h2 class="section-title mb-3">Testimonials</h2>
+            </div>
+          </div>
+        </div>
+        <div class="slide-one-item home-slider owl-carousel">
+          <div>
+            <div class="testimonial">
+              <figure
+                class="mb-4 d-block align-items-center justify-content-center"
+              >
+                <div>
+                  <img
+                    src="{{ url_for('static', filename='images/person_3.jpg') }}"
+                    alt="Image"
+                    class="w-100 img-fluid mb-3 shadow"
+                  />
+                </div>
+              </figure>
+              <blockquote class="mb-3">
+                <p>
+                  &ldquo;ClavaChat has revolutionized the way I communicate with
+                  my team. The platform is intuitive and user-friendly, making
+                  collaboration effortless. I highly recommend it!&rdquo;
+                </p>
+              </blockquote>
+              <p class="text-black"><strong>Kennedy Gross</strong></p>
+            </div>
+          </div>
+          <div>
+            <div class="testimonial">
+              <figure
+                class="mb-4 d-block align-items-center justify-content-center"
+              >
+                <div>
+                  <img
+                    src="{{ url_for('static', filename='images/person_2.jpg') }}"
+                    alt="Image"
+                    class="w-100 img-fluid mb-3 shadow"
+                  />
+                </div>
+              </figure>
+              <blockquote class="mb-3">
+                <p>
+                  &ldquo;ClavaChat has significantly improved our team's
+                  productivity. The real-time messaging and file sharing features
+                  have streamlined our workflow and enhanced collaboration. It's a
+                  game-changer!&rdquo;
+                </p>
+              </blockquote>
+              <p class="text-black"><strong>Robert Aguilar</strong></p>
+            </div>
+          </div>
+          <div>
+            <div class="testimonial">
+              <figure
+                class="mb-4 d-block align-items-center justify-content-center"
+              >
+                <div>
+                  <img
+                    src="{{ url_for('static', filename='images/person_4.jpg') }}"
+                    alt="Image"
+                    class="w-100 img-fluid mb-3 shadow"
+                  />
+                </div>
+              </figure>
+              <blockquote class="mb-3">
+                <p>
+                  &ldquo;I've tried numerous communication tools, but ClavaChat
+                  stands out from the rest. Its advanced features and seamless
+                  integration with other apps have made it an indispensable tool
+                  for our team. Highly recommended!&rdquo;
+                </p>
+              </blockquote>
+              <p class="text-black"><strong>Roger Spears</strong></p>
+            </div>
+          </div>
+          <div>
+            <div class="testimonial">
+              <figure
+                class="mb-4 d-block align-items-center justify-content-center"
+              >
+                <div>
+                  <img
+                    src="{{ url_for('static', filename='images/person_1.jpg') }}"
+                    alt="Image"
+                    class="w-100 img-fluid mb-3 shadow"
+                  />
+                </div>
+              </figure>
+              <blockquote class="mb-3">
+                <p>
+                  &ldquo;ClavaChat has transformed the way our remote team
+                  collaborates. The video conferencing and screen sharing
+                  capabilities have bridged the distance and made remote work
+                  seamless. It's a must-have tool for distributed teams!&rdquo;
+                </p>
+              </blockquote>
+              <p class="text-black"><strong>Kyle McDonald</strong></p>
+            </div>
+          </div>
+        </div>
+        <div
+          class="site-section bg-image2 overlay"
+          id="contact-section"
+          style="background-image: url('{{ url_for('static', filename='images/logo.png') }}');"
+        >
+          <div class="container">
+            <div class="row mb-5">
+              <div class="col-12 text-center">
+                <h2 class="section-title mb-3 text-white">Contact Us</h2>
+              </div>
+            </div>
+            <div class="row justify-content-center">
+              <div class="col-lg-7 mb-5">
+                <form action="#" class="p-5 bg-white">
+                  <h2 class="h4 text-black mb-5">Contact Form</h2>
+                  <div class="row form-group">
+                    <div class="col-md-6 mb-3 mb-md-0">
+                      <label class="text-black" for="fname">First Name</label>
+                      <input
+                        type="text"
+                        id="fname"
+                        class="form-control rounded-0"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label class="text-black" for="lname">Last Name</label>
+                      <input
+                        type="text"
+                        id="lname"
+                        class="form-control rounded-0"
+                      />
+                    </div>
+                  </div>
+                  <div class="row form-group">
+                    <div class="col-md-12">
+                      <label class="text-black" for="email">Email</label>
+                      <input
+                        type="email"
+                        id="email"
+                        class="form-control rounded-0"
+                      />
+                    </div>
+                  </div>
+                  <div class="row form-group">
+                    <div class="col-md-12">
+                      <label class="text-black" for="subject">Subject</label>
+                      <input
+                        type="subject"
+                        id="subject"
+                        class="form-control rounded-0"
+                      />
+                    </div>
+                  </div>
+                  <div class="row form-group">
+                    <div class="col-md-12">
+                      <label class="text-black" for="message">Message</label>
+                      <textarea
+                        name="message"
+                        id="message"
+                        cols="30"
+                        rows="7"
+                        class="form-control rounded-0"
+                        placeholder="Leave your message here..."
+                      ></textarea>
+                    </div>
+                  </div>
+                  <div class="row form-group">
+                    <div class="col-md-12">
+                      <input
+                        type="submit"
+                        value="Send Message"
+                        class="btn btn-primary mr-2 mb-2"
+                      />
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer py-5 text-center">
+          <div class="container">
+            <div class="row mb-5">
+              <div class="col-12">
+                <p class="mb-0">
+                  <a href="#" class="p-3"><span class="icon-facebook"></span></a>
+                  <a href="#" class="p-3"><span class="icon-twitter"></span></a>
+                  <a href="#" class="p-3"><span class="icon-instagram"></span></a>
+                  <a href="#" class="p-3"><span class="icon-linkedin"></span></a>
+                  <a href="#" class="p-3"><span class="icon-pinterest"></span></a>
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <p class="mb-0">
+                  clava &copy;
+                  <script>
+                    document.write(new Date().getFullYear());
+                  </script>
+                  All rights reserved.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script src="{{url_for('static',filename='js/urls.js')}}"></script>
+      <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/jquery-ui.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/owl.carousel.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/jquery.countdown.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/bootstrap-datepicker.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/jquery.easing.1.3.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/aos.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/jquery.fancybox.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/jquery.sticky.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  
+      
+    </body>
+  </html>

@@ -19,7 +19,7 @@ no_products_found_response = "We couldn't find any match based on the product yo
 invalid_product_information ="⚠️Invalid product information provided. \n\n- Please provide:\n- *Product name* \n- *Condition* \n- *Budget* \n\nYou can consider this example:*iphone13 pro-max 256GB,boxed $1200* \nreply with `exit` to exit."
 questions_list =["who are you?", "what is your name", "where are you from", "who made you?", "who is tankan", "tankan"]
 
-library_response = "Welcome to the `clavaChat` Library.\n\n- -> If looking for a novel/book, simply reply with the title of that book/novel.\n\n- -> If it's a past exam paper, reply with *level*,*paper title*,*year* and the *session* eg:\n- *A level mathematics paper 1 November 2023*.\n *DISCLAIMER* Please `note` that responses may not be accurate!\n\nType `exit` to exit or message 0779586059 for queries."
+library_response = "Welcome to the `clavaChat` Library.\n\n- -> *If looking for a novel/book 📖:*,\n- reply with the title.\n\n- -> If it's a past exam paper\n- `consider this example`: *A level mathematics paper 1 November 2023*.\n\n ⚠️*DISCLAIMER* Please `note` that responses may not be accurate!\n\nType `exit` to exit."
 
 #subscription section
 subs_response_default = "*YOUR FREE TRIAL HAS `EXPIRED`* \nPlease Choose `Subscription` Option\n1. Monthly Subscription\n2. Check Subscription Status\n3. Help\n4. `Exit`\n\n *Please reply with the `number` of your choice*."
