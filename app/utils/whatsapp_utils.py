@@ -943,12 +943,15 @@ def get_number_range(string):
         return None
 
 def extract_product_details(string):
-    product_name, condition, price ="", "", ""
-    match = re.search(r'^(.*?)\s*,\s*(.*?)\s+\$(\d+)$', string)
+    product_name, condition, price = "", "", ""
+    match = re.search(r'^(.*?)\s*,\s*(.*?)(?:\s+\$(\d+))?$', string)
     if match:
         product_name = match.group(1)
         condition = match.group(2)
-        price = int(match.group(3))
+        if match.group(3):
+            price = int(match.group(3))
+        else:
+            price = 20000
         return product_name, condition, price
     else:
         return product_name, condition, price
@@ -1007,7 +1010,10 @@ def extract_house_details(string):
     if match:
         house_info = match.group(1)
         location = match.group(2)
-        budget = int(match.group(3).replace(',', ''))
+        if match.group(3):
+            budget = int(match.group(3).replace(',', ''))
+        else:
+            budget = 20000
     
     return house_info, location, budget
 
