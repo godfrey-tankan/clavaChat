@@ -477,7 +477,8 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
                         result = "HERE ARE SOME PROPERTIES TO CONSIDER:\n\n"
                         for i,property in enumerate(matching_properties, start=1) :
                             result += f"*{i}* *House information* {property.house_info}\n\t*Rent*: {property.price}\n\t*Location*: {property.location}\n Call: *{property.landlord.name}* on {property.landlord.phone_number}\n\n"
-                        analyze_messages(mobile_number,message)
+                            property_analysis(property.id,active_subscription_status.id,property.landlord.id)
+                        # analyze_messages(mobile_number,message)
                         result += underline_response
                         result += after_tenant_listing_response
                         return result
