@@ -16,7 +16,7 @@ invalid_house_information ="⚠️Invalid house information. \n\n- Please provid
 landlord_name_response = "We would like to use your name when referring tenants to you.\nPlease provide your Name or Company Name"
 no_houses_found_response = "We couldn't find any listing, try another location."
 no_products_found_response = "Your search did not match any products. Please check the spelling or try a different product."
-invalid_product_information ="⚠️Invalid product information provided. \n\n- Please provide:\n- *Product name* \n- *Condition* \n- *Budget - `budget is optional`* \n\nYou can consider this example:*iphone 13 256GB,boxed $1200* \nreply with `exit` to exit."
+invalid_product_information ="⚠️Invalid product information provided. \n\nPlease provide:\n- *Product name* \n- *Condition* \n- *Budget - `budget is optional`* \n\nYou can consider this example:*iphone 13 256GB,boxed $1200* \nreply with `exit` to exit."
 questions_list =["who are you?", "what is your name", "where are you from", "who made you?", "who is tankan", "tankan"]
 
 library_response = "Welcome to the `clavaChat` Library.\n\n- -> *If looking for a novel/book 📖:*,\n- reply with the title.\n\n- -> If it's a past exam paper\n- `consider this example`: *A level mathematics paper 1 November 2023*.\n\n ⚠️*DISCLAIMER* Please `note` that responses may not be accurate!\n\nType `exit` to exit."
