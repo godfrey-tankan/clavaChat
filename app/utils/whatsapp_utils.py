@@ -103,7 +103,6 @@ def get_text_message_input(recipient, text,media,template=False):
     )
 
 def generate_response(response, wa_id, name):
-
     global conversation
     try:
         last_message = session.query(Subscription).filter_by(phone_number=wa_id[0]).first().user_activity
@@ -124,6 +123,7 @@ def generate_response(response, wa_id, name):
                 session.commit()
             except Exception as e:
                 ...
+
             user_status_mode = user_status.user_status
             expiry_date = user_status.trial_end_date
             subscription_status_ob =user_status.subscription_status
@@ -136,6 +136,7 @@ def generate_response(response, wa_id, name):
             Subscription_status = create_subscription(wa_id[0], name, trial_mode)
         except Exception as e:
             Subscription_status = "error!"
+            print('error subs check.. ',e)
             return None
         conversation.append({"role": "user", "content": response})
         if Subscription_status == "created":
@@ -981,12 +982,11 @@ def save_house_info(landlord_phone, location, description, price):
 
 def product_analysis(product_id,subscription_id,seller_id):
     try:
-        old_product_ob = session.query(productsAnalysis).filter_by(product=int(product_id)).first()
+        old_product_ob = session.query(ProductsAnalysis).filter_by(product_id=int(product_id)).first()
     except Exception as e:
         old_product_ob = None
-
     try:
-        product_ob = productsAnalysis(product=int(product_id),product_searcher=int(subscription_id),seller_id=int(seller_id))
+        product_ob = ProductsAnalysis(product_id=int(product_id),product_searcher=int(subscription_id),seller_id=int(seller_id))
         session.add(product_ob)
         if old_product_ob:
             pass
@@ -997,11 +997,12 @@ def product_analysis(product_id,subscription_id,seller_id):
 
 def property_analysis(property_id,subscription_id,landlord_id):
     try:
-        old_property_ob = session.query(propertiesAnalysis).filter_by(property=int(property_id)).first()
+        old_property_ob = session.query(PropertiesAnalysis).filter_by(property_id=int(property_id)).first()
     except Exception as e:
         old_property_ob = None
+
     try:
-        property_ob = propertiesAnalysis(property=int(property_id),property_searcher=int(subscription_id),landlord_id=int(landlord_id))
+        property_ob = PropertiesAnalysis(property_id=int(property_id),property_searcher=int(subscription_id),landlord_id=int(landlord_id))
         session.add(property_ob)
         if old_property_ob:
             pass

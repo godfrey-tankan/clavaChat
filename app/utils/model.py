@@ -24,6 +24,8 @@ class Subscription(Base):
     landlord = relationship("Landlord", back_populates="subscriptions")
     students = relationship("Student", backref="subscription")
     seller = relationship("Seller", back_populates="subscription")
+    products_analysis = relationship("ProductsAnalysis", back_populates="subscription")
+    property_analysis = relationship("PropertiesAnalysis", back_populates="subscription")
 
     @classmethod
     def exists(cls, session, mobile_number):
@@ -61,6 +63,7 @@ class Landlord(Base):
     phone_number = Column(String)
     rental_properties = relationship("RentalProperty", back_populates="landlord")
     subscriptions = relationship("Subscription", back_populates="landlord")
+    property_analysis = relationship("PropertiesAnalysis", back_populates="landlord")
 
 class RentalProperty(Base):
     __tablename__ = 'rental_properties'
@@ -73,6 +76,8 @@ class RentalProperty(Base):
     description = Column(String)
     picture = Column(String)
     landlord = relationship("Landlord", back_populates="rental_properties")
+    properties_analysis = relationship("PropertiesAnalysis", back_populates="property")
+
 
 class Document(Base):
     __tablename__ = 'documents'
@@ -82,27 +87,27 @@ class Document(Base):
     category = Column(String)
     file_path = Column(String)
 
-class productsAnalysis(Base):
+class ProductsAnalysis(Base):
     __tablename__ = 'products_analysis'
 
     id = Column(Integer, primary_key=True)
-    product= Column(Integer, ForeignKey('electronics.id'))
+    product_id = Column(Integer, ForeignKey('electronics.id'), nullable=False)
     product_searcher = Column(Integer, ForeignKey('subscriptions.id'))
     seller_id = Column(Integer, ForeignKey('sellers.id'))
-    seller = relationship("Seller", back_populates="products_analysis")
+    seller = relationship("Seller", back_populates="product_analysis")
     product = relationship("Electronics", back_populates="products_analysis")
     subscription = relationship("Subscription", back_populates="products_analysis")
 
-class propertiesAnalysis(Base):
+class PropertiesAnalysis(Base):
     __tablename__ = 'properties_analysis'
 
     id = Column(Integer, primary_key=True)
-    property= Column(Integer, ForeignKey('rental_properties.id'))
+    property_id = Column(Integer, ForeignKey('rental_properties.id'), nullable=False)
     property_searcher = Column(Integer, ForeignKey('subscriptions.id'))
     landlord_id = Column(Integer, ForeignKey('landlords.id'))
-    landlord = relationship("Landlord", back_populates="properties_analysis")
+    landlord = relationship("Landlord", back_populates="property_analysis")
     property = relationship("RentalProperty", back_populates="properties_analysis")
-    subscription = relationship("Subscription", back_populates="properties_analysis")
+    subscription = relationship("Subscription", back_populates="property_analysis")
 
 class Electronics(Base):
     __tablename__ = 'electronics'
@@ -113,6 +118,7 @@ class Electronics(Base):
     price = Column(Integer)
     seller_id = Column(Integer, ForeignKey('sellers.id'))
     seller = relationship("Seller", back_populates="electronics")
+    products_analysis = relationship("ProductsAnalysis", back_populates="product")
 
 class Clothes(Base):
     __tablename__ = 'clothes'
@@ -176,9 +182,12 @@ class Seller(Base):
     food = relationship("Food", back_populates="seller")
     subscription_id = Column(Integer, ForeignKey('subscriptions.id'))
     subscription = relationship("Subscription", back_populates="seller")
+    subscription = relationship("Subscription", back_populates="seller")
+    product_analysis = relationship("ProductsAnalysis", back_populates="seller")
 
 # Update the database connection URL for PostgreSQL
 # engine = create_engine('postgresql://clavadb_owner:07dJHxYhXqMw@ep-white-firefly-a5yg5yyf.us-east-2.aws.neon.tech/clavadb?sslmode=require')
+
 # engine = create_engine('sqlite:///clava_db.db')
 engine = create_engine('postgresql://clava_db_user:qSaLutxFV9xEfEIBvGq4bnDVMN584nJW@dpg-coq0b4cf7o1s73e8k2l0-a.oregon-postgres.render.com/clava_db')
 Base.metadata.create_all(engine)  # Create the tables if they don't exist
