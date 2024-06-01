@@ -507,7 +507,8 @@ def buying_and_selling(wa_id,message,name,page_number):
                             result = "*HERE IS WHAT YOU MAY LIKE:*\n\n"
                             for i,product in enumerate(seller_products_list, start=1) :
                                 result += f"*{i}* *Product Name* {product.gadget_name}\n\t*Condition*: {product.condition}\n\t*Price*: ${product.price}\n\n Call: *{product.seller.name}* on {product.seller.phone_number}\n\n"
-                            analyze_messages(wa_id[0],message)
+                                product_analysis(product.id,active_subscription_status.id,product.seller.id)
+                            # analyze_messages(wa_id[0],message)
                             result += underline_response
                             result += after_buyer_listing_response
                             return result
@@ -642,7 +643,7 @@ def buying_and_selling(wa_id,message,name,page_number):
                 return response
             if message_ob.lower() == "exit" :
                 try:
-                    active_subscription_status.user_status = welcome
+                    active_subscription_status.user_status = selling_mode
                     active_subscription_status.user_type = new_user
                     session.commit()
                 except Exception as e:
@@ -977,6 +978,37 @@ def save_house_info(landlord_phone, location, description, price):
         session.add(rental_property)
         session.commit()
 
+def product_analysis(product_id,subscription_id,seller_id):
+    try:
+        old_product_ob = session.query(productsAnalysis).filter_by(product=int(product_id)).first()
+    except Exception as e:
+        old_product_ob = None
+
+    try:
+        product_ob = productsAnalysis(product=int(product_id),product_searcher=int(subscription_id),seller_id=int(seller_id))
+        session.add(product_ob)
+        if old_product_ob:
+            pass
+        else:
+            session.commit()
+    except Exception as e:
+        ...
+
+def property_analysis(property_id,subscription_id,landlord_id):
+    try:
+        old_property_ob = session.query(propertiesAnalysis).filter_by(property=int(property_id)).first()
+    except Exception as e:
+        old_property_ob = None
+    try:
+        property_ob = propertiesAnalysis(property=int(property_id),property_searcher=int(subscription_id),landlord_id=int(landlord_id))
+        session.add(property_ob)
+        if old_property_ob:
+            pass
+        else:
+            session.commit()
+    except Exception as e:
+        ...
+
 def analyze_messages(sender,message):
     try:
         last_message = session.query(Message).filter_by(phone_number=sender).order_by(Message.id.desc()).first().message
@@ -1087,7 +1119,7 @@ def edit_property(property_id, new_price):
         return f"Please provide a valid new price for the property `{property_id}`."
 
 def create_seller_subscription(message, mobile_number):
-    response = landlord_subs_response
+    response = seller_subs_response
     monthly_pricing,quarterly_pricing,half_yearly,yearly_pricing = 1, 2.30, 4,7
     monthly_sub,quarterly_sub,half_yearly_sub,yearly_sub = "Monthly Subscription","Quarterly Subscription","Half Yearly Subscription","Yearly Subscription"
     try:
@@ -1139,7 +1171,7 @@ def create_seller_subscription(message, mobile_number):
         try:
             landlord_subs_cancelling = session.query(Subscription).filter_by(mobile_number=mobile_number).first()
             landlord_subs_cancelling.subscription_status = new_user
-            landlord_subs_cancelling.user_status = landlord_user
+            landlord_subs_cancelling.user_status = seller_user
             session.commit()
         except Exception as e:
             ...

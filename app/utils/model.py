@@ -53,7 +53,6 @@ class Message(Base):
     message = Column(String)
     phone_number = Column(String)
 
-
 class Landlord(Base):
     __tablename__ = 'landlords'
 
@@ -82,6 +81,28 @@ class Document(Base):
     title = Column(String)
     category = Column(String)
     file_path = Column(String)
+
+class productsAnalysis(Base):
+    __tablename__ = 'products_analysis'
+
+    id = Column(Integer, primary_key=True)
+    product= Column(Integer, ForeignKey('electronics.id'))
+    product_searcher = Column(Integer, ForeignKey('subscriptions.id'))
+    seller_id = Column(Integer, ForeignKey('sellers.id'))
+    seller = relationship("Seller", back_populates="products_analysis")
+    product = relationship("Electronics", back_populates="products_analysis")
+    subscription = relationship("Subscription", back_populates="products_analysis")
+
+class propertiesAnalysis(Base):
+    __tablename__ = 'properties_analysis'
+
+    id = Column(Integer, primary_key=True)
+    property= Column(Integer, ForeignKey('rental_properties.id'))
+    property_searcher = Column(Integer, ForeignKey('subscriptions.id'))
+    landlord_id = Column(Integer, ForeignKey('landlords.id'))
+    landlord = relationship("Landlord", back_populates="properties_analysis")
+    property = relationship("RentalProperty", back_populates="properties_analysis")
+    subscription = relationship("Subscription", back_populates="properties_analysis")
 
 class Electronics(Base):
     __tablename__ = 'electronics'
@@ -158,8 +179,8 @@ class Seller(Base):
 
 # Update the database connection URL for PostgreSQL
 # engine = create_engine('postgresql://clavadb_owner:07dJHxYhXqMw@ep-white-firefly-a5yg5yyf.us-east-2.aws.neon.tech/clavadb?sslmode=require')
-# engine = create_engine('sqlite:///clava_db.db')
-engine = create_engine('postgresql://clava_db_user:qSaLutxFV9xEfEIBvGq4bnDVMN584nJW@dpg-coq0b4cf7o1s73e8k2l0-a.oregon-postgres.render.com/clava_db')
+engine = create_engine('sqlite:///clava_db.db')
+# engine = create_engine('postgresql://clava_db_user:qSaLutxFV9xEfEIBvGq4bnDVMN584nJW@dpg-coq0b4cf7o1s73e8k2l0-a.oregon-postgres.render.com/clava_db')
 Base.metadata.create_all(engine)  # Create the tables if they don't exist
 # Create a session
 Session = sessionmaker(bind=engine)
