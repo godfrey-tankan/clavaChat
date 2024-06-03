@@ -100,8 +100,10 @@
       type="text/css"
       href="{{ url_for('static', filename='css/style.css') }}"
     />
+    
+
   </head>
-    <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+  <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
       <div id="overlayer"></div>
       <div class="loader">
         <div class="spinner-border text-primary" role="status">
@@ -557,7 +559,7 @@
                   assurance to both buyers and sellers within a convenient and
                   user-friendly environment.
                 </p>
-                <ul class="ul-check mb-5 list-unstyled success">
+                <ul class="ul-check mb-5">
                   <li>Connect buyers and sellers in one place</li>
                   <li>Connect Landlords and Tenants in one place</li>
                   <li>Offer a seamless online marketplace experience</li>
@@ -604,9 +606,9 @@
                       />
                     </figure>
                     <div class="social">
-                      <a href="#"><span class="icon-facebook"></span></a>
-                      <a href="#"><span class="icon-twitter"></span></a>
-                      <a href="#"><span class="icon-instagram"></span></a>
+                      <i class="fa fa-facebook" aria-hidden="true"></i>
+                      <i class="fa fa-twitter" aria-hidden="true"></i>
+                      <i class="fa fa-linkedin" aria-hidden="true"></i>
                     </div>
                   </div>
                   <h2 class="text-black h1">Cloe Marena</h2>
@@ -637,9 +639,9 @@
                       />
                     </figure>
                     <div class="social">
-                      <a href="#"><span class="icon-facebook"></span></a>
-                      <a href="#"><span class="icon-twitter"></span></a>
-                      <a href="#"><span class="icon-instagram"></span></a>
+                      <i class="fa fa-facebook" aria-hidden="true"></i>
+                      <i class="fa fa-twitter" aria-hidden="true"></i>
+                      <i class="fa fa-linkedin" aria-hidden="true"></i>
                     </div>
                   </div>
                   <h2 class="text-black h1">Godfrey T. Tankan</h2>
@@ -669,9 +671,11 @@
                       />
                     </figure>
                     <div class="social">
-                      <a href="#"><span class="icon-facebook"></span></a>
-                      <a href="#"><span class="icon-twitter"></span></a>
-                      <a href="#"><span class="icon-instagram"></span></a>
+                      <i class="fa fa-facebook" aria-hidden="true"></i>
+                      <i class="fa fa-twitter" aria-hidden="true"></i>
+                      <i class="fa fa-linkedin" aria-hidden="true"></i>
+
+
                     </div>
                   </div>
                   <h2 class="text-black h1">John S. Creg</h2>
@@ -702,9 +706,10 @@
                       />
                     </figure>
                     <div class="social">
-                      <a href="#"><span class="icon-facebook"></span></a>
-                      <a href="#"><span class="icon-twitter"></span></a>
-                      <a href="#"><span class="icon-instagram"></span></a>
+                      <i class="fa fa-facebook" aria-hidden="true"></i>
+                      <i class="fa fa-twitter" aria-hidden="true"></i>
+                      <i class="fa fa-linkedin" aria-hidden="true"></i>
+
                     </div>
                   </div>
                   <h2 class="text-black h1">Kudzai T. Kandeya</h2>
@@ -732,9 +737,9 @@
                       />
                     </figure>
                     <div class="social">
-                      <a href="#"><span class="icon-facebook"></span></a>
-                      <a href="#"><span class="icon-twitter"></span></a>
-                      <a href="#"><span class="icon-instagram"></span></a>
+                      <i class="fa fa-facebook" aria-hidden="true"></i>
+                      <i class="fa fa-twitter" aria-hidden="true"></i>
+                      <i class="fa fa-linkedin" aria-hidden="true"></i>
                     </div>
                   </div>
                   <h2 class="text-black h1">Michael H. Hamilton</h2>
@@ -764,9 +769,10 @@
                     />
                   </figure>
                   <div class="social">
-                    <a href="#"><span class="icon-facebook"></span></a>
-                    <a href="#"><span class="icon-twitter"></span></a>
-                    <a href="#"><span class="icon-instagram"></span></a>
+                    <i class="fa fa-facebook" aria-hidden="true"></i>
+                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                    <i class="fa fa-linkedin" aria-hidden="true"></i>
+                    
                   </div>
                 </div>
                 <h2 class="text-black h1">Anold tnqn</h2>
@@ -905,25 +911,24 @@
             </div>
             <div class="row justify-content-center">
               <div class="col-lg-7 mb-5">
-                <form action="#" class="p-5 bg-white">
+
+                <form action="#" class="p-5 bg-white"
+                    id="send-email">
                   <h2 class="h4 text-black mb-5">Contact Form</h2>
                   <div class="row form-group">
-                    <div class="col-md-6 mb-3 mb-md-0">
+                    <div class="col-md-12">
                       <label class="text-black" for="fname">First Name</label>
                       <input
                         type="text"
-                        id="fname"
                         class="form-control rounded-0"
-                      />
-                    </div>
-                    <div class="col-md-6">
-                      <label class="text-black" for="lname">Last Name</label>
-                      <input
                         type="text"
-                        id="lname"
-                        class="form-control rounded-0"
+                        placeholder="Name *"
+                        id="name"
+                        name="name"
+
                       />
                     </div>
+                    
                   </div>
                   <div class="row form-group">
                     <div class="col-md-12">
@@ -932,6 +937,8 @@
                         type="email"
                         id="email"
                         class="form-control rounded-0"
+                        placeholder="Email *"
+                        name="email"
                       />
                     </div>
                   </div>
@@ -939,9 +946,11 @@
                     <div class="col-md-12">
                       <label class="text-black" for="subject">Subject</label>
                       <input
-                        type="subject"
-                        id="subject"
                         class="form-control rounded-0"
+                        type="text"
+                        placeholder="Subject *"
+                        id="subject"
+                        name="subject"
                       />
                     </div>
                   </div>
@@ -958,17 +967,40 @@
                       ></textarea>
                     </div>
                   </div>
-                  <div class="row form-group">
-                    <div class="col-md-12">
-                      <input
-                        type="submit"
-                        value="Send Message"
-                        class="btn btn-primary mr-2 mb-2"
-                      />
+                 
+                    <button
+                    class="btn btn-primary mr-2 mb-2"
+                    id="submit-btn"
+                    type="submit"
+                    onclick="sendMail(event)"
+                  >
+                    SUBMIT
+                  </button>
+                    </form>
+                    <div class="alert-wrapper" id="alert-success">
+                    <div id="success">
+                      <button class="closeAlert">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                      </button>
+                      <div class="wrapper">
+                        <p>Your message was sent successfully.</p>
+                      </div>
                     </div>
                   </div>
-                </form>
+                  <div class="alert-wrapper" id="alert-error">
+                    <div id="error">
+                      <button class="closeAlert">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                      </button>
+                      <div class="wrapper">
+                        <p>Sorry! Something Went Wrong.</p>
+                      </div>
+                    </div>
+                  </div>
               </div>
+
+
+
             </div>
           </div>
         </div>
@@ -977,11 +1009,13 @@
             <div class="row mb-5">
               <div class="col-12">
                 <p class="mb-0">
-                  <a href="#" class="p-3"><span class="icon-facebook"></span></a>
-                  <a href="#" class="p-3"><span class="icon-twitter"></span></a>
-                  <a href="#" class="p-3"><span class="icon-instagram"></span></a>
-                  <a href="#" class="p-3"><span class="icon-linkedin"></span></a>
-                  <a href="#" class="p-3"><span class="icon-pinterest"></span></a>
+                  <i class="fa fa-facebook" aria-hidden="true"></i>
+                  <i class="fa fa-linkedin" aria-hidden="true"></i>
+                  <i class="fa fa-instagram" aria-hidden="true"></i>
+                  <i class="fa fa-github" aria-hidden="true"></i>
+                  <i class="fa fa-pininterest" aria-hidden="true"></i>
+                  <i class="fa fa-quora" aria-hidden="true"></i>
+                
                 </p>
               </div>
             </div>
@@ -999,6 +1033,19 @@
           </div>
         </div>
       </div>
+      <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
+    ></script>
+    <script type="text/javascript">
+      (function () {
+        emailjs.init({
+          publicKey: "ymKO20M5d5x9a3xby",
+        });
+      })();
+    </script>
+    <script src="{{ url_for('static', filename='js/contact.js') }}"></script>
+
       <script src="{{url_for('static',filename='js/urls.js')}}"></script>
       <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/jquery-ui.js') }}"></script>

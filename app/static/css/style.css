@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800,900|Source+Sans+Pro:300,400,600,700,900");
 /*----font awesome -------*/
-@import url("/css/font-awesome.min.css");
+@import url("./font-awesome.min.css");
 
 /* Base */
 body {
@@ -13,6 +13,57 @@ body {
 ::selection {
   background: #000;
   color: #fff;
+}
+.alert-wrapper {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  top: 0;
+  left: 0;
+  z-index: 9999999;
+}
+#success,
+#error {
+  position: relative;
+  width: 500px;
+  height: 100px;
+  top: calc(50% - 50px);
+  left: calc(50% - 250px);
+  background: rgba(0, 0, 0, 0.8);
+  text-align: center;
+}
+#success .wrapper,
+#error .wrapper {
+  display: table;
+  width: 100%;
+  height: 100%;
+}
+#success .wrapper p,
+#error .wrapper p {
+  display: table-cell;
+  vertical-align: middle;
+  letter-spacing: 1px;
+}
+#success p {
+  color: #26ace3;
+}
+#error p {
+  color: #c9182b;
+}
+#error button,
+#success button {
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  line-height: 20px;
+  background: transparent;
+  border-radius: 50%;
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  font-size: 20px;
 }
 #subs-history {
   color: #848485;
