@@ -1037,18 +1037,17 @@ def analyze_messages(sender,message):
             ...
 
 def extract_house_details(string):
-    pattern = r'^(.*?)\sin\s(.*?)\s*\$([\d,]+)$'
+    pattern = r'^(.*?)\sin\s(.*?)(?:\s*\$([\d,]+))?$'
     match = re.search(pattern, string)
-    house_info, location, budget = "", "", ""
+    house_info, location, budget = "", "", 0
     
     if match:
         house_info = match.group(1)
         location = match.group(2)
-        if match.group(3):
-            budget = int(match.group(3).replace(',', ''))
-        else:
-            budget = 20000
-    
+        try:
+            budget = int(match.group(3).replace(',', '')) if match.group(3) else 100000
+        except (IndexError, ValueError):
+            budget = 0
     return house_info, location, budget
 
 def search_rental_properties(house_info, location, budget, page_number, records_per_page):
