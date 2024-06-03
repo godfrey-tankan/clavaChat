@@ -23,12 +23,12 @@ document.addEventListener("DOMContentLoaded", function () {
     ourTeam.setAttribute("href", "/boost-my-business");
     testimonials.setAttribute("href", "/boost-my-business");
     loginButton.textContent = "Logout";
-    loginButton.setAttribute("href", "/home");
+    loginButton.setAttribute("href", "/");
   }
 
   loginButton.addEventListener("click", function () {
     if (loginButton.textContent === "Logout") {
-      window.location.href = "{{ url_for('webhook.home') }}";
+      window.location.href = "{{ url_for('webhook./') }}";
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
       localStorage.removeItem("user_name");

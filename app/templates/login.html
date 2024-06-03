@@ -157,7 +157,7 @@
                 // Login successful
                 localStorage.setItem("access_token", response.access_token);
                 localStorage.setItem("user_name", username);
-                window.location.href = "{{ url_for('webhook.home') }}";
+                window.location.href = "{{ url_for('webhook./') }}";
               }
             } else {
               console.error(xhr.responseText);
