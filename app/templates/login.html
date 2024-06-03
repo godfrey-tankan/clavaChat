@@ -110,7 +110,9 @@
                     class="btn text-white btn-block btn-primary"
                   />
                   <span class="d-block text-left my-4 text-muted">
-                    <a href="register">No account?</a></span
+                    <a onclick="toggleRegister()" href="# "
+                      >No account?</a
+                    ></span
                   >
                   <div class="social-login">
                     <a href="#" class="facebook">
@@ -132,6 +134,9 @@
       </div>
     </div>
     <script>
+      function toggleRegister() {
+        window.location.href = "/register";
+      }
       document
         .getElementById("login-form")
         .addEventListener("submit", function (event) {
@@ -157,7 +162,7 @@
                 // Login successful
                 localStorage.setItem("access_token", response.access_token);
                 localStorage.setItem("user_name", username);
-                window.location.href = "{{ url_for('webhook./') }}";
+                window.location.href = "{{ url_for('webhook.home') }}";
               }
             } else {
               console.error(xhr.responseText);

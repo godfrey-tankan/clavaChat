@@ -28,12 +28,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   loginButton.addEventListener("click", function () {
     if (loginButton.textContent === "Logout") {
-      window.location.href = "{{ url_for('webhook./') }}";
+      window.location.href = "{{ url_for('webhook.home') }}";
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
       localStorage.removeItem("user_name");
     } else {
-      window.location.href = "/login";
+      window.location.href = "login";
     }
   });
 
