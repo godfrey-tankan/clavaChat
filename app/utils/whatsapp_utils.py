@@ -1047,7 +1047,7 @@ def extract_house_details(string):
         try:
             budget = int(match.group(3).replace(',', '')) if match.group(3) else 100000
         except (IndexError, ValueError):
-            budget = 0
+            budget = 10000
     return house_info, location, budget
 
 def search_rental_properties(house_info, location, budget, page_number, records_per_page):
@@ -1495,6 +1495,8 @@ def publish_post(message):
         return response
 
 def library_contents_lookup(requester, message):
+    if message.lower() in greetings_list:
+        return "Hello! Please enter the title of what you are looking for."
     if message.lower() == "more":
         message = "vvvvbvb"
         request_type = '*here are some other random documents you might be interested in:*'

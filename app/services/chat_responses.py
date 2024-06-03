@@ -21,6 +21,8 @@ questions_list =["who are you?", "what is your name", "where are you from", "who
 
 library_response = "Welcome to the `clavaChat` Library.\n\n- *For a novel/book 📖:*,\n- reply with the title.\n\n- For a past exam paper\n- `consider this example`: *A level mathematics paper 1 November 2023*.\n\n ⚠️ *DISCLAIMER* _Please `note` that responses may not be accurate!_\n\nType `exit` to exit.\t clava.co.zw"
 
+
+greetings_list = ["hi", "hello", "hey", "hie", "good afternoon", "good evening", "good night", "morning", "afternoon", "evening", "night"]
 #subscription section
 subs_response_default = "*YOUR FREE TRIAL HAS `EXPIRED`* \nPlease Choose `Subscription` Option\n1. Monthly Subscription\n2. Check Subscription Status\n3. Help\n4. `Exit`\n\n *Please reply with the `number` of your choice*."
 subs_response1 = "Monthly Subscription Plan:\n\n *Features* \n1. Unlimited Access Message Requests\n2. 24/7 Customer Support\n3. Cancel Anytime - `guaranteed money back within first week` if you decided to change otherwise.\n\n *Pricing* \n$1/month\n\n To subscribe, please reply with, *Y* to proceed or *N* to abort."
