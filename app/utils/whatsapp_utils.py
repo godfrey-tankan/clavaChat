@@ -1428,12 +1428,30 @@ def search_document(document_name, requester,request_type):
                 return response
             else:
                 modified_string = document_name.replace(" ", "_")
+                try:
+                    document_parts = modified_string.split("_")
+                    modified_string = " ".join(document_parts[:2])
+                    document = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{modified_string}%"))).first()
+                    if document:
+                        response = document.title
+                        return response
+                    else:
+                        document_parts = document_name.split("")
+                        modified_string = " ".join(document_parts[:2])
+                        document = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{modified_string}%"))).first()
+                        if document:
+                            response = document.title
+                            return response
+
+                except Exception as e:
+                    ...
                 document = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{modified_string}%"))).first()
                 if document:
                     response = document.title
                     return response
                 else:
                     modified_string = document_name.replace(" ", "-")
+                    
                     document = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{modified_string}%"))).first()
                     if document:
                         response = document.title
