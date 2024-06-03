@@ -90,6 +90,7 @@ def subscriptions():
 
 @webhook_blueprint.route("/subscription_plan", methods=["POST", "GET"])
 def subscription_plan():
+
     if request.method == "POST":
         data = request.get_json()
         userName = data.get("user_name")
@@ -125,3 +126,11 @@ def subscription_plan():
                 return jsonify(data)
 
     return jsonify({"error": "Invalid request"})
+
+@webhook_blueprint.route("/insights", methods=["POST", "GET"])
+def insights():
+    if request.method == "GET":
+        return render_template("insights.html")
+    elif request.method == "POST":
+        data = request.get_json()
+        return jsonify(data)

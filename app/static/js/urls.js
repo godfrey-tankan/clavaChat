@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const unwantedItems = document.getElementById("unwanted");
   const contactUs = document.getElementById("contact");
   const ourTeam = document.getElementById("our-team");
+  const getStartedBtn = document.getElementById("get-started-btn");
 
   if (accessToken) {
     // User has a valid access token
@@ -24,6 +25,8 @@ document.addEventListener("DOMContentLoaded", function () {
     testimonials.setAttribute("href", "/boost-my-business");
     loginButton.textContent = "Logout";
     loginButton.setAttribute("href", "/");
+    getStartedBtn.textContent = "My Insights";
+    getStartedBtn.setAttribute("href", "/insights");
   }
 
   loginButton.addEventListener("click", function () {

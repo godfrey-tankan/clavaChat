@@ -30,7 +30,7 @@ configure_logging()
 
 app.register_blueprint(webhook_blueprint)
 
-@app.route("/login", methods=["POST", "GET"])
+@app.route("/login/", methods=["POST", "GET"])
 def login():
     if request.method == "GET":
         return render_template('login.html')

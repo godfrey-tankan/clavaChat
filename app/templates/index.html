@@ -165,25 +165,10 @@
                 if (username) {
                   document.write(username);
                 }</script></span>
-              <div class="user-profile">
+              <div class="user-profile site-menu-toggle js-menu-toggle text-black float-right">
               
-                <img
-                  style="
-                    max-width: 30px;
-                    max-height: 30px;
-                    margin-left: 10%;
-                  "
-                  src="{{url_for('static', filename='images/account.svg')}}"
-                  alt="user"
-                />
+                <i class="fa fa-user-circle" aria-hidden="true"></i>
                 
-              <div class="col-6 col-md-9 d-inline-block d-lg-none ml-md-0">
-                <a
-                  href="#"
-                  class="site-menu-toggle js-menu-toggle text-black float-right"
-                  ><span class="icon-menu h3"></span>
-                  </a>
-              </div>
             </div>
           </div>
         </header>
@@ -215,7 +200,7 @@
                       customer satisfaction.
                     </p>
                     <div>
-                      <a href="login" class="btn btn-primary mr-2 mb-2"
+                      <a href="login" id="get-started-btn" class="btn btn-primary mr-2 mb-2"
                         >Get Started
                         </a>
                     </div>

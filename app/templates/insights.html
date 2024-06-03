@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>clavaChat | Intelligent business insights &mdash;</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+      name="description"
+      content="Empower your business with ClavaChat's intelligent Marketing Solutions. Revolutionize customer interactions, boost efficiency, and drive customer satisfaction and get best insights about customer behavior through our intelligent WhatsApp chatbot +263717003473."
+    />
+    <meta
+      name="keywords"
+      content="clavachat, clavachat zimbabwe,clavachat chatbot, clavachat business, business automation, customer satisfaction, online marketplace, buy and sell, whatsapp marketplace,whatsapp ecommerce platform"
+    />
+    <meta name="author" content="Clava" />
+    <meta name="robots" content="index, follow" />
+    <meta
+      property="og:title"
+      content="ClavaChat Business - Take Your Business to the Next Level"
+    />
+    <meta
+      property="og:description"
+      content="Empower your business with ClavaChat's intelligent business insights solution. Revolutionize customer interactions, boost efficiency, and drive customer satisfaction."
+    />
+    <meta property="og:url" content="https://www.clavachat.co.zw" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://www.clavachat.co.zw/logo.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="ClavaChat Business - Take Your Business to the Next Level"
+    />
+    <meta
+      name="twitter:description"
+      content="Empower your business with ClavaChat's intelligent chatbot solution. Revolutionize customer interactions, boost efficiency, and drive customer satisfaction."
+    />
+    <meta name="twitter:image" content="https://www.clavachat.com/logo.png" />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Nunito:300,400,700"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='theme/fonts/icomoon/style.css') }}"
+    />
+    <!-- start -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+    />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/jquery-ui.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/owl.carousel.min.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/owl.theme.default.min.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/jquery.fancybox.min.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/bootstrap-datepicker.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/flaticon.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/aos.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    
+
+  </head>
+  <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+      <div id="overlayer"></div>
+      <div class="loader">
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+      <div class="site-wrap" id="home-section">
+        <div class="site-mobile-menu site-navbar-target">
+          <div class="site-mobile-menu-header">
+            <div class="site-mobile-menu-close mt-3">
+              <span class="icon-close2 js-menu-toggle"></span>
+            </div>
+          </div>
+          <div class="site-mobile-menu-body"></div>
+        </div>
+        <header
+          class="site-navbar py-4 js-sticky-header site-navbar-target"
+          role="banner"
+        >
+          <div class="container">
+            <div class="row align-items-center">
+              <div class="col-6 col-md-3 col-xl-4 d-block">
+                <h1 class="mb-0 site-logo">
+                  <a href="index.html" class="text-black h2 mb-0">
+                    clavaChat<span class="text-primary">.</span>
+                  </a>
+                </h1>
+              </div>
+              <div class="col-12 col-md-9 col-xl-8 main-menu">
+                <nav class="site-navigation position-relative text-right" role="navigation">
+                  <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block ml-0 pl-0">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li ><a href="#features-section" class="nav-link "id="services" >Profits</a></li>
+                    <li class="has-children" >
+                      <a href="#about-section" class="nav-link" id="about-us">Appearances</a>
+                      <ul class="dropdown arrow-top">
+                        <li ><a href="#our-team-section" class="nav-link"id="our-team" >Track sales</a></li>
+                      </ul>
+                    </li>
+                    <li id="unwanted"><a href="#testimonials-section" class="nav-link" id="testimonials">Trends</a></li>
+                    <li id="unwanted"><a href="#blog-section" class="nav-link" id="blog" >overall</a></li>
+                    <li>
+                      <a
+                        style="padding: 8px; color: #fff"
+                        class="btn btn-primary"
+                        id="login-button"
+                        href="login"
+                        class="nav-link"
+                      >Login</a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+              
+              
+              <span class="user-name"><script>
+              const username = localStorage.getItem("user_name");
+                if (username) {
+                  document.write(username);
+                }</script></span>
+              <div class="user-profile">
+              
+                <img
+                  style="
+                    max-width: 30px;
+                    max-height: 30px;
+                    margin-left: 10%;
+                  "
+                  src="{{url_for('static', filename='images/account.svg')}}"
+                  alt="user"
+                />
+                
+              <div class="col-6 col-md-9 d-inline-block d-lg-none ml-md-0">
+                <a
+                  href="#"
+                  class="site-menu-toggle js-menu-toggle text-black float-right"
+                  ><span class="icon-menu h3"></span>
+                  </a>
+              </div>
+            </div>
+          </div>
+        </header>
+  
+        <div class="site-blocks-cover" style="overflow: hidden">
+          <div class="container">
+            <div class="row align-items-center justify-content-center">
+              <div
+                class="col-md-12"
+                style="position: relative"
+                data-aos="fade-up"
+                data-aos-delay="200"
+              >
+                <img
+                  src="{{ url_for('static', filename='images/undraw_investing_7u74.svg') }}"
+                  alt="Image"
+                  class="img-fluid img-absolute"
+                />
+                <div class="row mb-4" data-aos="fade-up" data-aos-delay="200">
+                  <div class="col-lg-6 mr-auto">
+                    <h1>
+                      Take Your Business to the Next Level with ClavaChat Business
+                    </h1>
+                    <p class="mb-5">
+                      ClavaChat Business empowers you with an intelligent chatbot
+                      solution that revolutionizes customer interactions.
+                      Seamlessly integrate automated conversational agents into
+                      your operations and unlock new levels of efficiency and
+                      customer satisfaction.
+                    </p>
+                    <div>
+                      <a href="login" id="get-started-btn" class="btn btn-primary mr-2 mb-2"
+                        >Get Started
+                        </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="footer py-5 text-center">
+          <div class="container">
+            <div class="row mb-5">
+              <div class="col-12">
+                <p class="mb-0">
+                  <i class="fa fa-facebook" aria-hidden="true"></i>
+                  <i class="fa fa-linkedin" aria-hidden="true"></i>
+                  <i class="fa fa-instagram" aria-hidden="true"></i>
+                  <i class="fa fa-github" aria-hidden="true"></i>
+                  <i class="fa fa-pininterest" aria-hidden="true"></i>
+                  <i class="fa fa-quora" aria-hidden="true"></i>
+                
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <p class="mb-0">
+                  clava &copy;
+                  <script>
+                    document.write(new Date().getFullYear());
+                  </script>
+                  All rights reserved.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
+    ></script>
+    <script type="text/javascript">
+      (function () {
+        emailjs.init({
+          publicKey: "ymKO20M5d5x9a3xby",
+        });
+      })();
+    </script>
+    <script src="{{ url_for('static', filename='js/contact.js') }}"></script>
+
+      <script src="{{url_for('static',filename='js/urls.js')}}"></script>
+      <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/jquery-ui.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/owl.carousel.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/jquery.countdown.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/bootstrap-datepicker.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/jquery.easing.1.3.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/aos.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/jquery.fancybox.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/jquery.sticky.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  
+      
+    </body>
+  </html>
