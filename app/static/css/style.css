@@ -3,6 +3,10 @@
 @import url("./font-awesome.min.css");
 
 /* Base */
+html {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
 body {
   line-height: 1.7;
   color: gray;
