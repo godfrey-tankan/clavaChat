@@ -12,6 +12,10 @@ body {
   overflow-y: auto;
   scroll-behavior: smooth;
 }
+#body {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
 
 ::selection {
   background: #000;
