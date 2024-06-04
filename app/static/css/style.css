@@ -8,6 +8,8 @@ body {
   color: gray;
   font-weight: 400;
   font-size: 1rem;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 ::selection {
@@ -241,9 +243,15 @@ h5,
 .site-section {
   padding: 2.5em 0;
 }
+#contact-section {
+  background-image: url("../images/logo.png");
+}
 @media (min-width: 768px) {
   .site-section {
-    padding: 5em 0;
+    padding: 1em 0;
+  }
+  #contact-section {
+    background-image: none;
   }
 }
 
@@ -712,6 +720,9 @@ h5,
   .site-blocks-cover h1 {
     font-size: 2rem;
   }
+  #contact-section {
+    background-image: none;
+  }
 }
 .site-blocks-cover p {
   color: #6c757d;
@@ -739,6 +750,9 @@ h5,
     -ms-transform: translateY(0%) translateX(0%);
     transform: translateY(0%) translateX(0%);
     margin-bottom: 30px;
+  }
+  #contact-section {
+    background-image: none;
   }
 }
 
@@ -782,6 +796,9 @@ h5,
   .slide-one-item.home-slider .owl-nav {
     display: none;
   }
+  #contact-section {
+    background-image: none;
+  }
 }
 
 .slide-one-item.home-slider .owl-prev {
@@ -816,6 +833,9 @@ h5,
   .slide-one-item.home-slider .owl-prev,
   .slide-one-item.home-slider .owl-next {
     font-size: 25px;
+  }
+  #contact-section {
+    background-image: none;
   }
 }
 .slide-one-item.home-slider .owl-prev > span,
@@ -1013,6 +1033,9 @@ h5,
 @media (max-width: 991.98px) {
   .section-title {
     font-size: 30px;
+  }
+  #contact-section {
+    background-image: none;
   }
 }
 
