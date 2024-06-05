@@ -1261,12 +1261,19 @@ h5,
     width: 20px;
     height: 20px;
   }
+  #login-wraper {
+    max-width: 90%;
+    margin-left: 4%;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1199px) {
   .loader-spinner {
     width: 25px;
     height: 25px;
+  }
+  #login-wraper {
+    max-width: 70%;
   }
 }
 
