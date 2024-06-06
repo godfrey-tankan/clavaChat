@@ -118,8 +118,10 @@
       <div class="site-wrap" id="home-section">
         <div class="site-mobile-menu site-navbar-target">
           <div class="site-mobile-menu-header">
-            <div class="site-mobile-menu-close mt-3">
-              <span class="icon-close2 js-menu-toggle"></span>
+            <div class="site-mobile-menu-close mt-3 js-menu-toggle">
+              <span class=" js-menu-toggle"></span>
+              <i class="fa fa-times" aria-hidden="true"></i>
+
             </div>
           </div>
           <div class="site-mobile-menu-body"></div>
@@ -145,11 +147,9 @@
                   <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block ml-0 pl-0">
                     <li><a href="#home-section" class="nav-link">Home</a></li>
                     <li ><a href="#features-section" class="nav-link "id="services" >Services</a></li>
-                    <li class="has-children" >
+                    <li  >
                       <a href="#about-section" class="nav-link" id="about-us">About Us</a>
-                      <ul class="dropdown arrow-top">
-                        <li ><a href="#our-team-section" class="nav-link"id="our-team" >Our Team</a></li>
-                      </ul>
+
                     </li>
                     <li id="unwanted"><a href="#testimonials-section" class="nav-link" id="testimonials">Testimonials</a></li>
                     <li id="unwanted"><a href="#blog-section" class="nav-link" id="blog" >Blog</a></li>
@@ -171,11 +171,11 @@
               <span class="user-name"><script>
               const username = localStorage.getItem("user_name");
                 if (username) {
-                  document.write(username);
+                  document.write('hello,',username);
                 }</script></span>
               <div class="user-profile site-menu-toggle js-menu-toggle text-black float-right">
               
-                <i class="fa fa-user-circle" aria-hidden="true"></i>
+                <i id="user-icon" class="fa fa-user-circle" aria-hidden="true"></i>
                 
             </div>
           </div>
@@ -207,8 +207,13 @@
                       Seamlessly integrate automated conversational agents into
                       your operations and unlock new levels of efficiency and
                       customer satisfaction.
+                      <a href="login"
+                      style="padding-left: 30px;"
+                        ><i id="arrow-login" class="fa fa-arrow-right" aria-hidden="true">login</i>
+                        </a>
+                      
                     </p>
-                    <div>
+                    <div >
                       <a href="login" id="get-started-btn" class="btn btn-primary mr-2 mb-2"
                         >Get Started
                         </a>

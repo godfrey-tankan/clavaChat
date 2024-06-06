@@ -7,8 +7,8 @@ AOS.init({
 jQuery(document).ready(function ($) {
   "use strict";
 
-  $(".loader").delay(1000).fadeOut("slow");
-  $("#overlayer").delay(1000).fadeOut("slow");
+  $(".loader").delay(200).fadeOut("slow");
+  $("#overlayer").delay(200).fadeOut("slow");
 
   var siteMenuClone = function () {
     $(".js-clone-nav").each(function () {
@@ -40,15 +40,15 @@ jQuery(document).ready(function ($) {
       });
     }, 1000);
 
-    $("body").on("click", ".arrow-collapse", function (e) {
-      var $this = $(this);
-      if ($this.closest("li").find(".collapse").hasClass("show")) {
-        $this.removeClass("active");
-      } else {
-        $this.addClass("active");
-      }
-      e.preventDefault();
-    });
+    // $("body").on("click", ".arrow-collapse", function (e) {
+    //   var $this = $(this);
+    //   if ($this.closest("li").find(".collapse").hasClass("show")) {
+    //     $this.removeClass("active");
+    //   } else {
+    //     $this.addClass("active");
+    //   }
+    //   e.preventDefault();
+    // });
 
     $(window).resize(function () {
       var $this = $(this),
@@ -255,7 +255,6 @@ jQuery(document).ready(function ($) {
       }
     );
   };
-  OnePageNavigation();
 
   var siteScroll = function () {
     $(window).scroll(function () {

@@ -7,31 +7,30 @@ document.addEventListener("DOMContentLoaded", function () {
   const testimonials = document.getElementById("testimonials");
   const unwantedItems = document.getElementById("unwanted");
   const contactUs = document.getElementById("contact");
-  const ourTeam = document.getElementById("our-team");
   const getStartedBtn = document.getElementById("get-started-btn");
+  const mobileLoginIcon = document.getElementById("arrow-login");
 
   if (accessToken) {
     // User has a valid access token
-    contactUs.textContent = "Subscriptions";
-    contactUs.setAttribute("href", "/subscriptions");
-
-    contactUs.setAttribute("href", "/subscriptions");
-    unwantedItems.style.display = "none";
-    blog.style.display = "none";
-    aboutUs.textContent = "My Bussiness";
-    aboutUs.setAttribute("href", "/my-business");
-    ourTeam.textContent = "Boost My Bussiness";
-    ourTeam.setAttribute("href", "/boost-my-business");
-    testimonials.setAttribute("href", "/boost-my-business");
     loginButton.textContent = "Logout";
     loginButton.setAttribute("href", "/");
     getStartedBtn.textContent = "My Insights";
     getStartedBtn.setAttribute("href", "/insights");
+    contactUs.textContent = "Subscriptions";
+    contactUs.setAttribute("href", "/subscriptions");
+    contactUs.setAttribute("href", "/subscriptions");
+    unwantedItems.style.display = "none";
+    mobileLoginIcon.style.display = "none";
+    blog.style.display = "none";
+    aboutUs.textContent = "My Bussiness";
+    aboutUs.setAttribute("href", "/my-business");
+
+    testimonials.setAttribute("href", "/boost-my-business");
   }
 
   loginButton.addEventListener("click", function () {
+    window.location.href = "{{ url_for('webhook.home') }}";
     if (loginButton.textContent === "Logout") {
-      window.location.href = "{{ url_for('webhook.home') }}";
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
       localStorage.removeItem("user_name");

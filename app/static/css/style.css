@@ -337,7 +337,6 @@ h5,
 }
 .site-navbar .site-navigation .site-menu .has-children > a:before {
   position: absolute;
-  content: "\e313";
   font-size: 16px;
   top: 50%;
   right: 0;
@@ -432,7 +431,6 @@ h5,
   .dropdown
   > li.has-children
   > a:before {
-  content: "\e315";
   right: 20px;
 }
 .site-navbar
@@ -495,6 +493,10 @@ h5,
   margin-top: 0px;
   visibility: visible;
   opacity: 1;
+}
+
+#arrow-login {
+  display: none;
 }
 
 .site-mobile-menu {
@@ -1222,6 +1224,10 @@ h5,
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 } */
+
+.display-none {
+  display: none;
+}
 .loader {
   z-index: 7700;
   position: fixed;
@@ -1246,6 +1252,10 @@ h5,
   height: 30px;
   animation: spin 2s linear infinite;
 }
+#user-icon,
+.user-profile {
+  visibility: hidden;
+}
 
 @keyframes spin {
   0% {
@@ -1264,6 +1274,17 @@ h5,
   #login-wraper {
     max-width: 90%;
     margin-left: 4%;
+  }
+  #arrow-login {
+    display: contents;
+  }
+  #user-icon,
+  .user-profile {
+    visibility: visible;
+  }
+  .user-name {
+    display: none;
+    visibility: hidden;
   }
 }
 
