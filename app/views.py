@@ -132,5 +132,31 @@ def insights():
     if request.method == "GET":
         return render_template("insights.html")
     elif request.method == "POST":
+        print('postttttttttttttttttttttttttt')
         data = request.get_json()
-        return jsonify(data)
+        userName = data.get("user_name")
+        if userName:
+            userName = userName.replace("0", "263", 1)
+        try:
+            seller_ob = session.query(Seller).filter_by(phone_number=userName).first()
+        except Exception as e:
+            ...
+        if seller_ob:
+            print('seller_ob', seller_ob,'seller_ob id', seller_ob.id)
+            products_analysis = session.query(ProductsAnalysis).filter_by(seller_id=seller_ob.id).all()
+            if products_analysis:
+                data = {
+                    "searcher": products_analysis[0].subscription.user_name,
+                    "product": products_analysis[0].product.gadget_name,
+                }
+                # for product_record in products_analysis:
+                #     data = {
+                #         "searcher": product_record.product_searcher.user_name,
+                #         "product": product_record.product_id.gadget_name,
+                #     }
+            else:
+                data = {"error": "You have no product analysis"}
+                    
+            return jsonify(data)
+        else:
+            return jsonify({"error": "error from backend..."})

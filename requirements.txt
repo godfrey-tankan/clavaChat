@@ -63,3 +63,4 @@ weasel==0.3.4
 Werkzeug==3.0.1
 yarl==1.9.4
 gunicorn
+flask-migrate

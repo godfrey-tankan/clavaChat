@@ -278,6 +278,7 @@ def process_whatsapp_message(body):
         name = body["entry"][0]["changes"][0]["value"]["contacts"][0]["profile"]["name"]
         message = body["entry"][0]["changes"][0]["value"]["messages"][0]
         message_body = message["text"]["body"]
+        print('number:',phone_number_id,'name:',profile_name)
         response = generate_response(message_body, phone_number_id, profile_name)
         # OpenAI Integration
         # response = generate_response(message_body, wa_id, name)
