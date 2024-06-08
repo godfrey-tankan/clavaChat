@@ -132,7 +132,6 @@ def insights():
     if request.method == "GET":
         return render_template("insights.html")
     elif request.method == "POST":
-        print('postttttttttttttttttttttttttt')
         data = request.get_json()
         userName = data.get("user_name")
         if userName:
@@ -142,7 +141,6 @@ def insights():
         except Exception as e:
             ...
         if seller_ob:
-            print('seller_ob', seller_ob,'seller_ob id', seller_ob.id)
             products_analysis = session.query(ProductsAnalysis).filter_by(seller_id=seller_ob.id).all()
             if products_analysis:
                 data = {
