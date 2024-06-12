@@ -143,15 +143,11 @@ def insights():
         if seller_ob:
             products_analysis = session.query(ProductsAnalysis).filter_by(seller_id=seller_ob.id).all()
             if products_analysis:
-                data = {
-                    "searcher": products_analysis[0].subscription.user_name,
-                    "product": products_analysis[0].product.gadget_name,
-                }
-                # for product_record in products_analysis:
-                #     data = {
-                #         "searcher": product_record.product_searcher.user_name,
-                #         "product": product_record.product_id.gadget_name,
-                #     }
+                for product_record in products_analysis:
+                    data = {
+                        "searcher": product_record.subscription.user_name,
+                        "product": product_record.product.gadget_name,
+                    }
             else:
                 data = {"error": "You have no product analysis"}
                     
