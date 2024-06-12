@@ -21,7 +21,7 @@ from app.services.user_types import *
 import random
 from app.config import *
 
-openai.api_key = "sk-proj-uwITlARPsdn9IZZZ3NSjT3BlbkFJ4qiGtpvo1haVqNJP7DG3"
+openai.api_key = "sk-proj-aDRvKnVI3UJ0wNFwkeCgT3BlbkFJ8Pz8p363ZawJbwZzT4vz"
 conversation = []
 today = datetime.now().date()
 
@@ -169,37 +169,40 @@ def generate_response(response, wa_id, name):
                         ...
                     return welcome_message
             # return "Please *note* that the clavaChat AI Chatbot is currently under maintenance.\nRegards clavaTeam."      
+            try:
+                if response.lower().endswith("bypasslimit"):
+                    response = ChatCompletion.create(
+                        model="gpt-3.5-turbo",
+                        messages=[
+                            {"role": "user", "content": conversation[i]["content"]} for i in range(len(conversation))
+                        ],
+                        max_tokens=4000,
+                        temperature=0.7,
+                        n=1,
+                        stop=None
+                    )
+                    conversation.append({"role": "assistant", "content": response.choices[0].message.content.strip("bypasslimit")})
+                
+                elif response.lower() in questions_list:
+                    response = "I am tankan's assistant. I am here to help you with anything you need."
+                    return response
+                else:
+                    response = ChatCompletion.create(
+                        model="gpt-3.5-turbo",
+                        messages=[
+                            {"role": "user", "content": conversation[i]["content"]} for i in range(len(conversation))
+                        ],
+                        max_tokens=1000,
+                        temperature=0.7,
+                        n=1,
+                        stop=None
+                    )
+                    conversation.append({"role": "assistant", "content": response.choices[0].message.content.strip()})
 
-            if response.lower().endswith("bypasslimit"):
-                response = ChatCompletion.create(
-                    model="gpt-3.5-turbo",
-                    messages=[
-                        {"role": "user", "content": conversation[i]["content"]} for i in range(len(conversation))
-                    ],
-                    max_tokens=4000,
-                    temperature=0.7,
-                    n=1,
-                    stop=None
-                )
-                conversation.append({"role": "assistant", "content": response.choices[0].message.content.strip("bypasslimit")})
-            
-            elif response.lower() in questions_list:
-                response = "I am tankan's assistant. I am here to help you with anything you need."
-                return response
-            else:
-                response = ChatCompletion.create(
-                    model="gpt-3.5-turbo",
-                    messages=[
-                        {"role": "user", "content": conversation[i]["content"]} for i in range(len(conversation))
-                    ],
-                    max_tokens=1000,
-                    temperature=0.7,
-                    n=1,
-                    stop=None
-                )
-                conversation.append({"role": "assistant", "content": response.choices[0].message.content.strip()})
-
-            return response.choices[0].message.content.strip()
+                return response.choices[0].message.content.strip()
+            except Exception as e:
+                return "Please *note* that the clavaChat AI Chatbot is currently under maintenance.\nRegards clavaTeam."      
+                
     
 def send_message(data,template=False):
     if template:
