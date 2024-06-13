@@ -54,18 +54,49 @@ document.addEventListener("DOMContentLoaded", function () {
         user_name: localStorage.getItem("user_name"),
       }),
       success: function (response) {
-        // Update the subscription plan details in the HTML elements
-        $("#searcher").text(response.searcher);
-        $("#product").text(response.product);
-        console.log("response:", response);
-        if (response.error) {
-          // Change the context of the "Upgrade Plan" button to "Change Plan"
-          $("#erorr").text(response.error);
-        }
-        // Update other subscription plan details as needed
+        const tableBody = $("#insights-tbody");
+        tableBody.empty(); // Clear the table body
+
+        let loadedCount = 0;
+        const maxToDisplay = 10; // Set the maximum number of items to display initially
+
+        // Loop through the response and add the items to the table
+        response.forEach((item) => {
+          if (loadedCount < maxToDisplay) {
+            const row = $("<tr></tr>");
+            row.append($("<td></td>").text(item.searcher));
+            row.append($("<td></td>").text(item.product));
+            row.append($("<td></td>").text(item.error || ""));
+            tableBody.append(row);
+            loadedCount++;
+          }
+        });
+
+        const container = $("#analysis-container");
+        container.off("scroll"); // Remove any existing event listener
+        container.on("scroll", function () {
+          if (
+            $(this).scrollTop() + $(this).innerHeight() >=
+            $(this)[0].scrollHeight
+          ) {
+            loadMoreItems(tableBody, response, maxToDisplay, loadedCount);
+          }
+        });
       },
     });
   });
+
+  function loadMoreItems(tableBody, response, maxToDisplay, loadedCount) {
+    response.slice(loadedCount).forEach((item) => {
+      const row = $("<tr></tr>");
+      row.append($("<td></td>").text(item.searcher));
+      row.append($("<td></td>").text(item.product));
+      row.append($("<td></td>").text(item.error || ""));
+      tableBody.append(row);
+      loadedCount++;
+    });
+  }
+
   function sendRequest(method, url, data) {
     const xhr = new XMLHttpRequest();
     xhr.open(method, url, true);

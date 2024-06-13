@@ -21,7 +21,7 @@ from app.services.user_types import *
 import random
 from app.config import *
 
-openai.api_key = "sk-proj-aDRvKnVI3UJ0wNFwkeCgT3BlbkFJ8Pz8p363ZawJbwZzT4vz"
+openai.api_key = "sk-proj-vdoincb6xa4NeNX04fknT3BlbkFJqbXL0EFJvL6192EQny3d"
 conversation = []
 today = datetime.now().date()
 
