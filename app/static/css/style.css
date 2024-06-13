@@ -1256,6 +1256,25 @@ h5,
 .user-profile {
   visibility: hidden;
 }
+/* GRAPH CHAT INSIGHTS PAGE CONTAINER STYLES */
+.graph-chat-container {
+  max-width: 80%;
+  margin-left: 10%;
+  max-height: auto;
+  display: flex;
+  margin-bottom: 10%;
+  right: 0;
+}
+
+/* PIE CHAT INSIGHTS PAGE CONTAINER STYLES */
+.piechat {
+  max-width: 80%;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: row;
+  margin-left: 50%;
+}
+
 #analysis-container {
   height: 400px;
   overflow-y: auto;

@@ -213,7 +213,7 @@ def send_message(data,template=False):
         url = f"https://graph.facebook.com/{current_app.config['VERSION']}/{current_app.config['PHONE_NUMBER_ID']}/messages"
         try:
             response = requests.post(
-                url, data=data, headers=headers, timeout=15
+                url, data=data, headers=headers, timeout=30
             )  
             response.raise_for_status()  # Raises an HTTPError if the HTTP request returned an unsuccessful status code
         except requests.Timeout:
@@ -1522,8 +1522,12 @@ def publish_post(message):
     if all_users_related:
         for user in all_users_related:
             user_mobile = user.mobile_number
-            data = get_text_message_input(user_mobile, message,None)
-            response =send_message(data)
+            try:
+                data = get_text_message_input(user_mobile, message,None)
+                response =send_message(data)
+            except Exception as e:
+                ...
+                response = "error sending messages"
         return response
 
 def library_contents_lookup(requester, message):

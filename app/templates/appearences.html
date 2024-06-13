@@ -137,16 +137,8 @@
               <div class="col-12 col-md-9 col-xl-8 main-menu">
                 <nav class="site-navigation position-relative text-right" role="navigation">
                   <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block ml-0 pl-0">
-                    <li><a href="/" class="nav-link">Home</a></li>
-                    <li ><a href="#features-section" class="nav-link "id="services" >Profits</a></li>
-                    <li class="has-children" >
-                      <a href="appearences" class="nav-link" id="about-us">Appearances</a>
-                      <ul class="dropdown arrow-top">
-                        <li ><a href="#track-sales" class="nav-link"id="our-team" >Track sales</a></li>
-                      </ul>
-                    </li>
-                    <li id="unwanted"><a href="#testimonials-section" class="nav-link" id="testimonials">Trends</a></li>
-                    <li id="unwanted"><a href="#blog-section" class="nav-link" id="blog" >overall</a></li>
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                
                     <li>
                       <a
                         style="padding: 8px; color: #fff"
@@ -198,8 +190,11 @@
                 data-aos="fade-up"
                 data-aos-delay="200"
               >
-              
-               
+                <img
+                  src="{{ url_for('static', filename='images/undraw_investing_7u74.svg') }}"
+                  alt="Image"
+                  class="img-fluid img-absolute"
+                />
                 <div class="row mb-4" data-aos="fade-up" data-aos-delay="200">
                   <div class="col-lg-6 mr-auto">
                     <h1>
@@ -212,20 +207,28 @@
                       your operations and unlock new levels of efficiency and
                       customer satisfaction.
                     </p>
+                    <div>
+                        <button id="analyze" class="btn btn-primary mr-2 mb-2">Analyze</button>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
                     
                     </div>
                     </div>
-                    <div class="piechat">
-                <canvas id="piechat" class="img-fluid img-absolute"></canvas>
-                </div>
                     </div>
-                    
-                    </div>
-                    </div>
-                    </div>
-                    <div class="graph-chat-container">
-                      <canvas id="myChart"></canvas>
-                    </div>
+                      <div id="analysis-container">
+                        <table id="insights-table">
+                          <thead>
+                            <tr>
+                              <th>Searcher</th>
+                              <th>Product</th>
+                              <th>Date</th>
+                            </tr>
+                          </thead>
+                          <tbody id="insights-tbody"></tbody>
+                        </table>
+                      </div>
 
 
         <div class="footer py-5 text-center">
@@ -268,8 +271,6 @@
         });
       })();
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="{{ url_for('static', filename='js/chats.js') }}"></script>
     <script src="{{ url_for('static', filename='js/contact.js') }}"></script>
 
       <script src="{{url_for('static',filename='js/urls.js')}}"></script>

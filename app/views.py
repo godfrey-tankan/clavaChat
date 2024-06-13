@@ -156,3 +156,33 @@ def insights():
             return jsonify(data)
         else:
             return jsonify({"error": "error from backend..."})
+    
+@webhook_blueprint.route("/appearences", methods=["POST", "GET"])
+def appearences():
+    if request.method == "GET":
+        return render_template("appearences.html")
+    elif request.method == "POST":
+        data = request.get_json()
+        userName = data.get("user_name")
+        if userName:
+            userName = userName.replace("0", "263", 1)
+        try:
+            seller_ob = session.query(Seller).filter_by(phone_number=userName).first()
+        except Exception as e:
+            ...
+        if seller_ob:
+            products_analysis = session.query(ProductsAnalysis).filter_by(seller_id=seller_ob.id).all()
+            if products_analysis:
+                data = []
+                for product_record in products_analysis:
+                    data_ob = {
+                        "searcher": product_record.subscription.user_name,
+                        "product": product_record.product.gadget_name,
+                    }
+                    data.append(data_ob)
+            else:
+                data = {"error": "You have no product analysis"}
+                    
+            return jsonify(data)
+        else:
+            return jsonify({"error": "error from backend..."})
