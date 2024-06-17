@@ -175,9 +175,14 @@ def appearences():
             if products_analysis:
                 data = []
                 for product_record in products_analysis:
+                    product_name = product_record.product.gadget_name.split(" ")[0]
+                    number_of_appearences = session.query(ProductsAnalysis).filter_by(product_id=product_record.product_id).count()
                     data_ob = {
+                        "product_id": product_record.product_id,
                         "searcher": product_record.subscription.user_name,
                         "product": product_record.product.gadget_name,
+                        "product_name": product_name,
+                        "number_of_appearences": number_of_appearences,
                     }
                     data.append(data_ob)
             else:
