@@ -104,6 +104,7 @@ def get_text_message_input(recipient, text,media,template=False):
 
 def generate_response(response, wa_id, name):
     global conversation
+    session.rollback()
     try:
         last_message = session.query(Subscription).filter_by(phone_number=wa_id[0]).first().user_activity
     except Exception as e:
@@ -202,7 +203,6 @@ def generate_response(response, wa_id, name):
                 return response.choices[0].message.content.strip()
             except Exception as e:
                 return "Please *note* that the clavaChat AI Chatbot is currently under maintenance.\nRegards clavaTeam."      
-                
     
 def send_message(data,template=False):
     if template:
@@ -1478,17 +1478,31 @@ def search_document(document_name, requester,request_type):
                         else:
                             modified_string = modified_string.split(" ")[0]
                         documents_count = session.query(Document).count()
-                        all_documents = session.query(Document)\
-                        .offset(random.randint(1, int(documents_count))).limit(10).all()
-                        if all_documents:
-                            response = f"{request_type}\n\n"
-                            for i, document in enumerate(all_documents, start=random.randint(1, 10)):
-                                response += f"📚 *TITLE*: _{document.title}_\n- *code #️⃣:* {document.id}  \n\n"
-                            response += underline_response
-                            response += after_books_listing_response
-                            data = get_text_message_input(requester, response, None)
-                            response = send_message(data)
-                            return response
+                        if request_type.lower().startswith("*here"):
+                            all_documents = session.query(Document)\
+                            .offset(random.randint(1, int(documents_count))).limit(10).all()
+                            if all_documents:
+                                response = f"{request_type}\n\n"
+                                for i, document in enumerate(all_documents, start=random.randint(1, 10)):
+                                    response += f"📚 *TITLE*: _{document.title}_\n- *code #️⃣:* {document.id}  \n\n"
+                                response += underline_response
+                                response += after_books_listing_response
+                                data = get_text_message_input(requester, response, None)
+                                response = send_message(data)
+                                return response
+                        else:
+                            # all_documents = session.query(Document)\
+                            # .offset(random.randint(1, int(documents_count))).limit(10).all()
+                            all_documents = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{modified_string[:5]}%"))).all()
+                            if all_documents:
+                                response = f"{request_type}\n\n"
+                                for i, document in enumerate(all_documents, start=random.randint(1, 10)):
+                                    response += f"📚 *TITLE*: _{document.title}_\n- *code #️⃣:* {document.id}  \n\n"
+                                response += underline_response
+                                response += after_books_listing_response
+                                data = get_text_message_input(requester, response, None)
+                                response = send_message(data)
+                                return response
                     #returning matches with key words
         except Exception as e:
             ...
