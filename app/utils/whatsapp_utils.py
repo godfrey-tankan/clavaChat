@@ -301,8 +301,8 @@ def send_message_template(recepient):
                 "to":recepient,
                 "type": "template",
                 "template": {
-                    "name": "hello_world",
-                    "language": {"code": "en_US"}
+                    "name": "clava_home2",
+                    "language": {"code": "en"}
                 },
             }
         )
