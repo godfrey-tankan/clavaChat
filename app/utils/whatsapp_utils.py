@@ -1496,7 +1496,7 @@ def search_document(document_name, requester,request_type):
                         else:
                             # all_documents = session.query(Document)\
                             # .offset(random.randint(1, int(documents_count))).limit(10).all()
-                            all_documents = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{modified_string[:5]}%"))).all()
+                            all_documents = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{modified_string}%"))).all()
                             if all_documents:
                                 response = f"{request_type}\n\n"
                                 for i, document in enumerate(all_documents, start=random.randint(1, 10)):
