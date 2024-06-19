@@ -295,20 +295,20 @@ def process_whatsapp_message(body):
 
 def send_message_template(recepient):
     return json.dumps(
-            {
-                "messaging_product": "whatsapp",
-                "recipient_type": "individual",
-                "to": f"{recepient}",
-                "type": "template",
-                "template": {
-                        "namespace": "7a757027_47cc_4bb8_997e_e1fdb0600675",
-                        "name": "clava_home2",
-                        "language": {
-                            "code": "en",
-                        }
-                    }
+    {
+        "messaging_product": "whatsapp",
+        "recipient_type": "individual",
+        "to": f"{recepient}",
+        "type": "template",
+        "template": {
+            "namespace": "7a757027_47cc_4bb8_997e_e1fdb0600675",
+            "name": "clava_home2",
+            "language": {
+                "code": "en",
             }
-        )
+        }
+    }
+)
 
 def landlord_tenant_housing(mobile_number,message,name,page_number):
         try:
