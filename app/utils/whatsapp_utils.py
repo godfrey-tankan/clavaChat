@@ -305,44 +305,7 @@ def send_message_template(recepient):
                         "name": "clava_home2",
                         "language": {
                             "code": "en",
-                            "policy": "deterministic"
-                        },
-                        "components": [{
-                            "type": "body",
-                            "parameters": [
-                                {
-                                    "type": "text",
-                                    "text": "your-text-string"
-                                },
-                                {
-                                    "type": "currency",
-                                    "currency": {
-                                        "fallback_value": "$100.99",
-                                        "code": "USD",
-                                        "amount_1000": 100990
-                                    }
-                                },
-                                {
-                                    "type": "date_time",
-                                    "date_time" : {
-                                        "fallback_value": "February 25, 2024",
-                                        "day_of_week": 5,
-                                        "day_of_month": 25,
-                                        "year": 2024,
-                                        "month": 2,
-                                        "hour": 15,
-                                        "minute": 33
-                                    }
-                                },
-                                {
-                                "type": "date_time",
-                                    "date_time" : {
-                                    "fallback_value": "February 25, 2024",
-                                    "timestamp": 1485470276
-                                    }
-                                }
-                            ]
-                        }]
+                        }
                     }
             }
         )
