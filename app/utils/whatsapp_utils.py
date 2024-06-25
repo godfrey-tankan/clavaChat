@@ -954,17 +954,23 @@ def get_number_range(string):
 
 def extract_product_details(string):
     product_name, condition, price = "", "", ""
-    match = re.search(r'^(.*?)\s*,\s*(.*?)(?:\s+\$(\d+))?$', string)
-    if match:
-        product_name = match.group(1)
-        condition = match.group(2)
-        if match.group(3):
-            price = int(match.group(3))
-        else:
-            price = 20000
-        return product_name, condition, price
+    if 'new' in string:
+        condition = 'new'
+    elif 'used' in string:
+        condition = 'used'
+    elif 'boxed' in string:
+        condition = 'boxed'
     else:
-        return product_name, condition, price
+        condition = 'pre-owned' 
+
+    product_name = string.split(condition)[0].strip()
+
+    price_match = re.findall(r'\$\d+', string)
+    if price_match:
+        price = float(price_match[0][1:]) 
+    else:
+        price = 20000 
+    return product_name, condition, price
 
 def save_electronics_listing(seller_id, product_name, condition, price):
     seller = session.query(Seller).filter_by(phone_number=seller_id).first()
@@ -1059,13 +1065,7 @@ def extract_house_details(string):
 
 def search_rental_properties(house_info, location, budget, page_number, records_per_page):
     session = Session()
-    # try:
-    #     properties = session.query(RentalProperty).\
-    #         filter(RentalProperty.location.ilike('%{}%'.format(location))).\
-    #         filter(RentalProperty.price.between(budget - 100, budget +50)).\
-    #         all()
-    # except Exception as e:
-    #     properties = None
+
     try:
         offset = (page_number - 1) * records_per_page
         properties = session.query(RentalProperty).join(RentalProperty.landlord).\
