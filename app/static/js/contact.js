@@ -29,7 +29,6 @@ function sendMail(event) {
       submitButton.textContent = "SEND";
     }, 2000);
   }
-  console.log("email", emailInput, "name", nameInput, "message", messageInput);
 
   if (
     nameInput.value === "" ||
