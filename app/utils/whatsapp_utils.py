@@ -112,6 +112,8 @@ def generate_response(response, wa_id, name):
     if last_message == response.strip() and (response != "1" and response !="2" and response !="3"):
         return None
     else:
+        if response.lower() in questions_list:
+            return "I am tankan's assistant. I am here to help you with anything you need."
         if response.lower().startswith("post") and wa_id[0] == "263779586059" or wa_id[0] == "263717852804":
             response_ob = publish_post(response)
             return response_ob

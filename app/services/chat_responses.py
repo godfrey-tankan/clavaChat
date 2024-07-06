@@ -1,13 +1,13 @@
 # Welcome responses
-welcome_message = "*WELCOME TO `clavaChat` WHATSAPP MARKETPLACE*.\nPlease tell us what you would like to do:\n\n1. *General AI Chatbot services* \n2. *Buying and Selling* \n3. *Housing Services* \n4. *clavaChat Library* \n5. *Help* \n\nPlease reply with the number of your choice or type `exit` to exit"
-selling_response = "Please tell us what you would like to do:\n\n1. Sell a product\n2. Looking for a product to buy\n3. Exit\n\nPlease reply with the number of your choice or type exit to exit"
+welcome_message = "*WELCOME TO `clavaChat`*.\nPlease select:\n\n1. *General AI Chatbot services* \n2. *Buying and Selling* \n3. *Housing Services* \n4. *clavaChat Library* \n5. *Help* \n\nPlease reply with the number of your choice or type `exit` to exit"
+selling_response = "Please select:\n\n1. Sell a product\n2. Looking for a product to buy\n3. Exit\n\nPlease reply with the number of your choice or type exit to exit"
 buyer_response = "WHAT ARE YOU LOOKING FOR?\nreply with what you are looking for in this form:\n- *Product name* \n- *Condition* \n- *Budget - `budget is optional`* \n\nYou can consider this example:*iphone13 pro-max 256GB,boxed $1200* \n\nReply with exit to exit."
-seller_response = "Please tell us what you would like to do:\n\n1. Add a product\n2. View Your Listings \n3. Subscriptions\n\nPlease reply with the number of your choice or reply with word `exit` to exit"
+seller_response = "Please select:\n\n1. Add a product\n2. View Your Listings \n3. Subscriptions\n\nPlease reply with the number of your choice or reply with word `exit` to exit"
 seller_add_response = "*What are you selling?* \nPlease provide the following details about the product you are selling:\n1.Product\n2.Condition\n3.Price \n\nConsider this example: *iphone13 pro-max 256GB, Boxed $1500* \n\n🚨 _note that after adding your first product, you will be able to just post other products without going through all these steps again!_ \n\nTo exit simply type exit"
 welcome_response3 = "Are you a `Landlord` or a `Tenant`?\n\n1. Landlord\n2. Tenant\n3. Exit\n\nPlease reply with the number of your choice or type exit to exit"
-welcome_landlord_response = "Please tell us what you would like to do:\n\n1. Add a property\n2. View properties\n3. Subscriptions\n\nPlease reply with the number of your choice or type exit to exit"
+welcome_landlord_response = "Please select:\n\n1. Add a property\n2. View properties\n3. Subscriptions\n\nPlease reply with the number of your choice or type exit to exit"
 add_property_response = "Please provide the following details about the property you would like to add:\n\n1. House information\n2. Location\n3. Rent *needed per month*\n\nConsider this example:\n *1 room with tiles,ceiling and own entrance door* in *Waterfalls Prospect* $130\n\n🚨 _note that after adding your first property, you will be able to just post other properties without going through all these steps again!_ \n\nTo exit simply type exit"
-welcome_tenant_response = "Please tell us what you would like to do:\n\n1. View available properties or houses to rent\n2. Exit\n\nPlease *reply* with the number of your choice or type exit to exit"
+welcome_tenant_response = "Please select:\n\n1. View available properties or houses to rent\n2. Exit\n\nPlease *reply* with the number of your choice or type exit to exit"
 tenant_response = "Please tell us the type of apartment/house you are looking for and your *budget* - (`budget is optional`).\n e.g. 2 bedroom apartment with tiles and ceiling in Sunningdale $300\n\nTo exit simply type exit"
 product_added_successfully = "*{}* \nis now added to your listings and everyone looking for a similar will be given your contact details.\nHappy selling! `clava` ."
 apartment_added_successfully = "This property \n {} \nis now added to your listings,interested people will be given your contact details for viewing and further discussions.\n\nHappy Leasing! `clava` ."
@@ -17,7 +17,7 @@ landlord_name_response = "We would like to use your name when referring tenants 
 no_houses_found_response = "We couldn't find any listing, try another location."
 no_products_found_response = "Your search did not match any products. Please check the spelling or try a different product."
 invalid_product_information ="⚠️Invalid product information provided. \n\nPlease provide:\n- *Product name* \n- *Condition* \n- *Budget - `budget is optional`* \n\nYou can consider this example:*iphone 13 256GB,boxed $1200* \nreply with `exit` to exit."
-questions_list =["who are you?", "what is your name", "where are you from", "who made you?", "who is tankan", "tankan"]
+questions_list =["who are you?", "what is your name", "where are you from", "who made you?", "who is tankan", "tankan","tnqn"]
 
 library_response = "Welcome to the `clavaChat` Library.\n\n- *For a novel/book 📖:*,\n- reply with the title.\n\n- For a past exam paper\n- `consider this example`: *A level mathematics paper 1 November 2023*.\n\n ⚠️ *DISCLAIMER* _Please `note` that responses may not be accurate!_\n\nType `exit` to exit.\t clava.co.zw"
 
