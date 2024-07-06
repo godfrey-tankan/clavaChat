@@ -1,5 +1,5 @@
 # Welcome responses
-welcome_message = "*WELCOME TO `clavaChat`*.\nPlease select:\n\n1. *General AI Chatbot services* \n2. *Buying and Selling* \n3. *Housing Services* \n4. *clavaChat Library* \n5. *Help* \n\nPlease reply with the number of your choice or type `exit` to exit"
+welcome_message = "*WELCOME TO `clavaChat`*.\nPlease select:\n\n1. *General AI Chatbot services* \n2. *Buying and Selling* \n3. *Housing Services* \n4. *clavaChat Library* \n5. *Help* \n\nPlease reply with the `number` of your choice"
 selling_response = "Please select:\n\n1. Sell a product\n2. Looking for a product to buy\n3. Exit\n\nPlease reply with the number of your choice or type exit to exit"
 buyer_response = "WHAT ARE YOU LOOKING FOR?\nreply with what you are looking for in this form:\n- *Product name* \n- *Condition* \n- *Budget - `budget is optional`* \n\nYou can consider this example:*iphone13 pro-max 256GB,boxed $1200* \n\nReply with exit to exit."
 seller_response = "Please select:\n\n1. Add a product\n2. View Your Listings \n3. Subscriptions\n\nPlease reply with the number of your choice or reply with word `exit` to exit"
