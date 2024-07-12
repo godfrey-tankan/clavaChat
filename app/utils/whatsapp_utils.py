@@ -136,7 +136,8 @@ def generate_response(response, wa_id, name):
             expiry_date = today
             # return f"sorry {e}"
         try:
-            Subscription_status = create_subscription(wa_id[0], name, trial_mode)
+            user_name = name if name else "user"
+            Subscription_status = create_subscription(wa_id[0], user_name, trial_mode)
         except Exception as e:
             Subscription_status = "error!"
             print('error subs check.. ',e)
@@ -274,26 +275,24 @@ def process_whatsapp_message(body):
     try:
         # phone_number_id = data['entry'][0]['changes'][0]['value']['metadata']['phone_number_id']
         phone_number_id =  [contact['wa_id'] for contact in data['entry'][0]['changes'][0]['value']['contacts']]
-        # Extract messages text
-        messages_text = data['entry'][0]['changes'][0]['value']['messages'][0]['text']['body']
-        # Extract profile name
-        profile_name = data['entry'][0]['changes'][0]['value']['contacts'][0]['profile']['name']
+    except Exception as e:
+        phone_number_id = ""
 
-        wa_id = body["entry"][0]["changes"][0]["value"]["contacts"][0]["wa_id"]
-        name = body["entry"][0]["changes"][0]["value"]["contacts"][0]["profile"]["name"]
+    try:
+        profile_name = data['entry'][0]['changes'][0]['value']['contacts'][0]['profile']['name']
+    except Exception as e:
+        profile_name = "User"
+    try:
         message = body["entry"][0]["changes"][0]["value"]["messages"][0]
         message_body = message["text"]["body"]
-        print('number:',phone_number_id,'name:',profile_name)
+    except Exception as e:
+        message_body = "hello there, how can i help you today?"
+    try:
         response = generate_response(message_body, phone_number_id, profile_name)
-        # OpenAI Integration
-        # response = generate_response(message_body, wa_id, name)
-        # response = process_text_for_whatsapp(response)
-
-        # data = get_text_message_input(phone_number_id, response,"")
         data = get_text_message_input(phone_number_id, response,None,False)
         send_message(data)
     except Exception as e:
-        pass
+        ...
 
 def send_message_template(recepient):
     return json.dumps(
@@ -748,7 +747,7 @@ def activate_subscription(wa_id,status,message,expiry_date,subscription_status_o
 #=====================THE HOME PAGE==========================
 def welcome_page(wa_id,message,user_status_ob,name,page_number):
     end_date = today + timedelta(days=7)
-    trial_response_ob = trial_response.format(name)
+    trial_response_ob = trial_response
 
     if user_status_ob == new_user or user_status_ob != trial_mode or user_status_ob != welcome:
         welcome_response = welcome_message
@@ -770,6 +769,7 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                 
                 response = buying_and_selling(wa_id,message,name,page_number)
                 return response
+            
             #=========================LIBRARY USER BLOCK ===============
             if active_subscription_status.user_type == library_user:
                 if message.lower() == "exit":
