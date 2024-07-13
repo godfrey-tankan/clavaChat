@@ -1560,7 +1560,7 @@ def library_contents_lookup(requester, message):
         response = send_message(data)
         return response
     else:
-        custom_message = '*We couldn`t find any match,here are some alternatives you might be interested in*'
+        custom_message = '*No match found!,here are some alternatives*'
         document_path = search_document(message,requester,custom_message)
         if document_path == "Document already exists.":
             return "Document already exists."
