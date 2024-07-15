@@ -888,7 +888,7 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                     return e
                 return trial_response_ob
             
-            if message == "2" or message=="2.":
+            if  "2" in message:
                 selling_response_ob =selling_response
                 try:
                     active_subscription_status.user_status = selling_mode
@@ -897,7 +897,7 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                     selling_mode_ob = ""
                     # return e
                 return selling_response_ob
-            if message == "3":
+            if  '3' in message:
                 response = welcome_response3
                 try:
                     active_subscription_status.user_status = housing_mode
@@ -905,7 +905,7 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                 except Exception as e:
                     selling_mode_ob = ""
                 return response
-            if message == "4" :
+            if "4" in message:
                 response = library_response
                 try:
                     active_subscription_status.user_status = library_user
@@ -914,37 +914,13 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                 except Exception as e:
                     ...
                 return response
-            if message == "5":
+            if "5" in message:
+                return
+            if "6" in message:
                 response = buying_selling_help_help_final
                 return response
             return welcome_response
     return "eeh"
-
-# def summarize_message(message):
-#     nlp = spacy.load("en_core_web_sm")
-#     doc = nlp(message)
-#     keywords = []
-#     house_info = []
-#     price_per_month = []
-#     location = ""
-#     for token in doc:
-     
-#         if token.pos_ in ["NOUN", "PROPN"]:
-#             keywords.append(token.text)
-#         if token.pos_ == "NUM":
-#             house_info.append(token.text)
-
-#         if token.ent_type_ == "MONEY":
-#             price_per_month.append(token.text)
-        
-#         if token.ent_type_ == "GPE":
-#             location = token.text
-
-#     summary = f"Location: {location}\n" \
-#               f"Rent: {', '.join(price_per_month)}\n" \
-#               f"House info: {', '.join(house_info)}"
-
-#     return summary
 
 def get_number_range(string):
     match = re.search(r'\$(\d+)', string)
@@ -1060,7 +1036,7 @@ def extract_house_details(string):
         house_info = match.group(1)
         location = match.group(2)
         try:
-            budget = int(match.group(3).replace(',', '')) if match.group(3) else 100000
+            budget = int(match.group(3).replace(',', '')) if match.group(3) else 1000
         except (IndexError, ValueError):
             budget = 10000
     return house_info, location, budget
@@ -1560,7 +1536,7 @@ def library_contents_lookup(requester, message):
         response = send_message(data)
         return response
     else:
-        custom_message = '*No match found!,here are some alternatives*'
+        custom_message = '*No exact match found!,here are some alternatives*'
         document_path = search_document(message,requester,custom_message)
         if document_path == "Document already exists.":
             return "Document already exists."

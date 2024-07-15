@@ -1,5 +1,5 @@
 # Welcome responses
-welcome_message = "🔖 *WELCOME TO `clavaChat`*.\n\n1.🤖 *AI Chatbot services* \n\n2.💸 *Buying and Selling* \n\n3.🏘️ *Housing Services* \n\n4.📚 *clavaChat Library* \n\n5.🆘 *Help* \n\nreply with the `number` of your choice."
+welcome_message = "🔖 *WELCOME TO `clavaChat`*.\n\n1.🤖 *AI Chatbot services* \n\n2.💸 *Buying and Selling* \n\n3.🏘️ *Housing Services* \n\n4.📚 *clavaChat Library* \n\n5. Software Solutions \n\n6.🆘 *Help* \n\nchoose an option eg: 3"
 selling_response = "Please select:\n\n1. Sell a product\n2. Buy a product\n\n type `exit` to exit"
 buyer_response = "What product are you looking for?\nreply with :\n- *Product name* , *Condition* , *Budget - `budget is optional`* \n\n💡You can consider this example:*iphone13 pro-max 256GB boxed $1200* \n\n `type exit to exit.` "
 seller_response = " `Please select`:\n\n1. Add a product\n2. View Your Listings \n3. Subscriptions\n\ntype `exit` to exit"
@@ -57,7 +57,7 @@ eccocash_transaction_success_response = "Your subscription has been successfully
 transaction_message = "240313.1849.F42721."
 reference_number_error_response = "Transaction ID or Reference Number is invalid. Please try again."
 pop_reference_number_error_response = "The POP message is invalid, please send the whole message again."
-trial_response = "The AI chatbot service is under maintenance \nRegards,\n*clava*."
+trial_response = "The AI chatbot service is under maintenance \nRegards,\n*clava*.type exit to exit"
 
 #housing and selling services
 no_listings_response = "You have no listings yet. Please add a product to sell.\n\n1. Add a product\n2. Exit"
