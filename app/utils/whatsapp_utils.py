@@ -320,7 +320,7 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
         if active_subscription_status.user_status == appartment_addition:
             response = add_property_response
             if message.lower() == "y":
-                response = "House information captured successfully, you can add another property anytime."
+                response = "House information captured successfully, you can add another listing anytime."
                 return response
             elif message.lower() == "n":
                 try:
@@ -361,7 +361,7 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
                     except Exception as e:
                         return "error adding property"
                     
-                return "properties added successfully."
+                return "listings added successfully."
                 
             
             if len(message) > 7:
@@ -417,7 +417,7 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
                         if landlord_listings:
                             response = f"*HERE IS YOUR OTHER PROPERTY LISTINGS:*\n\n"
                             for i, listing in enumerate(landlord_listings, start=1):
-                                response += f"{listing.id} *House Information:* {listing.description}\n\t-*Location:* {listing.location}\n\t-*Rent:* ${listing.price}/month\n\n"
+                                response += f"{listing.id} *House Information:* {listing.description}\n\t- *Location:* {listing.location}\n\t- *Rent:* ${listing.price}/month\n\n"
                             response += underline_response
                             response += after_property_listing_response
                             return response
@@ -430,7 +430,7 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
                     if landlord_listings:
                         response = f"*HI `{landlord_profile.name.upper()}` HERE IS YOUR PROPERTY LISTINGS:*\n\n"
                         for i, listing in enumerate(landlord_listings, start=1):
-                            response += f"{listing.id} *House Information:* {listing.description}\n\t-*Location:* {listing.location}\n\t-*Rent:* ${listing.price}/month\n\n"
+                            response += f"{listing.id} *House Information:* {listing.description}\n\t- *Location:* {listing.location}\n\t- *Rent:* ${listing.price}/month\n\n"
                         response += underline_response
                         response += after_property_listing_response
                         return response
@@ -485,7 +485,7 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
                     if matching_properties:
                         result = "HERE ARE SOME PROPERTIES TO CONSIDER:\n\n"
                         for i,property in enumerate(matching_properties, start=1) :
-                            result += f"*{i}* *House information* {property.house_info}\n\t*Rent*: {property.price}\n\t*Location*: {property.location}\n Call: *{property.landlord.name}* on {property.landlord.phone_number}\n\n"
+                            result += f"*{i}* *House information :* {property.house_info}\n\t*Rent*: {property.price}\n\t*Location*: {property.location}\n Call: *{property.landlord.name}* on {property.landlord.phone_number}\n\n"
                             property_analysis(property.id,active_subscription_status.id,property.landlord.id)
                         # analyze_messages(mobile_number,message)
                         result += underline_response
