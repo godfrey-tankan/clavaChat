@@ -80,4 +80,4 @@ buying_selling_help_help+="\n\n*5. FOR BUYERS:*\n- Buyers can view available pro
 buying_selling_help_help_final = buying_selling_help_help
 
 # Software solutions
-join_our_group_response = " *For all your digital solutions needs, contact *clava software solutions*\nwe provide the following services:\n\n1. *Website Development* \n2. *Mobile App Development* \n3. *Chatbot Development* \n4. *E-commerce Solutions* \n5. *Customized Software Solutions*\n\nJoin our whatsApp group\n https://chat.whatsapp.com/KXy8gLgDLKxKpxPDfRszzg or message 0779586059 to get your software solution now."
+join_our_group_response = " *clava software solutions*\nwe provide the following services:\n\n1. *Website Development* \n2. *Mobile App Development* \n3. *Chatbot Development* \n4. *E-commerce Solutions* \n5. *Customized Software Solutions*\n\nJoin our whatsApp group:\n https://chat.whatsapp.com/KXy8gLgDLKxKpxPDfRszzg \nor message 0779586059."
