@@ -915,7 +915,7 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                     ...
                 return response
             if "5" in message:
-                return
+                return join_our_group_response
             if "6" in message:
                 response = buying_selling_help_help_final
                 return response
