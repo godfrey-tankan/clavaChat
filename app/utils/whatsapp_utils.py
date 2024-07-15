@@ -1553,4 +1553,5 @@ def library_contents_lookup(requester, message):
             #     # Handle the FileNotFoundError appropriately
             #     return f"error somewhere..{e}"
         else:
-            return "Document not found! Please check the document name and try again."
+            random_books = library_contents_lookup(requester, "more")
+            return random_books
