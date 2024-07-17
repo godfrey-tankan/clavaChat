@@ -1100,7 +1100,7 @@ def edit_property(property_id, new_price):
 
 def create_seller_subscription(message, mobile_number):
     response = seller_subs_response
-    monthly_pricing,quarterly_pricing,half_yearly,yearly_pricing = 1, 2.30, 4,7
+    monthly_pricing,quarterly_pricing,half_yearly,yearly_pricing = 1, 2, 4,7
     monthly_sub,quarterly_sub,half_yearly_sub,yearly_sub = "Monthly Subscription","Quarterly Subscription","Half Yearly Subscription","Yearly Subscription"
     try:
         subscription_status = session.query(Subscription).filter_by(mobile_number=mobile_number).first()
@@ -1163,7 +1163,7 @@ def create_seller_subscription(message, mobile_number):
 
 def create_landlord_subscription(message, mobile_number):
     response = landlord_subs_response
-    monthly_pricing,quarterly_pricing,half_yearly,yearly_pricing = 5.77, 13.80, 22.80,39.90
+    monthly_pricing,quarterly_pricing,half_yearly,yearly_pricing = 2, 3.80, 5,9
     monthly_sub,quarterly_sub,half_yearly_sub,yearly_sub = "Monthly Subscription","Quarterly Subscription","Half Yearly Subscription","Yearly Subscription"
     try:
         subscription_status = session.query(Subscription).filter_by(mobile_number=mobile_number).first()
