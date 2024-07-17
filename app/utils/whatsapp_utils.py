@@ -878,34 +878,25 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                         ...
                     return welcome_message
                 return response
-            if message == "1" or message=="1.":
-                try:
-                    active_subscription_status.user_status = chat_status
-                    active_subscription_status.subscription_status = trial_mode
-                    active_subscription_status.user_type = chat_user
-                    session.commit()
-                except Exception as e:
-                    return e
-                return trial_response_ob
             
-            if  "2" in message:
-                selling_response_ob =selling_response
+            if '1' in message:
                 try:
                     active_subscription_status.user_status = selling_mode
                     session.commit() 
                 except Exception as e:
-                    selling_mode_ob = ""
-                    # return e
-                return selling_response_ob
-            if  '3' in message:
-                response = welcome_response3
+                    ...
+                return selling_response
+            
+            if  "2" in message:
+            
                 try:
                     active_subscription_status.user_status = housing_mode
                     session.commit() 
                 except Exception as e:
-                    selling_mode_ob = ""
-                return response
-            if "4" in message:
+                    ...
+                    # return e
+                return welcome_response3
+            if  '3' in message:
                 response = library_response
                 try:
                     active_subscription_status.user_status = library_user
@@ -914,11 +905,14 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                 except Exception as e:
                     ...
                 return response
-            if "5" in message:
+            
+            if "4" in message:
                 return join_our_group_response
-            if "6" in message:
+            
+            if "5" in message:
                 response = buying_selling_help_help_final
                 return response
+           
             return welcome_response
     return "eeh"
 
