@@ -654,7 +654,8 @@ def buying_and_selling(wa_id,message,name,page_number):
                         return response
                     else:
                         return invalid_sale_response
-                return response
+                return 'Please provide a valid product price eg: $100.'
+
             if message_ob.lower() == "exit" :
                 try:
                     active_subscription_status.user_status = selling_mode
