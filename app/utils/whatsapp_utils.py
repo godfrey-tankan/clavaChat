@@ -641,7 +641,7 @@ def buying_and_selling(wa_id,message,name,page_number):
                     ...
                 return response
 
-            elif len(message) > 7:
+            elif len(message) > 4 and not 'delete' in message.lower() and not 'edit' in message.lower():
                 analyze_messages(wa_id[0],message)
                 if get_number_range(message):
                     number_range = get_number_range(message)
