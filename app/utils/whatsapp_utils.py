@@ -368,6 +368,8 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
                 analyze_messages(mobile_number,message)
                 description,location, rentals = extract_house_details(message)
                 if location and description and rentals:
+                    if int(rentals) ==100000:
+                        return "Please provide a valid rental amount."
                     house_details = f"- *Location:* {location}\n- *Description:* {description}\n- *Rentals*: ${rentals}"
                     response = apartment_added_successfully.format(house_details)
                     save_house_info(mobile_number, location.lower(), description.lower(), rentals)
@@ -1030,9 +1032,9 @@ def extract_house_details(string):
         house_info = match.group(1)
         location = match.group(2)
         try:
-            budget = int(match.group(3).replace(',', '')) if match.group(3) else 1000
+            budget = int(match.group(3).replace(',', '')) if match.group(3) else 100000
         except (IndexError, ValueError):
-            budget = 10000
+            budget = 100000
     return house_info, location, budget
 
 def search_rental_properties(house_info, location, budget, page_number, records_per_page):
