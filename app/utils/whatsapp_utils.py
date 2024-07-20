@@ -369,7 +369,7 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
                 description,location, rentals = extract_house_details(message)
                 if location and description and rentals:
                     if int(rentals) ==100000:
-                        return "Please provide a valid rental amount."
+                        return "Please provide a valid rental amount eg $80."
                     house_details = f"- *Location:* {location}\n- *Description:* {description}\n- *Rentals*: ${rentals}"
                     response = apartment_added_successfully.format(house_details)
                     save_house_info(mobile_number, location.lower(), description.lower(), rentals)
@@ -648,6 +648,8 @@ def buying_and_selling(wa_id,message,name,page_number):
                     response = product_added_successfully.format(message, number_range.start, number_range.stop)
                     product_name, condition, price = extract_product_details(message)
                     if product_name and condition and price:
+                        if price == 20000:
+                            return 'Please provide a valid product price eg: $100.'
                         save_electronics_listing(wa_id[0], product_name.lower(), condition.lower(), price)
                         return response
                     else:
