@@ -1,7 +1,7 @@
 # Welcome responses
 welcome_message = "🔖 *WELCOME TO `clavaChat`*.\n\n1.💸 *Buying and Selling* \n\n2.🏘️ *Housing Services* \n\n3.📚 *clavaChat Library* \n\n4.👨‍💻 *Software Solutions* \n\n5.🆘 *Help* \n\nchoose an option eg: 3"
 selling_response = "Please select:\n\n1. Sell a product\n2. Buy a product\n\n type `exit` to exit"
-buyer_response = "What product are you looking for?\nreply with :\n- *Product name*  *Condition* \n\n💡You can consider this example:\n- *iphone 13 pro-max 256GB boxed $1200* \n\n `type exit to exit.` "
+buyer_response = "What product are you looking for?\nreply with :\n- *Product_name* & *Condition* \n\n💡You can consider this example:\n- *iphone 13 256GB boxed* \n\n `type exit to exit.` "
 seller_response = " `Please select`:\n\n1. Add a product\n2. View Your Listings \n3. Subscriptions\n\ntype `exit` to exit"
 seller_add_response = "*What are you selling?* \nPlease provide the following details about the product you are selling:\n- *Product name & details*  *Condition*  *Price* \n\n💡 Consider this example: \n- *iphone 15 256GB boxed $1500* \n\n🚨 _note that after adding your first product, you will be able to just post other products without going through all these steps again!_ \n\n `type exit to exit` "
 welcome_response3 = "Are you a `Landlord` or a `Tenant`?\n\n1. Landlord\n2. Tenant\n\n type `exit` to exit"
