@@ -403,12 +403,12 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
                         property_id = message.split(" ")[1]
                         match = re.search(r'\$(\d+)', message)
                         new_price = match.group(1) if match else None
-                        response = edit_property(property_id, new_price)
+                        response = edit_property(property_id, new_price,mobile_number)
                         return response
                     
                     if "delete" in message.lower():
                         property_id = message.split(" ")[1]
-                        response = delete_property(property_id)
+                        response = delete_property(property_id,mobile_number)
                         return response
 
                     if message.lower() =="more":
@@ -594,12 +594,12 @@ def buying_and_selling(wa_id,message,name,page_number):
                         product_id = message.split(" ")[1]
                         match = re.search(r'\$(\d+)', message)
                         new_price = match.group(1) if match else None
-                        response = edit_product(product_id, new_price)
+                        response = edit_product(product_id, new_price,wa_id[0])
                         return response
                     
                     if "delete" in message.lower():
                         product_id = message.split(" ")[1]
-                        response = delete_product(product_id)
+                        response = delete_product(product_id,wa_id[0])
                         return response
                     
                     if message.lower() =="more":
@@ -1061,28 +1061,54 @@ def search_rental_properties(house_info, location, budget, page_number, records_
         properties = None
     return properties
 
-def delete_product(product_id):
+def delete_product(product_id,mobile_number):
+
     try:
         product = session.query(Electronics).filter_by(id=product_id).first()
-        session.delete(product)
-        session.commit()
-        return f"Product `{product_id}` has been deleted successfully."
+        if product:
+            if f'{mobile_number}' == product.seller.phone_number:
+                for products_analysis in product.products_analysis:
+                    session.delete(products_analysis)
+                product.seller.electronics.remove(product)
+                session.delete(product)
+                session.commit()
+                return f"Product `{product_id}` has been deleted successfully."
+            else:
+                return "You are not the owner of this product. You can only delete your own products"
+        else:
+            return "Product not found. Please check the product ID and try again."
     except Exception as e:
-        return "wrong product id, please try again, make sure you're using correct the command e.g *delete 1*."
+        session.rollback()
+        return f"Error deleting product"
 
-def delete_property(property_id):
+def delete_property(property_id,mobile_number):
     try:
         property = session.query(RentalProperty).filter_by(id=property_id).first()
-        session.delete(property)
-        session.commit()
-        return f"Property `{property_id}` has been deleted successfully."
+        if property:
+            if f'{mobile_number}' == property.landlord.phone_number:
+                for properties_analysis in property.properties_analysis:
+                    session.delete(properties_analysis)
+                property.landlord.rental_properties.remove(property)
+                session.delete(property)
+                session.commit()
+                return f"Property `{property_id}` has been deleted successfully."
+            else:
+                return "You are not the owner of this property. You can only delete your own properties"
+        else:
+            return "Property not found. Please check the property ID and try again."
     except Exception as e:
-        return "wrong property id, please try again, make sure you're using correct the command e.g *delete 1*."
+        session.rollback()
+        return f"Error deleting property"
 
-def edit_product(product_id, new_price):
+def edit_product(product_id, new_price,mobile_number):
     if new_price:
         try:
             product = session.query(Electronics).filter_by(id=product_id).first()
+        except Exception as e:
+            ...
+        try:
+            if f'{mobile_number}' != product.seller.phone_number:
+                return "You are not the owner of this product. You can only edit your own products"
             product.price = new_price
             session.commit()
             return f"Product `{product_id}` has been updated successfully."
@@ -1091,10 +1117,15 @@ def edit_product(product_id, new_price):
     else:
         return f"Please provide a valid new price for the product `{product_id}`."
 
-def edit_property(property_id, new_price):
+def edit_property(property_id, new_price,mobile_number):
     if new_price:
         try:
             property = session.query(RentalProperty).filter_by(id=property_id).first()
+        except Exception as e:
+            ...
+        try:
+            if f'{mobile_number}' != property.landlord.phone_number:
+                return "You are not the owner of this property. You can only edit your own properties"
             property.price = new_price
             session.commit()
             return f"Property `{property_id}` has been updated successfully."
@@ -1106,7 +1137,7 @@ def edit_property(property_id, new_price):
 def create_seller_subscription(message, mobile_number):
     response = seller_subs_response
     monthly_pricing,quarterly_pricing,half_yearly,yearly_pricing = 1, 2, 4,7
-    monthly_sub,quarterly_sub,half_yearly_sub,yearly_sub = "Monthly Subscription","Quarterly Subscription","Half Yearly Subscription","Yearly Subscription"
+    monthly_sub,quarterly_sub,half_yearly_sub,yearly_sub = "Monthly","Quarterly ","Half Yearly","Yearly"
     try:
         subscription_status = session.query(Subscription).filter_by(mobile_number=mobile_number).first()
         landlord_subscription = session.query(Seller).filter_by(phone_number=mobile_number).first()
@@ -1160,7 +1191,7 @@ def create_seller_subscription(message, mobile_number):
             session.commit()
         except Exception as e:
             ...
-        return welcome_landlord_response
+        return seller_response
     if len(message) > 5 and message[:1] == "0" or "ecocash" in message.lower():
         response =validate_payment(message, mobile_number)
         return response
@@ -1169,7 +1200,7 @@ def create_seller_subscription(message, mobile_number):
 def create_landlord_subscription(message, mobile_number):
     response = landlord_subs_response
     monthly_pricing,quarterly_pricing,half_yearly,yearly_pricing = 2, 3.80, 5,9
-    monthly_sub,quarterly_sub,half_yearly_sub,yearly_sub = "Monthly Subscription","Quarterly Subscription","Half Yearly Subscription","Yearly Subscription"
+    monthly_sub,quarterly_sub,half_yearly_sub,yearly_sub = "Monthly ","Quarterly ","Half Yearly ","Yearly "
     try:
         subscription_status = session.query(Subscription).filter_by(mobile_number=mobile_number).first()
         landlord_subscription = session.query(Landlord).filter_by(phone_number=mobile_number).first()

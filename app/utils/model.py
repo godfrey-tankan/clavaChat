@@ -20,6 +20,8 @@ class Subscription(Base):
     user_type = Column(String)
     user_activity = Column(String)
     is_active = Column(Boolean, default=True)
+    date_joined = Column(DateTime, default=datetime.now)
+    date_modified = Column(DateTime, default=datetime.now, onupdate=datetime.now)
     landlord_id = Column(Integer, ForeignKey('landlords.id'))
     landlord = relationship("Landlord", back_populates="subscriptions")
     students = relationship("Student", backref="subscription")
@@ -61,6 +63,8 @@ class Landlord(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
     phone_number = Column(String)
+    date_created = Column(DateTime, default=datetime.now)
+    date_modified = Column(DateTime, default=datetime.now, onupdate=datetime.now)
     rental_properties = relationship("RentalProperty", back_populates="landlord")
     subscriptions = relationship("Subscription", back_populates="landlord")
     property_analysis = relationship("PropertiesAnalysis", back_populates="landlord")
@@ -75,6 +79,8 @@ class RentalProperty(Base):
     price = Column(Integer)
     description = Column(String)
     picture = Column(String)
+    date_created = Column(DateTime, default=datetime.now)
+    date_modified = Column(DateTime, default=datetime.now, onupdate=datetime.now)
     landlord = relationship("Landlord", back_populates="rental_properties")
     properties_analysis = relationship("PropertiesAnalysis", back_populates="property")
 
@@ -116,6 +122,8 @@ class Electronics(Base):
     gadget_name = Column(String)
     condition = Column(String)
     price = Column(Integer)
+    date_created = Column(DateTime, default=datetime.now)
+    date_modified = Column(DateTime, default=datetime.now, onupdate=datetime.now)
     seller_id = Column(Integer, ForeignKey('sellers.id'))
     seller = relationship("Seller", back_populates="electronics")
     products_analysis = relationship("ProductsAnalysis", back_populates="product")
@@ -189,7 +197,7 @@ class Seller(Base):
 # engine = create_engine('postgresql://clavadb_owner:07dJHxYhXqMw@ep-white-firefly-a5yg5yyf.us-east-2.aws.neon.tech/clavadb?sslmode=require')
 
 # engine = create_engine('sqlite:///clava_db.db')
-engine = create_engine('postgresql://clava_db_user:qSaLutxFV9xEfEIBvGq4bnDVMN584nJW@dpg-coq0b4cf7o1s73e8k2l0-a.oregon-postgres.render.com/clava_db')
+engine = create_engine('postgresql://clava:dkdS5RlfUzgHOHkQy7rTfBAjRbpJ9qAK@dpg-cqig13ogph6c738oorig-a.oregon-postgres.render.com/clava')
 Base.metadata.create_all(engine)  # Create the tables if they don't exist
 # Create a session
 Session = sessionmaker(bind=engine)
