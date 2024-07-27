@@ -186,10 +186,10 @@ class Seller(Base):
     product_analysis = relationship("ProductsAnalysis", back_populates="seller")
 
 # Update the database connection URL for PostgreSQL
-# engine = create_engine('postgresql://clavadb_owner:07dJHxYhXqMw@ep-white-firefly-a5yg5yyf.us-east-2.aws.neon.tech/clavadb?sslmode=require')
+engine = create_engine('postgresql://clavadb_owner:07dJHxYhXqMw@ep-white-firefly-a5yg5yyf.us-east-2.aws.neon.tech/clavadb?sslmode=require')
 
 # engine = create_engine('sqlite:///clava_db.db')
-engine = create_engine('postgresql://clava:dkdS5RlfUzgHOHkQy7rTfBAjRbpJ9qAK@dpg-cqig13ogph6c738oorig-a.oregon-postgres.render.com/clava')
+# engine = create_engine('postgresql://clava:dkdS5RlfUzgHOHkQy7rTfBAjRbpJ9qAK@dpg-cqig13ogph6c738oorig-a.oregon-postgres.render.com/clava')
 
 Base.metadata.create_all(engine)  # Create the tables if they don't exist
 # Create a session
