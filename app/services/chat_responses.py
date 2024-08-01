@@ -66,7 +66,7 @@ not_a_landlord_response = "You are not a Registered as a landlord!\n1. Contact S
 after_property_listing_response ="\n- *1* to Add a property\n- *more* to view more properties\n- *exit* to exit\n- *delete* property number. e.g. *delete 1* to delete or *edit 1 price =$300* to edit.\nFor more help reply with *help*"
 after_listing_response ="\n- *1* to Add a product\n- *more* to view more\n- *exit* to exit\n- *delete* product number. e.g. *delete 1* to delete or *edit 1 price =$300* to edit.\nFor more help reply with *help*"
 after_buyer_listing_response ="\n- *exit* to exit\n- *more* to view more products\nFor more help reply with *help*"
-after_books_listing_response ="\n- *exit* to exit | *more* to view more\nReply with *book code* to get that book eg: *17* \n*Please use only book code number like :* 412  not `code #️⃣: 412`"
+after_books_listing_response ="\n- *exit* to exit | *more* to view more\nReply with *book code* to get that book eg: *17* \n*Please use ONLY book code number like :* 412 "
 underline_response = "\n______________*REPLY WITH:*______________"
 after_tenant_listing_response ="\n- *exit* to exit\n- *more* to view more properties\nFor more help reply with *help*"
 buying_selling_help_help = "`clavaChat` *WhatsApp marketplace  support* 🆘\n\nclavaChat connects *buyers* and *sellers*, *tenants* and *landlords*. You can buy or sell products, rent or lease properties\n\n*1. FOR AI CHATBOT SERVICE*\n- choose option 1\n\n2. *FOR LANDLORDS:"

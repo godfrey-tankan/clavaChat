@@ -419,7 +419,7 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
                         if landlord_listings:
                             response = f"*HERE IS YOUR OTHER PROPERTY LISTINGS:*\n\n"
                             for i, listing in enumerate(landlord_listings, start=1):
-                                response += f"{listing.id} *House Information:* {listing.description}\n\t- *Location:* {listing.location}\n\t- *Rent:* ${listing.price}/month\n\n"
+                                response += f"{listing.id} *HOUSE INFORMATION:* {listing.description}\n- *LOCATION:* {listing.location}\n- *RENT:* ${listing.price}/month\n\n"
                             response += underline_response
                             response += after_property_listing_response
                             return response
@@ -610,7 +610,7 @@ def buying_and_selling(wa_id,message,name,page_number):
                         if seller_products:
                             response = "Here are your other listings:\n\n"
                             for i, product in enumerate(seller_products, start=1):
-                                response += f"- {product.id} *Product Name:* {product.gadget_name}\n\t- *Condition:* {product.condition}\n\t- *Price:* ${product.price}\n"
+                                response += f"{product.id} *PRODUCT NAME:* {product.gadget_name}\n- *CONDITION:* {product.condition}\n- *PRICE:* ${product.price}\n"
                             response += underline_response
                             response += after_listing_response
                             return response
@@ -623,7 +623,7 @@ def buying_and_selling(wa_id,message,name,page_number):
                     if seller_products:
                         response = "Here are your listings:\n\n"
                         for i, product in enumerate(seller_products, start=1):
-                            response += f"- {product.id} *Product Name:* {product.gadget_name}\n\t- *Condition:* {product.condition}\n\t- *Price:* ${product.price}\n"
+                            response += f"{product.id} *PRODUCT NAME:* {product.gadget_name}\n- *CONDITION:* {product.condition}\n- *PRICE:* ${product.price}\n"
                         response += underline_response
                         response += after_listing_response
                         return response
