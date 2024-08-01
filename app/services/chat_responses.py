@@ -69,14 +69,14 @@ after_buyer_listing_response ="\n- *exit* to exit\n- *more* to view more product
 after_books_listing_response ="\n- *exit* to exit | *more* to view more\nReply with *book code* to get that book eg: *17* \n*Please use ONLY book code number like :* 412 "
 underline_response = "\n______________*REPLY WITH:*______________"
 after_tenant_listing_response ="\n- *exit* to exit\n- *more* to view more properties\nFor more help reply with *help*"
-buying_selling_help_help = "`clavaChat` *WhatsApp marketplace  support* 🆘\n\nclavaChat connects *buyers* and *sellers*, *tenants* and *landlords*. You can buy or sell products, rent or lease properties\n\n*1. FOR AI CHATBOT SERVICE*\n- choose option 1\n\n2. *FOR LANDLORDS:"
+buying_selling_help_help = "`clavaChat` *WhatsApp marketplace  support* 🆘\n\nclavaChat connects *buyers* and *sellers*, *tenants* and *landlords*. You can buy or sell products, rent or lease properties\n\n*1.FOR LANDLORDS:"
 buying_selling_help_help +="*\n*Landlord can post and manage properties, they can edit property information or delete a property*\n- To add a property you go to *housing services* >> select Landlord >> add a property and follow the steps."
 buying_selling_help_help +="\n- To edit a property you first go to your property listings tab\n `Once there you can`:\n- edit by typing *edit* and property number and what you want to edit e.g *edit 2 rent = $300*"
-buying_selling_help_help+="\n- To delete a property you type: *delete* and property number e.g *delete 1* to remove listing number *1* from your listings or if the property has been occupied.\n\n*3. FOR TENANTS:*\n*Tenants can view available properties*"
-buying_selling_help_help+="\n- To view available properties you go to *housing services* >> select Tenant >> view available properties\n\n *4. FOR SELLERS:* \n *Sellers can post and manage products,edit product information or delete a product*"
+buying_selling_help_help+="\n- To delete a property you type: *delete* and property number e.g *delete 1* to remove listing number *1* from your listings or if the property has been occupied.\n\n*2. FOR TENANTS:*\n*Tenants can view available properties*"
+buying_selling_help_help+="\n- To view available properties you go to *housing services* >> select Tenant >> view available properties\n\n *3. FOR SELLERS:* \n *Sellers can post and manage products,edit product information or delete a product*"
 buying_selling_help_help+= "\n- To add a product you go to *selling* >> select Sell a product >> add a product and follow the steps.\n- To edit a product you first go to your product listings tab\n `Once there you can`:"
 buying_selling_help_help+= "\n- edit by typing *edit* and product number and what you want to edit e.g edit 2 price = $300\n- *delete* product number e.g *delete 1* to remove from listings or if the product has been sold or out of stock."
-buying_selling_help_help+="\n\n*5. FOR BUYERS:*\n- Buyers can view available products\n- To view available products you go to *selling* >> select Looking for a product to buy\n\n6. *FOR SUBSCRIPTIONS:* \n- To subscribe to our services you go to a service first then *subscriptions* >> select your Subscription choice and follow the steps\n\nType *exit* to exit. or message 0779586059 for support.\nclava.co.zw"
+buying_selling_help_help+="\n\n*4. FOR BUYERS:*\n- Buyers can view available products\n- To view available products you go to *selling* >> select Looking for a product to buy\n\n6. *FOR SUBSCRIPTIONS:* \n- To subscribe to our services you go to a service first then *subscriptions* >> select your Subscription choice and follow the steps\n\nType *exit* to exit. or message 0779586059 for support.\nclava.co.zw"
 buying_selling_help_help_final = buying_selling_help_help
 
 # Software solutions
