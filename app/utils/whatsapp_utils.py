@@ -1598,10 +1598,12 @@ def library_contents_lookup(requester, message):
             return "Document added successfully."
         if document_path:
             path=f"https://github.com/godfrey-tankan/My_projects/raw/godfrey-tankan-patch-1/{document_path.strip()}"
-            if path.endswith(".pdf"):
-                pass
-            else:
-                path=f"https://github.com/godfrey-tankan/My_projects/raw/main/{document_path.strip()}"
+        
+            data = get_text_message_input(requester, document_path, path)
+            response =send_message(data)
+            if response:
+                return response
+            path=f"https://github.com/godfrey-tankan/My_projects/raw/main/{document_path.strip()}"
             data = get_text_message_input(requester, document_path, path)
             response =send_message(data)
             return response
