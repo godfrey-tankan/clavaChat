@@ -60,7 +60,7 @@ def create_subscription(mobile_number,user_name, subscription_status):
 
 def log_http_response(response):
     pass
-    # logging.info(f"Status: {response.status_code}")
+    logging.info(f"Status: {response.status_code}")
     # logging.info(f"Content-type: {response.headers.get('content-type')}")
     # logging.info(f"Body: {response.text}")
 
@@ -241,7 +241,7 @@ def send_message(data,template=False):
         url = f"https://graph.facebook.com/{current_app.config['VERSION']}/{current_app.config['PHONE_NUMBER_ID']}/messages"
         try:
             response = requests.post(
-                url, data=data, headers=headers, timeout=10
+                url, data=data, headers=headers, timeout=30
             )  
             response.raise_for_status()  # Raises an HTTPError if the HTTP request returned an unsuccessful status code
         except requests.Timeout:
@@ -1540,7 +1540,7 @@ def publish_post(message):
     else:
         user_type = chat_user
     try:
-        all_users_related = session.query(Subscription).filter_by(user_type=user_type).all()
+        all_users_related = session.query(Subscription).filter_by(user_type=user_type)
     except Exception as e:
         all_users_related = None
     
