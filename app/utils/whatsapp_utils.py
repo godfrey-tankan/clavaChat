@@ -1436,7 +1436,7 @@ def search_document(document_name, requester,request_type):
             session.commit()
             return "Document added successfully."
         except Exception as e:
-            return None
+            return 'Error adding document.'
     else:
         try:
             document = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{document_name}%"))).first()
@@ -1522,10 +1522,9 @@ def search_document(document_name, requester,request_type):
         return None
     return None
 
-MAX_RETRIES = 3
-RETRY_DELAY = 3  # Delay in seconds between retries
-
 def publish_post(message):
+    MAX_RETRIES = 3
+    RETRY_DELAY = 3 
     new_message = message.split()
     post_type = new_message[1]
     split_word = "message"
