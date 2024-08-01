@@ -27,6 +27,9 @@ openai.api_key = "sk-proj-vdoincb6xa4NeNX04fknT3BlbkFJqbXL0EFJvL6192EQny3d"
 conversation = []
 today = datetime.now().date()
 
+MAX_RETRIES = 3
+RETRY_DELAY = 3 
+
 def create_subscription(mobile_number,user_name, subscription_status):
     if Subscription.exists(session, mobile_number):
         sub_end = session.query(Subscription).filter_by(mobile_number=mobile_number).first()
@@ -1426,17 +1429,24 @@ def search_document(document_name, requester,request_type):
     
     if document_name.startswith("add"):
         new_name = document_name.strip("add")
+        retries = 0
+        while retries < MAX_RETRIES:
+            try:
+                document_ob = session.query(Document).filter_by(title=new_name).first()
+                if document_ob:
+                    return "Document already exists."
+                document = Document(title=new_name, category="Library", file_path=requester)
+                session.add(document)
+                session.commit()
+                return "Document added successfully."
+            except OperationalError as e:
+                if "SSL connection has been closed unexpectedly" in str(e):
+                    retries += 1
+                    print(f"Retrying database query ({retries}/{MAX_RETRIES})")
+                    time.sleep(RETRY_DELAY)
+                else:
+                    raise e
 
-        try:
-            document_ob = session.query(Document).filter_by(title=new_name).first()
-            if document_ob:
-                return "Document already exists."
-            document = Document(title=new_name, category="Library", file_path=requester)
-            session.add(document)
-            session.commit()
-            return "Document added successfully."
-        except Exception as e:
-            return 'Error adding document.'
     else:
         try:
             document = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{document_name}%"))).first()
@@ -1523,8 +1533,7 @@ def search_document(document_name, requester,request_type):
     return None
 
 def publish_post(message):
-    MAX_RETRIES = 3
-    RETRY_DELAY = 3 
+   
     new_message = message.split()
     post_type = new_message[1]
     split_word = "message"
