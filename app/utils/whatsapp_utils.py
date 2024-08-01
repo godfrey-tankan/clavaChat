@@ -432,7 +432,7 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
                     if landlord_listings:
                         response = f"*HI `{landlord_profile.name.upper()}` HERE IS YOUR PROPERTY LISTINGS:*\n\n"
                         for i, listing in enumerate(landlord_listings, start=1):
-                            response += f"{listing.id} *House Information:* {listing.description}\n\t- *Location:* {listing.location}\n\t- *Rent:* ${listing.price}/month\n\n"
+                            response += f"{listing.id} *HOUSE INFORMATION:* {listing.description}\n- *LOCATION:* {listing.location}\n- *RENT:* ${listing.price}/month\n\n"
                         response += underline_response
                         response += after_property_listing_response
                         return response
