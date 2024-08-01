@@ -1597,13 +1597,16 @@ def library_contents_lookup(requester, message):
         elif document_path == "Document added successfully.":
             return "Document added successfully."
         if document_path:
-            path=f"https://github.com/godfrey-tankan/My_projects/raw/godfrey-tankan-patch-1/{document_path.strip()}"
+            try:
+                document = session.query(Document).filter_by(title=document_path).first()
+                document_id = document.id
+            except Exception as e:
+                document_id = None
+            if document_id and document_id > 1060:
+                path=f"https://github.com/godfrey-tankan/My_projects/raw/main/{document_path.strip()}"
+            else:
+                path=f"https://github.com/godfrey-tankan/My_projects/raw/godfrey-tankan-patch-1/{document_path.strip()}"
         
-            data = get_text_message_input(requester, document_path, path)
-            response =send_message(data)
-            if response:
-                return response
-            path=f"https://github.com/godfrey-tankan/My_projects/raw/main/{document_path.strip()}"
             data = get_text_message_input(requester, document_path, path)
             response =send_message(data)
             return response
