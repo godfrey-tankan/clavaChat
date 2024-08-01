@@ -1414,7 +1414,7 @@ def search_document(document_name, requester,request_type):
     except Exception as e:
         ...
 
-    if document_name.startswith("[") and len(document_name) > 40:
+    if document_name.startswith("[") and requester =='263779586059':
         file_name_list = eval(document_name)  # Convert the string to a list
         for file_name in file_name_list:
             document = session.query(Document).filter_by(title=file_name).first()
@@ -1427,7 +1427,7 @@ def search_document(document_name, requester,request_type):
                 session.commit()
         return "Documents added successfully."
     
-    if document_name.startswith("add"):
+    if document_name.startswith("add") and requester =='263779586059':
         new_name = document_name.strip("add")
         retries = 0
         while retries < MAX_RETRIES:
