@@ -3,6 +3,8 @@ from datetime import datetime
 from datetime import timedelta
 from flask import current_app, jsonify
 import json
+import time
+from sqlalchemy.exc import OperationalError
 import requests
 import openai
 import time
@@ -1520,6 +1522,9 @@ def search_document(document_name, requester,request_type):
         return None
     return None
 
+MAX_RETRIES = 3
+RETRY_DELAY = 3  # Delay in seconds between retries
+
 def publish_post(message):
     new_message = message.split()
     post_type = new_message[1]
@@ -1527,6 +1532,7 @@ def publish_post(message):
     words = message.split()
     second_word_index = words.index(split_word)
     message = " ".join(words[second_word_index+1:])
+
     if post_type.lower() == "library":
         user_type = library_user
     elif post_type.lower() == "landlord":
@@ -1539,19 +1545,28 @@ def publish_post(message):
         user_type = seller_user
     else:
         user_type = chat_user
-    try:
-        all_users_related = session.query(Subscription).filter_by(user_type=user_type)
-    except Exception as e:
-        all_users_related = None
-    
+
+    retries = 0
+    while retries < MAX_RETRIES:
+        try:
+            all_users_related = session.query(Subscription).filter_by(user_type=user_type)
+            break
+        except OperationalError as e:
+            if "SSL connection has been closed unexpectedly" in str(e):
+                retries += 1
+                print(f"Retrying database query ({retries}/{MAX_RETRIES})")
+                time.sleep(RETRY_DELAY)
+            else:
+                raise e
+
     if all_users_related:
         for user in all_users_related:
             user_mobile = user.mobile_number
             try:
-                data = get_text_message_input(user_mobile, message,None)
-                response =send_message(data)
+                data = get_text_message_input(user_mobile, message, None)
+                response = send_message(data)
             except Exception as e:
-                ...
+                # Handle exception for send_message()
                 response = "error sending messages"
         return response
     return 'No users found'
