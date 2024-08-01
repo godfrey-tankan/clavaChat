@@ -1523,7 +1523,7 @@ def search_document(document_name, requester,request_type):
 def publish_post(message):
     new_message = message.split()
     post_type = new_message[1]
-    split_word = ","
+    split_word = "message"
     words = message.split()
     second_word_index = words.index(split_word)
     message = " ".join(words[second_word_index+1:])
