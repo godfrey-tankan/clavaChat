@@ -1588,6 +1588,7 @@ def publish_post(message):
 def library_contents_lookup(requester, message):
     if message.lower() in greetings_list:
         return "Hello! Please enter the title of what you are looking for."
+
     if message.lower() == "more":
         message = "vvvvbvb"
         request_type = '*here are some other random documents you might be interested in:*'
@@ -1622,4 +1623,7 @@ def library_contents_lookup(requester, message):
             #     # Handle the FileNotFoundError appropriately
             #     return f"error somewhere..{e}"
         else:
+            message = message.strip()
+            if message[:1].isdigit() and message[-1].isalpha():
+                return 'please use book code *number* only to get the book'
             return "No document found."
