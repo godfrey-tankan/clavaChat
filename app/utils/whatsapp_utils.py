@@ -1414,17 +1414,23 @@ def search_document(document_name, requester,request_type):
     except Exception as e:
         ...
 
-    if document_name.startswith("[") and requester =='263779586059':
-        file_name_list = eval(document_name)  # Convert the string to a list
+    if document_name.startswith("[") and requester == '263779586059':
+        file_name_list = eval(document_name)
+
+        last_document_id = session.query(func.max(Document.id)).scalar() or 0
+
         for file_name in file_name_list:
             document = session.query(Document).filter_by(title=file_name).first()
-            # title = file_name[:-4]
+
             if document:
                 pass
             else:
-                document_add = Document(title=file_name, category="Library", file_path=requester)
+                new_document_id = last_document_id + 1  # Start from the last ID
+                document_add = Document(id=new_document_id, title=file_name, category="Library", file_path=requester)
+                
                 session.add(document_add)
                 session.commit()
+                last_document_id = new_document_id
         return "Documents added successfully."
     
     if document_name.startswith("add") and requester =='263779586059':
