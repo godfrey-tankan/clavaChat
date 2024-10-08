@@ -1626,4 +1626,4 @@ def library_contents_lookup(requester, message):
             message = message.strip()
             if message[:1].isdigit() and message[-1].isalpha():
                 return 'please use book code *number* only to get the book'
-            return "No document found."
+            return "No document found!\n `tip`: _try searching by the author instead_ ."
