@@ -52,7 +52,7 @@ def create_subscription(mobile_number,user_name, subscription_status):
             subscription_status=new_user,
             user_name=user_name,
             trial_start_date=today,
-            trial_end_date=today + timedelta(days=130),
+            trial_end_date=today + timedelta(days=430),
             user_status=welcome,
             user_type=new_user,
             subscription_referral=None,
@@ -372,6 +372,13 @@ def generate_response(response, wa_id, name, message_type, message_id):
                         session.commit()
                     except Exception as e:
                         ...
+                    details = {
+                        "list":True,
+                        
+                    }
+                    response = get_interactive_message_input(wa_id[0],details)
+                    send_message(response)
+                    return ''
                     return welcome_message
             # return "Please *note* that the clavaChat AI Chatbot is currently under maintenance.\nRegards clavaTeam."      
             try:
@@ -581,6 +588,13 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
                     session.commit()
                 except Exception as e:
                     ...
+                details = {
+                    "list":True,
+                    
+                }
+                response = get_interactive_message_input(wa_id[0],details)
+                send_message(response)
+                return ''
                 return welcome_message
             if "[" in message:
                 landlord_details = message.split(']')[1].strip()
@@ -708,6 +722,13 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
                     session.commit()
                 except Exception as e:
                     ...
+                details = {
+                    "list":True,
+                    
+                }
+                response = get_interactive_message_input(mobile_number,details)
+                send_message(response)
+                return ''
                 return welcome_message
             return response      
         #=========================TENANT USER BLOCK ===============              
@@ -721,6 +742,13 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
                     session.commit()
                 except Exception as e:
                     ...
+                details = {
+                    "list":True,
+                    
+                }
+                response = get_interactive_message_input(mobile_number,details)
+                send_message(response)
+                return ''
                 return welcome_message
             if len(message) > 7 or message.lower() == "more":
                 if message.lower() == "more":
@@ -781,6 +809,13 @@ def buying_and_selling(wa_id,message,name,page_number):
                         session.commit()
                     except Exception as e:
                         ...
+                    details = {
+                        "list":True,
+                        
+                    }
+                    response = get_interactive_message_input(wa_id[0],details)
+                    send_message(response)
+                    return ''
                     return welcome_message
                 return response
             #=========================SELLING USER BLOCK ===============
@@ -907,6 +942,13 @@ def buying_and_selling(wa_id,message,name,page_number):
                     session.commit()
                 except Exception as e:
                     ...
+                details = {
+                    "list":True,
+                    
+                }
+                response = get_interactive_message_input(wa_id[0],details)
+                send_message(response)
+                return ''
                 return welcome_message
             return response
 
@@ -935,6 +977,13 @@ def activate_subscription(wa_id,status,message,expiry_date,subscription_status_o
                 session.commit()
             except Exception as e:
                 ...
+            details = {
+                "list":True,
+                
+            }
+            response = get_interactive_message_input(wa_id[0],details)
+            send_message(response)
+            return ''
             return welcome_message
         if status ==subs_status:
             try:
@@ -1052,6 +1101,13 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                         active_subscription_status.user_status = welcome
                         active_subscription_status.user_type = new_user
                         session.commit()
+                        details = {
+                            "list":True,
+                            
+                        }
+                        response = get_interactive_message_input(wa_id[0],details)
+                        send_message(response)
+                        return ''
                         return welcome_message
                     except Exception as e:
                         ...
@@ -1098,7 +1154,7 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                         session.commit()
                     except Exception as e:
                         ...
-                    return welcome_message
+                    
                 details = {
                     "heading":"Please select",
                     "body":f'confirm your choice',
