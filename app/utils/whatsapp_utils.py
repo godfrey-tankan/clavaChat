@@ -107,7 +107,203 @@ def get_text_message_input(recipient, text,media,template=False):
         }
     )
 
-def generate_response(response, wa_id, name):
+def get_interactive_message_input(recipient,details=None):
+   
+    try:
+        if details and details.get('button',False):
+            return json.dumps(
+                {
+                    "messaging_product": "whatsapp",
+                    "recipient_type": "individual",
+                    "to": recipient,
+                    "type": "interactive",
+                    "interactive": {
+                        "type": "button",
+                        "header": {
+                        "type": "text",
+                        "text": details.get('heading', None) 
+                        },
+                        "body": {
+                        "text": details.get('body', None)
+                        },
+                        "footer": {
+                        "text": details.get('footer', None)
+                        },
+                        "action": {
+                        "buttons": [
+                            {
+                            "type": "reply",
+                            "reply": {
+                                "id": details.get('first_id', None),
+                                "title": details.get('first_reply', None)
+                            }
+                            },
+                            {
+                            "type": "reply",
+                            "reply": {
+                                "id": details.get('second_id', None),
+                                "title": details.get('second_reply', None)
+                            }
+                            },
+                            {
+                            "type": "reply",
+                            "reply": {
+                                "id": details.get('third_id', None),
+                                "title": details.get('third_reply', None)
+                            }
+                            }
+                        ]
+                        }
+                    }
+                    }
+            )
+        
+        elif details and details.get('list',False):
+            return json.dumps(
+                {
+                    "messaging_product": "whatsapp",
+                    "recipient_type": "individual",
+                    "to": recipient,
+                    "type": "interactive",
+                    "interactive": {
+                        "type": "list",
+                        "header": {
+                        "type": "text",
+                        "text": details.get("heading") if details.get("heading") else "🔖 WELCOME TO clavaChat."
+                        },
+                        "body": {
+                        "text": "Your one stop marketplace for all your buying and selling needs."
+                        },
+                        "footer": {
+                        "text": "choose one of the following options"
+                        },
+                        "action": {
+                        "button": "Choose Type",
+                        "sections": [
+                            {
+                            "title": "Menu Options",
+                            "rows": [
+                                {
+                                "id": "buying",
+                                "title": "💸 Buying and Selling"
+                                },
+                                {
+                                "id": "rentals",
+                                "title": "🏘️ Housing Services"
+                                },
+                                {
+                                "id": "library",
+                                "title": "📚 clavaChat Library"
+                                },
+                                {
+                                "id": "support_inquiry",
+                                "title": "👨‍💻 Software Solutions"
+                                },
+                                {
+                                "id": "other_inquiry",
+                                "title": "🆘 Help"
+                                }
+                            ]
+                            }
+                        ]
+                        }
+                    }
+                    }
+            )
+        
+
+    except Exception as e:
+        return e
+
+def send_single_button_interactive(recipient,details=None):
+   
+    try:
+        if details and details.get('button',False):
+            return json.dumps(
+                {
+                    "messaging_product": "whatsapp",
+                    "recipient_type": "individual",
+                    "to": recipient,
+                    "type": "interactive",
+                    "interactive": {
+                        "type": "button",
+                        "header": {
+                        "type": "text",
+                        "text": details.get('heading', None) 
+                        },
+                        "body": {
+                        "text": details.get('body', None)
+                        },
+                        "footer": {
+                        "text": details.get('footer', None)
+                        },
+                        "action": {
+                        "buttons": [
+                            {
+                            "type": "reply",
+                            "reply": {
+                                "id": details.get('first_id', None),
+                                "title": details.get('first_reply', None)
+                            }
+                            }
+                        ]
+                        }
+                    }
+                    }
+            )
+
+    except Exception as e:
+        return e
+
+def send_double_button_interactive(recipient,details=None):
+   
+    try:
+        if details and details.get('button',False):
+            return json.dumps(
+                {
+                    "messaging_product": "whatsapp",
+                    "recipient_type": "individual",
+                    "to": recipient,
+                    "type": "interactive",
+                    "interactive": {
+                        "type": "button",
+                        "header": {
+                        "type": "text",
+                        "text": details.get('heading', None) 
+                        },
+                        "body": {
+                        "text": details.get('body', None)
+                        },
+                        "footer": {
+                        "text": details.get('footer', None)
+                        },
+                        "action": {
+                        "buttons": [
+                            {
+                            "type": "reply",
+                            "reply": {
+                                "id": details.get('first_id', None),
+                                "title": details.get('first_reply', None)
+                            }
+                            },
+                            {
+                            "type": "reply",
+                            "reply": {
+                                "id": details.get('second_id', None),
+                                "title": details.get('second_reply', None)
+                            }
+                            }
+                        ]
+                        }
+                    }
+                    }
+            )
+                
+
+    except Exception as e:
+        return e
+
+def generate_response(response, wa_id, name, message_type, message_id):
     global conversation
     session.rollback()
     try:
@@ -211,7 +407,8 @@ def generate_response(response, wa_id, name):
                 return response.choices[0].message.content.strip()
             except Exception as e:
                 return "Please *note* that the clavaChat AI Chatbot is currently under maintenance.\nRegards clavaTeam."      
-    
+
+
 def send_message(data,template=False):
     if template:
         headers = {
@@ -278,8 +475,7 @@ def process_text_for_whatsapp(text):
 def process_whatsapp_message(body):
     data = body
     try:
-        # phone_number_id = data['entry'][0]['changes'][0]['value']['metadata']['phone_number_id']
-        phone_number_id =  [contact['wa_id'] for contact in data['entry'][0]['changes'][0]['value']['contacts']]
+        phone_number_id = [contact['wa_id'] for contact in data['entry'][0]['changes'][0]['value']['contacts']]
     except Exception as e:
         phone_number_id = ""
 
@@ -287,17 +483,60 @@ def process_whatsapp_message(body):
         profile_name = data['entry'][0]['changes'][0]['value']['contacts'][0]['profile']['name']
     except Exception as e:
         profile_name = "User"
+
     try:
-        message = body["entry"][0]["changes"][0]["value"]["messages"][0]
-        message_body = message["text"]["body"]
+        process_message_file_type(
+            body, phone_number_id, profile_name
+        )
     except Exception as e:
-        message_body = "hello there, how can i help you today?"
-    try:
-        response = generate_response(message_body, phone_number_id, profile_name)
-        data = get_text_message_input(phone_number_id, response,None,False)
-        send_message(data)
-    except Exception as e:
+        print(f"Error processing message: {e}")
         ...
+
+
+def process_message_file_type(body, phone_number_id, profile_name):
+    message = body["entry"][0]["changes"][0]["value"]["messages"][0]
+    message_type = message["type"]
+    message_id = None
+    if message_type == "audio":
+        message_id = message["audio"]["id"]
+      
+    elif message_type =='button':
+        message_body = message["button"]["text"]
+    
+    elif message_type == "video":
+        message_id = message["video"]["id"]
+        
+    elif message_type == "document":
+        message_id = message["document"]["id"]
+
+    elif message_type == "image":
+        message_id = message["image"]["id"]
+        
+    
+    elif message_type == "interactive":
+            try:
+                if "list_reply" in message["interactive"]:
+                    message_body = message["interactive"]["list_reply"]["title"]
+                    message_id = message["interactive"]["list_reply"]["id"]
+                elif "button_reply" in message["interactive"]:
+                    message_body = message["interactive"]["button_reply"]["title"]
+                    message_id = message["interactive"]["button_reply"]["id"]
+                else:
+                    print("Unsupported interactive message subtype.")
+            except KeyError as e:
+                print(f"Missing key in interactive message: {e}")
+            except Exception as e:
+                print(f"Unexpected error processing interactive message: {e}")
+    
+    elif message_type == "text":
+        message_body = message["text"]["body"]
+        
+    response = generate_response(message_body, phone_number_id, profile_name,message_type,message_id)
+    data = get_text_message_input(phone_number_id, response, None, False)
+    return send_message(data)
+
+
+
 
 def send_message_template(recepient):
     return json.dumps(
@@ -389,7 +628,7 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
                 return response
             records_per_page =10
             response = welcome_landlord_response
-            if message == "1":
+            if message == "1" or 'add' in message.lower():
                 response = add_property_response
                 try:
                     active_subscription_status.subscription_referral = message[:5]
@@ -398,7 +637,7 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
                 except Exception as e:
                     ...
                 return response
-            elif message == "2" or "delete" in message.lower() or "edit" in message.lower() or message.lower() == "more":
+            elif message == "2" or 'view' in message.lower() or "delete" in message.lower() or "edit" in message.lower() or message.lower() == "more":
                 try:
                     landlord_profile = session.query(Landlord).filter_by(phone_number=mobile_number).first()
                 except Exception as e:
@@ -454,7 +693,7 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
                         ...
                     response = f"We will use *{message.upper()}* as your name.\n\nReply with *Y* to accept or *N* to deny."
                     return response
-            if message == "3":
+            if message == "3" or 'your':
                 response = landlord_subs_response
                 try:
                     active_subscription_status.user_status = subscription_status
@@ -801,7 +1040,7 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
             
             if active_subscription_status.user_status == selling_mode:
                 response = selling_response
-                if message == "1":
+                if message == "1" or 'sell' in message.lower():
                     response = seller_response
                     try:
                         active_subscription_status.user_type = seller_user
@@ -822,7 +1061,7 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                         # return e
                     return response
                 
-                elif message == "2":
+                elif message == "2" or 'buy' in message.lower():
                     response = buyer_response
                     try:
                         active_subscription_status.user_type = buyer_user
@@ -840,6 +1079,22 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                     except Exception as e:
                         ...
                     return welcome_message
+                details = {
+                    "heading":"Please select",
+                    "body":f'confirm your choice',
+                    "footer":'choose one of the following options',
+                    "first_id":'Sell',
+                    "first_reply":"Sell a product",
+                    "second_id":"Buy",
+                    "second_reply":"Buy a product",
+                    "third_id":"exit",
+                    "third_reply":"exit",
+                    "button":True,
+                    
+                }
+                data =get_interactive_message_input(wa_id[0],details=details)
+                send_message(data)
+                return ''
                 return response  
             
             #=========================HOUSING USER BLOCK ========================
@@ -849,7 +1104,7 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
             
             if active_subscription_status.user_status == housing_mode:
                 response = welcome_response3
-                if message == "1":
+                if message == "1" or 'tenant' in response.lower():
                     response = welcome_landlord_response
                     try:
                         response = landlord_name_response
@@ -874,7 +1129,7 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                         selling_mode_ob = ""
                         # return e
                     return response
-                elif message == "2":
+                elif message == "2" or 'landlord' in response.lower():
                     response = tenant_response
                     try:
                         active_subscription_status.user_type = tenant_user
@@ -893,9 +1148,25 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                     except Exception as e:
                         ...
                     return welcome_message
+                details = {
+                    "heading":f"Are you a Landlord or a Tenant?",
+                    "body":f'confirm your user type',
+                    "footer":'choose one of the following options',
+                    "first_id":'landlord',
+                    "first_reply":"landlord",
+                    "second_id":"tenant",
+                    "second_reply":"tenant",
+                    "third_id":"exit",
+                    "third_reply":"exit",
+                    "button":True,
+                    
+                }
+                data =get_interactive_message_input(wa_id[0],details=details)
+                send_message(data)
+                return ''
                 return response
             
-            if '1' in message:
+            if '1' in message or 'buying' in message.lower():
                 try:
                     active_subscription_status.user_status = selling_mode
                     session.commit() 
@@ -903,7 +1174,7 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                     ...
                 return selling_response
             
-            if  "2" in message:
+            if  "2" in message or 'housing' in message.lower():
             
                 try:
                     active_subscription_status.user_status = housing_mode
@@ -912,7 +1183,7 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                     ...
                     # return e
                 return welcome_response3
-            if  '3' in message:
+            if  '3' in message or 'library' in message.lower():
                 response = library_response
                 try:
                     active_subscription_status.user_status = library_user
@@ -922,13 +1193,19 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                     ...
                 return response
             
-            if "4" in message:
+            if "4" in message or 'software' in message.lower():
                 return join_our_group_response
             
-            if "5" in message:
+            if "5" in message or 'help' in message.lower():
                 response = buying_selling_help_help_final
                 return response
-
+            details = {
+                "list":True,
+                
+            }
+            response = get_interactive_message_input(wa_id[0],details)
+            send_message(response)
+            return ''
             return welcome_response
     return "eeh"
 
