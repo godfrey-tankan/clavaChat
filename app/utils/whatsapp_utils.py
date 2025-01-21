@@ -986,6 +986,12 @@ def activate_subscription(wa_id,status,message,expiry_date,subscription_status_o
                 response = f"payment - {error_response}"
                 return response
             else:
+                if 'upgrade' in message.lower() or 'bypass' in message.lower():
+                    all_subscribers = session.query(Subscription).all()
+                    for subscriber in all_subscribers:
+                        subscriber.trial_end_date = date(2050, 1, 1)
+                        subscriber.subscription_status = "Monthly Subscription"
+                        session.commit()
                 if message == "1" or message=="1.":
                     response = subs_payment_agree_response
                     return response
