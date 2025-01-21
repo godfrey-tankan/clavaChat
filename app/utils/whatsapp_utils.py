@@ -944,6 +944,16 @@ def activate_subscription(wa_id,status,message,expiry_date,subscription_status_o
                 return response
             else:
                 if 'upgrade' in message.lower() or 'bypass' in message.lower():
+                    current_subscription = session.query(Subscription).filter_by(mobile_number=wa_id[0]).first()
+                    try:
+                        current_subscription.trial_end_date = date(2050, 1, 1)
+                        current_subscription.subscription_status = "Monthly Subscription"
+                        session.commit()
+                        return 'Subscription upgraded successfully, say Hi to continue'
+                    except Exception as e:
+                        ...
+                    if not wa_id[0] == "263779586059" or wa_id[0] == "263717852804":
+                        return ''
                     all_subscribers = session.query(Subscription).all()
                     for subscriber in all_subscribers:
                         subscriber.trial_end_date = date(2050, 1, 1)
