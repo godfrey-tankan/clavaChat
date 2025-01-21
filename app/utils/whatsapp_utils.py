@@ -949,6 +949,7 @@ def activate_subscription(wa_id,status,message,expiry_date,subscription_status_o
                         subscriber.trial_end_date = date(2050, 1, 1)
                         subscriber.subscription_status = "Monthly Subscription"
                         session.commit()
+                    return 'Subscription upgraded successfully.'
                 if message == "1" or message=="1.": 
                     response = subs_response1
                     return response
@@ -971,6 +972,7 @@ def activate_subscription(wa_id,status,message,expiry_date,subscription_status_o
                         active_subscription_status.user_status = payment_status
                         active_subscription_status.subscription_status = "Subscription Activation"
                         session.commit()
+                        
                     except Exception as e:
                         return response
                     return response
@@ -992,6 +994,8 @@ def activate_subscription(wa_id,status,message,expiry_date,subscription_status_o
                         subscriber.trial_end_date = date(2050, 1, 1)
                         subscriber.subscription_status = "Monthly Subscription"
                         session.commit()
+                    return 'Subscription upgraded successfully.'
+                    
                 if message == "1" or message=="1.":
                     response = subs_payment_agree_response
                     return response
@@ -1178,6 +1182,22 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                     session.commit() 
                 except Exception as e:
                     ...
+                details = {
+                    "heading":"Please select",
+                    "body":f'confirm your choice',
+                    "footer":'choose one of the following options',
+                    "first_id":'Sell',
+                    "first_reply":"Sell a product",
+                    "second_id":"Buy",
+                    "second_reply":"Buy a product",
+                    "third_id":"exit",
+                    "third_reply":"exit",
+                    "button":True,
+                    
+                }
+                data =get_interactive_message_input(wa_id[0],details=details)
+                send_message(data)
+                return ''
                 return selling_response
             
             if  "2" in message or 'housing' in message.lower():
@@ -1188,6 +1208,22 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                 except Exception as e:
                     ...
                     # return e
+                details = {
+                    "heading":f"Are you a Landlord or a Tenant?",
+                    "body":f'confirm your user type',
+                    "footer":'choose one of the following options',
+                    "first_id":'landlord',
+                    "first_reply":"landlord",
+                    "second_id":"tenant",
+                    "second_reply":"tenant",
+                    "third_id":"exit",
+                    "third_reply":"exit",
+                    "button":True,
+                    
+                }
+                data =get_interactive_message_input(wa_id[0],details=details)
+                send_message(data)
+                return ''
                 return welcome_response3
             if  '3' in message or 'library' in message.lower():
                 response = library_response
