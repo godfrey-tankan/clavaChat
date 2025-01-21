@@ -928,7 +928,7 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
             if "5" in message:
                 response = buying_selling_help_help_final
                 return response
-           
+
             return welcome_response
     return "eeh"
 
