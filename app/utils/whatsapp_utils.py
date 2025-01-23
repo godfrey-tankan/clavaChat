@@ -937,7 +937,7 @@ def buying_and_selling(wa_id,message,name,page_number):
 
             if message_ob.lower() == "exit" :
                 try:
-                    active_subscription_status.user_status = new_user
+                    active_subscription_status.user_status = welcome
                     active_subscription_status.user_type = new_user
                     session.commit()
                 except Exception as e:
