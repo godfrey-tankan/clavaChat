@@ -178,7 +178,7 @@ def get_interactive_message_input(recipient,details=None):
                         "text": "choose one of the following options"
                         },
                         "action": {
-                        "button": "Choose Type",
+                        "button": "View Options",
                         "sections": [
                             {
                             "title": "Menu Options",
