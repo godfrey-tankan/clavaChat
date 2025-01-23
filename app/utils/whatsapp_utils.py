@@ -1998,8 +1998,8 @@ def search_document(document_name, requester,request_type):
                         else:
                             # all_documents = session.query(Document)\
                             # .offset(random.randint(1, int(documents_count))).limit(10).all()
-                            all_documents = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{modified_string}%"))).all()
-                            if all_documents:
+                            all_documents = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{modified_string}%")))
+                            if all_documents.count() > 0:
                                 response = f"{request_type}\n\n"
                                 for i, document in enumerate(all_documents, start=random.randint(1, 10)):
                                     response += f"📚 *TITLE*: _{document.title}_\n- *code #️⃣:* {document.id}  \n\n"
@@ -2021,6 +2021,7 @@ def search_document(document_name, requester,request_type):
                                 data = send_double_button_interactive(requester,details=details)
                                 send_message(data)
                                 return 'alternatives found'
+                            return None
                     #returning matches with key words
         except Exception as e:
             ...
@@ -2134,4 +2135,20 @@ def library_contents_lookup(requester, message):
             message = message.strip()
             if message[:1].isdigit() and message[-1].isalpha():
                 return 'please use book code *number* only to get the book'
-            return "No document found!\n `tip`: _try searching by the author instead_ ."
+            msg ="No document found!\n `tip`: _try searching by the author instead_ ."
+            data = get_text_message_input(requester, msg, None)
+            send_message(data)
+            details = {
+                    "heading":"What would you like to do next?",
+                    "body":'Do you want to see more books or exit?',
+                    "footer":'choose one of the following options',
+                    "first_id":'random',
+                    "first_reply":"Browse Random",
+                    "second_id":"Exit",
+                    "second_reply":"Exit",
+                    "button":True,
+                    
+            }
+            data = send_double_button_interactive(requester,details=details)
+            send_message(data)
+            return ""
