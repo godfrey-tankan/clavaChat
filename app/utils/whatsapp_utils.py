@@ -2139,8 +2139,8 @@ def library_contents_lookup(requester, message):
             data = get_text_message_input(requester, msg, None)
             send_message(data)
             details = {
-                    "heading":"What would you like to do next?",
-                    "body":'Do you want to see more books or exit?',
+                    "heading":"No document found!",
+                    "body":'`tip`: _try searching by the author instead_ .',
                     "footer":'choose one of the following options',
                     "first_id":'random',
                     "first_reply":"Browse Random",
