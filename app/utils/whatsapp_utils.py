@@ -1915,8 +1915,21 @@ def search_document(document_name, requester,request_type):
                                 response += underline_response
                                 response += after_books_listing_response
                                 data = get_text_message_input(requester, response, None)
-                                response = send_message(data)
-                                return response
+                                send_message(data)
+                                details = {
+                                        "heading":"What would you like to do next?",
+                                        "body":'choose more to see more books or exit to leave',
+                                        "footer":'choose one of the following options',
+                                        "first_id":'more',
+                                        "first_reply":"More",
+                                        "second_id":"Exit",
+                                        "second_reply":"Exit",
+                                        "button":True,
+                                        
+                                }
+                                data = send_double_button_interactive(requester,details=details)
+                                send_message(data)
+                                return ''
                         else:
                             # all_documents = session.query(Document)\
                             # .offset(random.randint(1, int(documents_count))).limit(10).all()
@@ -1928,8 +1941,21 @@ def search_document(document_name, requester,request_type):
                                 response += underline_response
                                 response += after_books_listing_response
                                 data = get_text_message_input(requester, response, None)
-                                response = send_message(data)
-                                return response
+                                send_message(data)
+                                details = {
+                                        "heading":"What would you like to do next?",
+                                        "body":'choose more to see more books or exit to leave',
+                                        "footer":'choose one of the following options',
+                                        "first_id":'exit',
+                                        "first_reply":"Exit",
+                                        "second_id":"Exit",
+                                        "second_reply":"Exit",
+                                        "button":True,
+                                        
+                                }
+                                data = send_double_button_interactive(requester,details=details)
+                                send_message(data)
+                                return ''
                     #returning matches with key words
         except Exception as e:
             ...
@@ -2010,23 +2036,6 @@ def library_contents_lookup(requester, message):
         document_path = search_document(message,requester,request_type)
         data = get_text_message_input(requester, document_path, None)
         response = send_message(data)
-        details = {
-                "heading":"What would you like to do next?",
-                "body":'choose more to see more books or exit to leave',
-                "footer":'choose one of the following options',
-                "first_id":'more',
-                "first_reply":"More",
-                "second_id":"Exit",
-                "second_reply":"Exit",
-                "button":True,
-                
-        }
-        try:
-            data = send_double_button_interactive(requester,details=details)
-            send_message(data)
-        except:
-            return '> an error occurred while changing branch..'
-        
         return response
     else:
         custom_message = '*No exact match found!,here are some alternatives*'
