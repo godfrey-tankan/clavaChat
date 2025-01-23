@@ -484,11 +484,13 @@ def process_whatsapp_message(body):
     try:
         phone_number_id = [contact['wa_id'] for contact in data['entry'][0]['changes'][0]['value']['contacts']]
     except Exception as e:
+        print('error getting number',e)
         phone_number_id = ""
 
     try:
         profile_name = data['entry'][0]['changes'][0]['value']['contacts'][0]['profile']['name']
     except Exception as e:
+        print('Error getting name',e)
         profile_name = "User"
 
     try:
@@ -504,6 +506,10 @@ def process_message_file_type(body, phone_number_id, profile_name):
     message = body["entry"][0]["changes"][0]["value"]["messages"][0]
     message_type = message["type"]
     message_id = None
+    print('body..........',body)
+    print('message............',message)
+    print('message_type............',message_type)
+    print('profile_name............',profile_name)
     if message_type == "audio":
         message_id = message["audio"]["id"]
       
@@ -537,6 +543,8 @@ def process_message_file_type(body, phone_number_id, profile_name):
     
     elif message_type == "text":
         message_body = message["text"]["body"]
+    
+    print('last message body......',message_body)
         
     response = generate_response(message_body, phone_number_id, profile_name,message_type,message_id)
     data = get_text_message_input(phone_number_id, response, None, False)
