@@ -1972,7 +1972,7 @@ def search_document(document_name, requester,request_type):
                         documents_count = session.query(Document).count()
                         if request_type.lower().startswith("*here"):
                             all_documents = session.query(Document)\
-                            .offset(random.randint(1, int(documents_count))).limit(10).all()
+                            .offset(random.randint(1, int(documents_count))).limit(15).all()
                             if all_documents:
                                 response = f"{request_type}\n\n"
                                 for i, document in enumerate(all_documents, start=random.randint(1, 10)):
