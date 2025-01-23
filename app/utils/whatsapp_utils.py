@@ -592,7 +592,7 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
                     "list":True,
                     
                 }
-                response = get_interactive_message_input(wa_id[0],details)
+                response = get_interactive_message_input(mobile_number,details)
                 send_message(response)
                 return ''
                 return welcome_message
@@ -642,7 +642,7 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
                 return response
             records_per_page =10
             response = welcome_landlord_response
-            if message == "1" or 'add' in message.lower():
+            if message.lower() in ['1','add a property']:
                 response = add_property_response
                 try:
                     active_subscription_status.subscription_referral = message[:5]
@@ -651,7 +651,7 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
                 except Exception as e:
                     ...
                 return response
-            elif message == "2" or 'view' in message.lower() or "delete" in message.lower() or "edit" in message.lower() or message.lower() == "more":
+            elif message.lower() in ['3','view your properties','more'] or "delete" in message.lower() or "edit" in message.lower():
                 try:
                     landlord_profile = session.query(Landlord).filter_by(phone_number=mobile_number).first()
                 except Exception as e:
@@ -698,7 +698,7 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
                         return no_apartment_listings
                 else:
                     return not_a_landlord_response
-            if len(message) > 4 and len(message) < 10 and message != "exit" and message != "hello":
+            if len(message) > 4 and len(message) < 10 and message.lower() not in ["hello",'exit',"view your properties","your subscriptions","add a property"]:
                     try:
                         landlord_prof = session.query(Landlord).filter_by(phone_number=mobile_number).first()
                         landlord_prof.name = message
@@ -707,7 +707,7 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
                         ...
                     response = f"We will use *{message.upper()}* as your name.\n\nReply with *Y* to accept or *N* to deny."
                     return response
-            if message == "3" or 'your':
+            if message.lower() in ["3","your subscriptions"]:
                 response = landlord_subs_response
                 try:
                     active_subscription_status.user_status = subscription_status
@@ -730,6 +730,22 @@ def landlord_tenant_housing(mobile_number,message,name,page_number):
                 send_message(response)
                 return ''
                 return welcome_message
+            details = {
+                "heading":"Please select",
+                "body":f'confirm your choice',
+                "footer":'choose one of the following options or type exit to go back',
+                "first_id":'Sell',
+                "first_reply":"Add a property",
+                "second_id":"view",
+                "second_reply":"View Your properties",
+                "third_id":"Subscriptions",
+                "third_reply":"Your subscriptions",
+                "button":True,
+                
+            }
+            data =get_interactive_message_input(mobile_number,details=details)
+            send_message(data)
+            return ''
             return response      
         #=========================TENANT USER BLOCK ===============              
         if active_subscription_status.user_type == tenant_user:
