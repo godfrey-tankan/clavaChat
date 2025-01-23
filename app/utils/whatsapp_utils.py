@@ -2008,7 +2008,7 @@ def search_document(document_name, requester,request_type):
                                 data = get_text_message_input(requester, response, None)
                                 send_message(data)
                                 details = {
-                                        "heading":"What would you like to do next?",
+                                        "heading":"No exact match found",
                                         "body":'Do you want to see more books or exit?',
                                         "footer":'choose one of the following options',
                                         "first_id":'random',
@@ -2078,9 +2078,9 @@ def publish_post(message):
 def library_contents_lookup(requester, message):
     if message.lower() in greetings_list:
         details = {
-                "heading":"Hello! Please enter the title of what you are looking for.",
-                "body":'Reply with the title or the author of the book you are looking for',
-                "footer":'Or choose one of the following options',
+                "heading":"Please enter the title of what you are looking for.",
+                "body":'You can use title or the author of the book',
+                "footer":'You can alternatively choose:',
                 "first_id":'browse',
                 "first_reply":"Available Books",
                 "second_id":"Exit",
