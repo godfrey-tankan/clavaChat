@@ -1251,14 +1251,14 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                             return response
                         details = {
                             "heading":f"Are you a Landlord or a Tenant?",
-                            "body":f'confirm your user type',
-                            "footer":'choose one of the following options',
-                            "first_id":'landlord',
-                            "first_reply":"Landlord",
-                            "second_id":"tenant",
-                            "second_reply":"Tenant",
-                            "third_id":"exit",
-                            "third_reply":"exit",
+                            "body":f'confirm your choice',
+                            "footer":'choose one of the following options or type exit to go back',
+                            "first_id":'Sell',
+                            "first_reply":"Add a property",
+                            "second_id":"view",
+                            "second_reply":"View Your properties",
+                            "third_id":"Subscriptions",
+                            "third_reply":"Your subscriptions",
                             "button":True,
                             
                         }
@@ -1353,7 +1353,7 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                     "first_id":'landlord',
                     "first_reply":"Landlord",
                     "second_id":"tenant",
-                    "second_reply":"Lenant",
+                    "second_reply":"Tenant",
                     "third_id":"exit",
                     "third_reply":"Exit",
                     "button":True,
