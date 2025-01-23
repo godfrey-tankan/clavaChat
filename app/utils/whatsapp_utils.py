@@ -861,7 +861,7 @@ def buying_and_selling(wa_id,message,name,page_number):
             elif message == "1":
                 response = seller_add_response
                 return response
-            elif message == "2" or message.lower()=="more" or "delete" in message.lower() or "edit" in message.lower():
+            elif message.lower() in ["2","more","view your listings"] or "delete" in message.lower() or "edit" in message.lower():
                 try:
                     seller_user_profile = session.query(Seller).filter_by(phone_number=wa_id[0]).first()
                 except Exception as e:
@@ -911,7 +911,7 @@ def buying_and_selling(wa_id,message,name,page_number):
                 else:
                     return not_a_seller_response
             
-            elif message.lower() == "3" :
+            elif message.lower() in ['3','subscriptions']:
                 response = seller_subs_response
                 try:
                     active_subscription_status.user_status = subscription_status
@@ -950,6 +950,22 @@ def buying_and_selling(wa_id,message,name,page_number):
                 send_message(response)
                 return ''
                 return welcome_message
+            details = {
+                "heading":"Please select",
+                "body":f'confirm your choice',
+                "footer":'choose one of the following options or type exit to go back',
+                "first_id":'Sell',
+                "first_reply":"Add a product",
+                "second_id":"view",
+                "second_reply":"View Your Listings",
+                "third_id":"Subscriptions",
+                "third_reply":"Subscriptions",
+                "button":True,
+                
+            }
+            data =get_interactive_message_input(wa_id[0],details=details)
+            send_message(data)
+            return ''
             return response
 
 def is_valid_whatsapp_message(body):
@@ -1135,6 +1151,23 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                     except Exception as e:
                         pass
                         # return e
+                    seller_response
+                    details = {
+                        "heading":"Please select",
+                        "body":f'confirm your choice',
+                        "footer":'choose one of the following options or type exit to go back',
+                        "first_id":'Sell',
+                        "first_reply":"Add a product",
+                        "second_id":"view",
+                        "second_reply":"View Your Listings",
+                        "third_id":"Subscriptions",
+                        "third_reply":"Subscriptions",
+                        "button":True,
+                        
+                    }
+                    data =get_interactive_message_input(wa_id[0],details=details)
+                    send_message(data)
+                    return ''
                     return response
                 
                 elif message == "2" or 'buy' in message.lower():
