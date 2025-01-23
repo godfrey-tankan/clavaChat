@@ -874,7 +874,7 @@ def buying_and_selling(wa_id,message,name,page_number):
                 response = create_seller_subscription(message, wa_id[0])
                 return response
                 
-            elif message == "1":
+            elif message.lower() in ['1','add a product']:
                 response = seller_add_response
                 return response
             elif message.lower() in ["2","more","view your listings"] or "delete" in message.lower() or "edit" in message.lower():
