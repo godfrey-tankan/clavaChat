@@ -1946,8 +1946,8 @@ def search_document(document_name, requester,request_type):
                                         "heading":"What would you like to do next?",
                                         "body":'choose more to see more books or exit to leave',
                                         "footer":'choose one of the following options',
-                                        "first_id":'exit',
-                                        "first_reply":"Exit",
+                                        "first_id":'random',
+                                        "first_reply":"Browse Random",
                                         "second_id":"Exit",
                                         "second_reply":"Exit",
                                         "button":True,
@@ -2030,7 +2030,7 @@ def library_contents_lookup(requester, message):
             return '> an error occurred while changing branch..'
         
 
-    if message.lower() in ["more","available books"]:
+    if message.lower() in ["more","available books","browse random"]:
         message = "vvvvbvb"
         request_type = '*here are some other random documents you might be interested in:*'
         document_path = search_document(message,requester,request_type)
