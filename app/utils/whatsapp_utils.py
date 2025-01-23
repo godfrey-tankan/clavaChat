@@ -1223,6 +1223,13 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                         session.commit()
                     except Exception as e:
                         ...
+                    details = {
+                    "list":True,
+                    
+                    }
+                    response = get_interactive_message_input(wa_id[0],details)
+                    send_message(response)
+                    return ''
                     return welcome_message
                 details = {
                     "heading":f"Are you a Landlord or a Tenant?",
@@ -1978,14 +1985,48 @@ def publish_post(message):
 
 def library_contents_lookup(requester, message):
     if message.lower() in greetings_list:
-        return "Hello! Please enter the title of what you are looking for."
+        details = {
+                "heading":"Hello! Please enter the title of what you are looking for.",
+                "body":'Reply with the title or the author of the book you are looking for',
+                "footer":'Or choose one of the following options',
+                "first_id":'browse',
+                "first_reply":"Available Books",
+                "second_id":"Exit",
+                "second_reply":"Exit",
+                "button":True,
+                
+        }
+        try:
+            data = send_double_button_interactive(requester,details=details)
+            send_message(data)
+            return ''
+        except:
+            return '> an error occurred while changing branch..'
+        
 
-    if message.lower() == "more":
+    if message.lower() in ["more","available books"]:
         message = "vvvvbvb"
         request_type = '*here are some other random documents you might be interested in:*'
         document_path = search_document(message,requester,request_type)
         data = get_text_message_input(requester, document_path, None)
         response = send_message(data)
+        details = {
+                "heading":"What would you like to do next?",
+                "body":'choose more to see more books or exit to leave',
+                "footer":'choose one of the following options',
+                "first_id":'more',
+                "first_reply":"More",
+                "second_id":"Exit",
+                "second_reply":"Exit",
+                "button":True,
+                
+        }
+        try:
+            data = send_double_button_interactive(requester,details=details)
+            send_message(data)
+        except:
+            return '> an error occurred while changing branch..'
+        
         return response
     else:
         custom_message = '*No exact match found!,here are some alternatives*'
