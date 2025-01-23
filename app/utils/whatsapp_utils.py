@@ -1213,7 +1213,7 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                     "second_id":"Buy",
                     "second_reply":"Buy a product",
                     "third_id":"exit",
-                    "third_reply":"exit",
+                    "third_reply":"Exit",
                     "button":True,
                     
                 }
@@ -1329,7 +1329,7 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                     "second_id":"Buy",
                     "second_reply":"Buy a product",
                     "third_id":"exit",
-                    "third_reply":"exit",
+                    "third_reply":"Exit",
                     "button":True,
                     
                 }
@@ -1351,11 +1351,11 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                     "body":f'confirm your user type',
                     "footer":'choose one of the following options',
                     "first_id":'landlord',
-                    "first_reply":"landlord",
+                    "first_reply":"Landlord",
                     "second_id":"tenant",
-                    "second_reply":"tenant",
+                    "second_reply":"Lenant",
                     "third_id":"exit",
-                    "third_reply":"exit",
+                    "third_reply":"Exit",
                     "button":True,
                     
                 }
