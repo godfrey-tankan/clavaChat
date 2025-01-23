@@ -1944,7 +1944,7 @@ def search_document(document_name, requester,request_type):
                                 send_message(data)
                                 details = {
                                         "heading":"What would you like to do next?",
-                                        "body":'choose more to see more books or exit to leave',
+                                        "body":'Do you want to see more books or exit?',
                                         "footer":'choose one of the following options',
                                         "first_id":'random',
                                         "first_reply":"Browse Random",
@@ -1955,7 +1955,7 @@ def search_document(document_name, requester,request_type):
                                 }
                                 data = send_double_button_interactive(requester,details=details)
                                 send_message(data)
-                                return ''
+                                return 'alternatives found'
                     #returning matches with key words
         except Exception as e:
             ...
@@ -2040,6 +2040,8 @@ def library_contents_lookup(requester, message):
     else:
         custom_message = '*No exact match found!,here are some alternatives*'
         document_path = search_document(message,requester,custom_message)
+        if document_path == "alternatives found":
+            return ""
         if document_path == "Document already exists.":
             return "Document already exists."
         elif document_path == "Document added successfully.":
