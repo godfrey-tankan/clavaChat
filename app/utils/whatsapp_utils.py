@@ -1229,7 +1229,7 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
             
             if active_subscription_status.user_status == housing_mode:
                 response = welcome_response3
-                if message == "1" or 'tenant' in response.lower():
+                if message.lower() in ['1','landlord']:
                     response = welcome_landlord_response
                     try:
                         response = landlord_name_response
@@ -1249,12 +1249,28 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                             active_subscription_status.landlord_id=landlord_info.id
                             session.commit()
                             return response
+                        details = {
+                            "heading":f"Are you a Landlord or a Tenant?",
+                            "body":f'confirm your user type',
+                            "footer":'choose one of the following options',
+                            "first_id":'landlord',
+                            "first_reply":"Landlord",
+                            "second_id":"tenant",
+                            "second_reply":"Tenant",
+                            "third_id":"exit",
+                            "third_reply":"exit",
+                            "button":True,
+                            
+                        }
+                        data =get_interactive_message_input(wa_id[0],details=details)
+                        send_message(data)
+                        return ''
                         return welcome_landlord_response
                     except Exception as e:
                         selling_mode_ob = ""
                         # return e
                     return response
-                elif message == "2" or 'landlord' in response.lower():
+                elif message.lower() in ['2','tenant']:
                     response = tenant_response
                     try:
                         active_subscription_status.user_type = tenant_user
@@ -1285,9 +1301,9 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                     "body":f'confirm your user type',
                     "footer":'choose one of the following options',
                     "first_id":'landlord',
-                    "first_reply":"landlord",
+                    "first_reply":"Landlord",
                     "second_id":"tenant",
-                    "second_reply":"tenant",
+                    "second_reply":"Tenant",
                     "third_id":"exit",
                     "third_reply":"exit",
                     "button":True,
