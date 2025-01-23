@@ -315,6 +315,8 @@ def generate_response(response, wa_id, name, message_type, message_id):
     else:
         if response.lower() in questions_list:
             return "I am tankan's assistant. I am here to help you with anything you need."
+        if response.lower() in ["codes","#codes"]:
+            message ='1. To send messages: `post library message New books will be available today`\n2. bypass - does magic'
         if response.lower().startswith("post") and (wa_id[0] == "263779586059" or wa_id[0] == "263717852804"):
             response_ob = publish_post(response)
             return response_ob
