@@ -1999,6 +1999,7 @@ def search_document(document_name, requester,request_type):
                             # all_documents = session.query(Document)\
                             # .offset(random.randint(1, int(documents_count))).limit(10).all()
                             all_documents = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{modified_string}%")))
+                            print(all_documents)
                             if all_documents.count() > 0:
                                 response = f"{request_type}\n\n"
                                 for i, document in enumerate(all_documents, start=random.randint(1, 10)):
@@ -2021,6 +2022,7 @@ def search_document(document_name, requester,request_type):
                                 data = send_double_button_interactive(requester,details=details)
                                 send_message(data)
                                 return 'alternatives found'
+                            print('!!!no alternatives found')
                             return None
                     #returning matches with key words
         except Exception as e:
@@ -2106,6 +2108,7 @@ def library_contents_lookup(requester, message):
     else:
         custom_message = '*No exact match found!,here are some alternatives*'
         document_path = search_document(message,requester,custom_message)
+        print('The document path is:',document_path)
         if document_path == "alternatives found":
             return ""
         if document_path == "Document already exists.":
