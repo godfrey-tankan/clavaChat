@@ -309,13 +309,14 @@ def generate_response(response, wa_id, name, message_type, message_id):
     try:
         last_message = session.query(Subscription).filter_by(phone_number=wa_id[0]).first().user_activity
     except Exception as e:
+        print('error fetching subs',e)
         last_message = ""
     if last_message == response.strip() and (response != "1" and response !="2" and response !="3"):
         return None
     else:
         if response.lower() in questions_list:
             return "I am tankan's assistant. I am here to help you with anything you need."
-        if response.lower().startswith("post") and wa_id[0] == "263779586059" or wa_id[0] == "263717852804":
+        if response.lower().startswith("post") and (wa_id[0] == "263779586059" or wa_id[0] == "263717852804"):
             response_ob = publish_post(response)
             return response_ob
         if response.lower() == "help": 
@@ -506,10 +507,6 @@ def process_message_file_type(body, phone_number_id, profile_name):
     message = body["entry"][0]["changes"][0]["value"]["messages"][0]
     message_type = message["type"]
     message_id = None
-    print('body..........',body)
-    print('message............',message)
-    print('message_type............',message_type)
-    print('profile_name............',profile_name)
     if message_type == "audio":
         message_id = message["audio"]["id"]
       
@@ -544,13 +541,10 @@ def process_message_file_type(body, phone_number_id, profile_name):
     elif message_type == "text":
         message_body = message["text"]["body"]
     
-    print('last message body......',message_body)
         
     response = generate_response(message_body, phone_number_id, profile_name,message_type,message_id)
     data = get_text_message_input(phone_number_id, response, None, False)
     return send_message(data)
-
-
 
 
 def send_message_template(recepient):
