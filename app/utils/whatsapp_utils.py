@@ -178,7 +178,7 @@ def get_interactive_message_input(recipient,details=None):
                         "text": "choose one of the following options"
                         },
                         "action": {
-                        "button": "View Options",
+                        "button": "Select your option",
                         "sections": [
                             {
                             "title": "Menu Options",
@@ -1253,7 +1253,7 @@ def welcome_page(wa_id,message,user_status_ob,name,page_number):
                             session.commit()
                             return response
                         details = {
-                            "heading":f"Are you a Landlord or a Tenant?",
+                            "heading":f"Landlord Menu",
                             "body":f'confirm your choice',
                             "footer":'choose one of the following options or type exit to go back',
                             "first_id":'Sell',
