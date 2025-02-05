@@ -1926,6 +1926,19 @@ def search_document(document_name, requester,request_type):
                 response = document.title
                 return response
             else:
+                school_study_searches = ['zimsec','o level','a level','cambridge','geo','maths','vid']
+                for search in school_study_searches:
+                    if search.lower() in document_name.lower():
+                        all_documents = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{search}%"))).all()
+                        if all_documents:
+                            response = f"Study materials\n\n"
+                            for i, document in enumerate(all_documents, start=random.randint(1, 10)):
+                                response += f"📚 *TITLE*: _{document.title}_\n- *code #️⃣:* {document.id}  \n\n"
+                            response += underline_response
+                            response += after_books_listing_response
+                            data = get_text_message_input(requester, response, None)
+                            send_message(data)
+                            return ''
                 try:
                     document_parts = modified_string.split("")
                     modified_string = "".join(document_parts[:3])
@@ -2001,32 +2014,7 @@ def search_document(document_name, requester,request_type):
                         else:
                             # all_documents = session.query(Document)\
                             # .offset(random.randint(1, int(documents_count))).limit(10).all()
-                            school_study_searches = ['zimsec','o level','a level','cambridge','geo','maths','vid']
-                            for search in school_study_searches:
-                                if search.lower() in modified_string.lower():
-                                    all_documents = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{search}%"))).all()
-                                    if all_documents:
-                                        response = f"Study materials\n\n"
-                                        for i, document in enumerate(all_documents, start=random.randint(1, 10)):
-                                            response += f"📚 *TITLE*: _{document.title}_\n- *code #️⃣:* {document.id}  \n\n"
-                                        response += underline_response
-                                        response += after_books_listing_response
-                                        data = get_text_message_input(requester, response, None)
-                                        send_message(data)
-                                        details = {
-                                                "heading":"What would you like to do next?",
-                                                "body":'choose more to see more books or exit to leave',
-                                                "footer":'choose one of the following options',
-                                                "first_id":'more',
-                                                "first_reply":"More",
-                                                "second_id":"Exit",
-                                                "second_reply":"Exit",
-                                                "button":True,
-                                                
-                                        }
-                                        data = send_double_button_interactive(requester,details=details)
-                                        send_message(data)
-                                        return ''
+
                             all_documents = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{modified_string}%"))).all()
                             if all_documents:
                                 response = f"{request_type}\n\n"
