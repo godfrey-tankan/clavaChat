@@ -2001,9 +2001,9 @@ def search_document(document_name, requester,request_type):
                         else:
                             # all_documents = session.query(Document)\
                             # .offset(random.randint(1, int(documents_count))).limit(10).all()
-                            school_study_searches = ['zimsec','o level','a level','cambridge','geo','maths']
+                            school_study_searches = ['zimsec','o level','a level','cambridge','geo','maths','vid']
                             for search in school_study_searches:
-                                if search in modified_string:
+                                if search.lower() in modified_string.lower():
                                     all_documents = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{search}%"))).all()
                                     if all_documents:
                                         response = f"Study materials\n\n"
