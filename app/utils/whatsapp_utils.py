@@ -1926,7 +1926,7 @@ def search_document(document_name, requester,request_type):
                 response = document.title
                 return response
             else:
-                school_study_searches = ['zimsec','o level','a level','cambridge','geo','maths','vid']
+                school_study_searches = ['zimsec','o level','a level','cambridge','geo','maths','past exam']
                 for search in school_study_searches:
                     if search.lower() in document_name.lower():
                         all_documents = session.query(Document).filter(func.lower(Document.title).like(func.lower(f"%{search}%"))).all()
@@ -1938,7 +1938,7 @@ def search_document(document_name, requester,request_type):
                             response += after_books_listing_response
                             data = get_text_message_input(requester, response, None)
                             send_message(data)
-                            return ''
+                            return 'alternatives found'
                 try:
                     document_parts = modified_string.split("")
                     modified_string = "".join(document_parts[:3])
@@ -2152,9 +2152,9 @@ def library_contents_lookup(requester, message):
             message = message.strip()
             if message[:1].isdigit() and message[-1].isalpha():
                 return 'please use book code *number* only to get the book'
-            msg ="No document found!\n `tip`: _try searching by the author instead_ ."
-            data = get_text_message_input(requester, msg, None)
-            send_message(data)
+            # msg ="No document found!\n `tip`: _try searching by the author instead_ ."
+            # data = get_text_message_input(requester, msg, None)
+            # send_message(data)
             details = {
                     "heading":"No document found!",
                     "body":'`tip`: _try searching by the author instead_ .',
