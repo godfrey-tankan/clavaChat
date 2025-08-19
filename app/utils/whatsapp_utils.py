@@ -2111,6 +2111,8 @@ def library_contents_lookup(requester, message):
             return ''
         except:
             return '> an error occurred while changing branch..'
+    if "#" in message.lower() and len(message) < 5:
+        return "Please use only book code number with no *#* or any *special* characters"
         
 
     if message.lower() in ["more","available books","browse random"]:
