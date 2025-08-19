@@ -19,7 +19,7 @@ no_products_found_response = "No products found!. Please check the spelling or t
 invalid_product_information ="⚠️Invalid product information provided. \n\nPlease provide:\n- *Product name* *Condition* \n\n 💡example:*iphone 13 256GB boxed* \nreply with `exit` to exit."
 questions_list =["who are you?", "what is your name", "where are you from", "who made you?", "who is tankan", "tankan","tnqn"]
 
-library_response = " `clavaChat` Library.\n\n1. *For a novel/book 📖:*,\n- reply with the title.\n\n2. *For a past exam paper:* \n- reply with paper title and year.\n\n ⚠️ *DISCLAIMER* _responses may not be accurate!_\n\nType `exit` to exit.\t clava.co.zw"
+library_response = " `clavaChat` Library.\n\n1. *For a novel/book 📖:*,\n- reply with the title.\n\n2. *For a past exam paper:* \n- reply with paper title and year.\n\n ⚠️ *DISCLAIMER* _responses may not be accurate!_\n\nType `exit` to exit.\t *2k* + books found🚀"
 
 
 greetings_list = ["hi", "hello", "hey", "hie", "good afternoon", "good evening", "good night", "morning", "afternoon", "evening", "night"]
